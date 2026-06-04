@@ -259,6 +259,7 @@ function generateHTMLReport(data) {
   </div>
 
   <div class="container">
+    ${generateExecutiveSummaryHTML(data)}
     ${generateHealthScoreHTML(data)}
     ${generateMetricGridHTML(data)}
     ${generateChartsHTML(data)}
@@ -275,6 +276,18 @@ function generateHTMLReport(data) {
   `;
 
   return html;
+}
+
+function generateExecutiveSummaryHTML(data) {
+  if (!data.executiveSummary) return '';
+  return `
+    <div class="section" style="border-left: 8px solid #667eea;">
+      <h3 class="section-title">📝 Executive Summary</h3>
+      <div style="font-size: 1.1rem; color: #4a5568;">
+        ${data.executiveSummary.replace(/\n/g, '<br>')}
+      </div>
+    </div>
+  `;
 }
 
 function generateHealthScoreHTML(data) {
@@ -380,7 +393,7 @@ function generateChartsHTML(data) {
 }
 
 function generateIssueTabsHTML(data) {
-  const { bottlenecks, reRenderIssues, hierarchyIssues, memoryAnalysis, bundleAnalysis, hierarchyTree } = data;
+  const { bottlenecks, reRenderIssues, hierarchyIssues, memoryAnalysis, bundleAnalysis, hierarchyTree, flows = [], anomalies = [] } = data;
 
   return `
     <div class="section">
@@ -396,6 +409,27 @@ function generateIssueTabsHTML(data) {
         </div>
         <div class="tab" onclick="switchTab('memory')">
           💾 Memory (${memoryAnalysis.leaks.length} leaks)
+        </div>
+        <div class="tab" onclick="switchTab('flows')">
+          🌊 Flows (${flows.length})
+        </div>
+        <div class="tab" onclick="switchTab('anomalies')">
+          🚨 Anomalies (${anomalies.length})
+        </div>
+        <div class="tab" onclick="switchTab('concurrent')">
+          ⚛️ Concurrent (${data.concurrentAnalysis.transitions.length + data.concurrentAnalysis.interruptedRenders.length})
+        </div>
+        <div class="tab" onclick="switchTab('phases')">
+          🔄 Phases
+        </div>
+        <div class="tab" onclick="switchTab('animations')">
+          🎬 Animations (${data.animations.length})
+        </div>
+        <div class="tab" onclick="switchTab('prediction')">
+          🔮 Prediction
+        </div>
+        <div class="tab" onclick="switchTab('fixes')">
+          🛠️ Automated Fixes (${data.automatedFixes.length})
         </div>
         ${bundleAnalysis ? `
         <div class="tab" onclick="switchTab('bundle')">
@@ -420,12 +454,241 @@ function generateIssueTabsHTML(data) {
         ${generateMemoryHTML(memoryAnalysis)}
       </div>
 
+      <div id="flows" class="tab-content">
+        ${generateFlowsHTML(flows)}
+      </div>
+
+      <div id="anomalies" class="tab-content">
+        ${generateAnomaliesHTML(anomalies)}
+      </div>
+
+      <div id="concurrent" class="tab-content">
+        ${generateConcurrentHTML(data.concurrentAnalysis)}
+      </div>
+
+      <div id="phases" class="tab-content">
+        ${generatePhasesHTML(data.phaseAnalysis)}
+      </div>
+
+      <div id="animations" class="tab-content">
+        ${generateAnimationsHTML(data.animations)}
+      </div>
+
+      <div id="prediction" class="tab-content">
+        ${generatePredictionHTML(data.prediction)}
+      </div>
+
+      <div id="fixes" class="tab-content">
+        ${generateFixesHTML(data.automatedFixes)}
+      </div>
+
       ${bundleAnalysis ? `
       <div id="bundle" class="tab-content">
         ${generateBundleHTML(bundleAnalysis)}
       </div>
       ` : ''}
     </div>
+  `;
+}
+
+function generatePredictionHTML(prediction) {
+  if (!prediction) return '<p style="padding: 2rem; text-align: center; color: #718096;">ℹ️ Prediction engine data not available.</p>';
+
+  return `
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-title">Predicted Render Time</div>
+        <div class="metric-value">${prediction.predictedRenderTime}</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Risk Level</div>
+        <div class="metric-value" style="color: ${prediction.risk === 'HIGH' ? CONFIG.report.chartColors.critical : prediction.risk === 'MEDIUM' ? CONFIG.report.chartColors.warning : CONFIG.report.chartColors.good}">
+          ${prediction.risk}
+        </div>
+      </div>
+    </div>
+    
+    <h4 style="margin: 1.5rem 0 1rem;">Predicted Optimization Needs</h4>
+    ${prediction.suggestions.map(s => `
+      <div class="issue-card ${s.priority === 'HIGH' ? 'critical' : 'warning'}">
+        <strong>${s.type}</strong> [Priority: ${s.priority}]
+        <p>${s.message}</p>
+      </div>
+    `).join('') || '<p>✅ No major risks predicted for this component structure.</p>'}
+  `;
+}
+
+function generateFixesHTML(fixes) {
+  if (!fixes || fixes.length === 0) return '<p style="padding: 2rem; text-align: center; color: #718096;">✅ No automated fixes suggested at this time.</p>';
+
+  const allSuggestions = fixes.flatMap(f => f.suggestions);
+  if (allSuggestions.length === 0) return '<p style="padding: 2rem; text-align: center; color: #718096;">✅ No automated fixes suggested at this time.</p>';
+
+  return `
+    <p style="margin-bottom: 1rem;">Recommended code changes to improve performance:</p>
+    <table>
+      <thead>
+        <tr><th>Component</th><th>Type</th><th>Description</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        ${fixes.map(f => f.suggestions.map(s => `
+          <tr>
+            <td><strong>&lt;${f.component}&gt;</strong></td>
+            <td><span class="badge ${s.type === 'ADD_MEMO' ? 'critical' : 'warning'}">${s.type}</span></td>
+            <td>${s.description}</td>
+            <td><button style="padding: 0.25rem 0.5rem; border-radius: 4px; border: 1px solid #ccc; cursor: not-allowed;" disabled title="Direct patching not available in this version">Apply Patch</button></td>
+          </tr>
+        `).join('')).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function generateAnimationsHTML(animations) {
+  if (!animations || animations.length === 0) return '<p style="padding: 2rem; text-align: center; color: #718096;">✅ No animations detected.</p>';
+
+  return `
+    <table>
+      <thead>
+        <tr><th>Component</th><th>Duration</th><th>Avg FPS</th><th>Dropped Frames</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        ${animations.map(a => `
+          <tr>
+            <td><strong>${a.component}</strong></td>
+            <td>${a.duration}ms</td>
+            <td>${a.avgFPS}</td>
+            <td>${a.droppedFrames}</td>
+            <td><span class="badge ${a.smooth ? 'good' : 'warning'}">${a.smooth ? 'Smooth' : 'Janky'}</span></td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function generateConcurrentHTML(analysis) {
+  let html = '<h4>⚛️ Concurrent React Analysis</h4>';
+  
+  if (analysis.transitions.length > 0) {
+    html += '<h5 style="margin-top: 1rem;">Transitions</h5>';
+    html += `
+      <table>
+        <thead>
+          <tr><th>Time</th><th>Duration</th><th>Components</th><th>Interrupted</th></tr>
+        </thead>
+        <tbody>
+          ${analysis.transitions.map(t => `
+            <tr>
+              <td>${t.timestamp}ms</td>
+              <td>${t.duration}ms</td>
+              <td>${t.components.join(', ')}</td>
+              <td>${t.wasInterrupted ? '⚠️ Yes' : 'No'}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
+  if (analysis.interruptedRenders.length > 0) {
+    html += '<h5 style="margin-top: 1rem;">Interrupted Renders</h5>';
+    html += `
+      <table>
+        <thead>
+          <tr><th>Time</th><th>Actual</th><th>Interrupted</th><th>Efficiency</th></tr>
+        </thead>
+        <tbody>
+          ${analysis.interruptedRenders.map(r => `
+            <tr>
+              <td>${r.timestamp}ms</td>
+              <td>${r.actualDuration}ms</td>
+              <td>${r.interruptedDuration}ms</td>
+              <td>${r.efficiency}%</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
+  if (analysis.transitions.length === 0 && analysis.interruptedRenders.length === 0) {
+    html += '<p style="padding: 2rem; text-align: center; color: #718096;">ℹ️ No concurrent features (transitions/suspense) detected in this trace.</p>';
+  }
+
+  return html;
+}
+
+function generatePhasesHTML(phases) {
+  const expensivePhases = phases.filter(p => p.renderPhase.expensive || p.commitPhase.expensive);
+  
+  if (expensivePhases.length === 0) return '<p style="padding: 2rem; text-align: center; color: #718096;">✅ All render phases are within healthy thresholds.</p>';
+
+  return `
+    <p style="margin-bottom: 1rem;">Showing ${expensivePhases.length} heavy render cycles:</p>
+    <table>
+      <thead>
+        <tr><th>Time</th><th>Total</th><th>Render Phase</th><th>Commit Phase</th><th>Recommendation</th></tr>
+      </thead>
+      <tbody>
+        ${expensivePhases.slice(0, 20).map(p => `
+          <tr>
+            <td>${p.timestamp}ms</td>
+            <td>${p.totalDuration}ms</td>
+            <td style="color: ${p.renderPhase.expensive ? CONFIG.report.chartColors.critical : 'inherit'}">${p.renderPhase.duration}ms (${p.renderPhase.percentage}%)</td>
+            <td style="color: ${p.commitPhase.expensive ? CONFIG.report.chartColors.critical : 'inherit'}">${p.commitPhase.duration}ms (${p.commitPhase.percentage}%)</td>
+            <td><small>${p.recommendation}</small></td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function generateFlowsHTML(flows) {
+  if (!flows || flows.length === 0) return '<p style="padding: 2rem; text-align: center; color: #718096;">ℹ️ No configured user flows detected in this trace.</p>';
+  
+  return `
+    <table>
+      <thead>
+        <tr><th>Flow</th><th>Duration</th><th>Budget</th><th>Avg FPS</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        ${flows.map(f => `
+          <tr>
+            <td><strong>${f.name}</strong></td>
+            <td>${f.duration}ms</td>
+            <td>< ${f.budget.duration}ms</td>
+            <td>${f.avgFPS} (target: ${f.budget.fps})</td>
+            <td><span class="badge ${f.passed ? 'good' : 'critical'}">${f.passed ? '✅ PASSED' : '❌ FAILED'}</span></td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function generateAnomaliesHTML(anomalies) {
+  if (!anomalies || anomalies.length === 0) return '<p style="padding: 2rem; text-align: center; color: #718096;">✅ No statistical anomalies detected.</p>';
+
+  return `
+    <table>
+      <thead>
+        <tr><th>Time</th><th>Metric</th><th>Value</th><th>Expected</th><th>Deviation (Z-Score)</th><th>Severity</th></tr>
+      </thead>
+      <tbody>
+        ${anomalies.slice(0, 20).map(a => `
+          <tr>
+            <td>${a.timestamp}ms</td>
+            <td><strong>${a.metric.toUpperCase()}</strong></td>
+            <td>${Math.round(a.value)}</td>
+            <td>~${a.expected}</td>
+            <td>${a.deviation}σ</td>
+            <td><span class="badge ${a.severity === 'critical' ? 'critical' : a.severity === 'high' ? 'warning' : 'info'}">${a.severity.toUpperCase()}</span></td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
   `;
 }
 
@@ -442,7 +705,7 @@ function generateBottlenecksTableHTML(bottlenecks) {
           <th>FPS</th>
           <th>CPU</th>
           <th>Component</th>
-          <th>Confidence</th>
+          <th>Network</th>
           <th>Severity</th>
         </tr>
       </thead>
@@ -450,6 +713,9 @@ function generateBottlenecksTableHTML(bottlenecks) {
         ${bottlenecks.slice(0, 20).map(b => {
           const candidate = b.candidates[0];
           const severityClass = b.severity > 0.7 ? 'critical' : b.severity > 0.4 ? 'warning' : 'good';
+          const networkInfo = b.networkActivity 
+            ? `<span title="${b.networkActivity.details?.join('\n') || ''}">${b.networkActivity.concurrentCount} reqs ${b.networkActivity.likelyBlocked ? '⚠️' : ''}</span>`
+            : '-';
           
           return `
             <tr>
@@ -457,7 +723,7 @@ function generateBottlenecksTableHTML(bottlenecks) {
               <td>${b.fps} FPS</td>
               <td>${b.cpuTotal}%</td>
               <td>${candidate && candidate.component ? `<${candidate.component}>` : '<em>Native layer</em>'}</td>
-              <td>${candidate && candidate.confidence ? (candidate.confidence * 100).toFixed(0) + '%' : 'N/A'}</td>
+              <td>${networkInfo}</td>
               <td><span class="badge ${severityClass}">${(b.severity * 100).toFixed(0)}%</span></td>
             </tr>
           `;

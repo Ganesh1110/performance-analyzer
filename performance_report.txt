@@ -3,9 +3,20 @@
 ║            REACT NATIVE PERFORMANCE ANALYSIS REPORT v2.0                   ║
 ╚════════════════════════════════════════════════════════════════════════════╝
 
-Generated: 6/4/2026, 12:48:53 PM
+Generated: 6/4/2026, 1:48:00 PM
 Duration: 112326ms
 Samples: 223 frames analyzed
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📝 EXECUTIVE SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️ Your app has significant performance issues that need immediate attention. We detected 81 frame drops, but they appear to be caused by native-layer operations like image loading or network requests. 
+
+**Immediate Actions:**
+2. 🔴 Optimize top 3 bottleneck components
+
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📊 OVERALL HEALTH SCORE: 64/100 ⚠️  NEEDS IMPROVEMENT
@@ -35,6 +46,7 @@ Samples: 223 frames analyzed
     • 0 components with excessive re-renders
     • 0 parent-child re-render cascades
     • 0 potential memory leaks
+    • 0 animations tracked
     
 
 
@@ -56,6 +68,7 @@ Showing top 20 worst bottlenecks:
 [Metrics]
   • FPS: 36 | CPU: 107% | RenderThread: 40% | JS: 0%
 
+
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
 
@@ -71,6 +84,7 @@ Showing top 20 worst bottlenecks:
 
 [Metrics]
   • FPS: 29 | CPU: 105% | RenderThread: 36% | JS: 0%
+
 
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
@@ -88,6 +102,7 @@ Showing top 20 worst bottlenecks:
 [Metrics]
   • FPS: 41 | CPU: 86% | RenderThread: 36% | JS: 0%
 
+
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
 
@@ -103,6 +118,7 @@ Showing top 20 worst bottlenecks:
 
 [Metrics]
   • FPS: 40 | CPU: 99% | RenderThread: 32% | JS: 0%
+
 
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
@@ -120,6 +136,7 @@ Showing top 20 worst bottlenecks:
 [Metrics]
   • FPS: 28 | CPU: 80% | RenderThread: 34% | JS: 0%
 
+
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
 
@@ -135,6 +152,7 @@ Showing top 20 worst bottlenecks:
 
 [Metrics]
   • FPS: 37 | CPU: 96% | RenderThread: 32% | JS: 0%
+
 
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
@@ -152,6 +170,7 @@ Showing top 20 worst bottlenecks:
 [Metrics]
   • FPS: 37 | CPU: 97% | RenderThread: 32% | JS: 0%
 
+
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
 
@@ -167,6 +186,7 @@ Showing top 20 worst bottlenecks:
 
 [Metrics]
   • FPS: 40 | CPU: 127% | RenderThread: 36% | JS: 0%
+
 
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
@@ -184,6 +204,7 @@ Showing top 20 worst bottlenecks:
 [Metrics]
   • FPS: 39 | CPU: 93% | RenderThread: 28% | JS: 0%
 
+
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
 
@@ -199,6 +220,7 @@ Showing top 20 worst bottlenecks:
 
 [Metrics]
   • FPS: 34 | CPU: 72% | RenderThread: 42% | JS: 0%
+
 
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
@@ -216,6 +238,7 @@ Showing top 20 worst bottlenecks:
 [Metrics]
   • FPS: 37 | CPU: 74% | RenderThread: 46% | JS: 0%
 
+
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
 
@@ -231,6 +254,7 @@ Showing top 20 worst bottlenecks:
 
 [Metrics]
   • FPS: 36 | CPU: 76% | RenderThread: 46% | JS: 0%
+
 
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
@@ -248,6 +272,7 @@ Showing top 20 worst bottlenecks:
 [Metrics]
   • FPS: 43 | CPU: 112% | RenderThread: 34% | JS: 0%
 
+
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
 
@@ -263,6 +288,7 @@ Showing top 20 worst bottlenecks:
 
 [Metrics]
   • FPS: 31 | CPU: 102% | RenderThread: 30% | JS: 0%
+
 
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
@@ -280,6 +306,7 @@ Showing top 20 worst bottlenecks:
 [Metrics]
   • FPS: 34 | CPU: 77% | RenderThread: 42% | JS: 0%
 
+
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
 
@@ -295,6 +322,7 @@ Showing top 20 worst bottlenecks:
 
 [Metrics]
   • FPS: 34 | CPU: 80% | RenderThread: 44% | JS: 0%
+
 
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
@@ -312,6 +340,7 @@ Showing top 20 worst bottlenecks:
 [Metrics]
   • FPS: 36 | CPU: 73% | RenderThread: 44% | JS: 0%
 
+
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
 
@@ -327,6 +356,7 @@ Showing top 20 worst bottlenecks:
 
 [Metrics]
   • FPS: 36 | CPU: 78% | RenderThread: 44% | JS: 0%
+
 
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
@@ -344,6 +374,7 @@ Showing top 20 worst bottlenecks:
 [Metrics]
   • FPS: 40 | CPU: 100% | RenderThread: 28% | JS: 0%
 
+
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue
 
@@ -359,6 +390,7 @@ Showing top 20 worst bottlenecks:
 
 [Metrics]
   • FPS: 43 | CPU: 54% | RenderThread: 28% | JS: 0%
+
 
 [Root Cause]
   ⚠️  No React component identified - likely native layer issue

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-04T07:18:53.762Z",
+  "timestamp": "2026-06-04T08:18:00.720Z",
   "summary": {
     "totalFrames": 223,
     "bottleneckCount": 81,
@@ -4245,5 +4245,533 @@
       }
     ],
     "leaks": []
-  }
+  },
+  "flows": [],
+  "anomalies": [
+    {
+      "timestamp": 12639,
+      "metric": "fps",
+      "value": 59.75859986896084,
+      "expected": 60,
+      "deviation": "34.59",
+      "severity": "critical",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 14645,
+      "metric": "cpuTotal",
+      "value": 9.9601593625498,
+      "expected": 4,
+      "deviation": "3.55",
+      "severity": "high",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 16653,
+      "metric": "ram",
+      "value": 342,
+      "expected": 341,
+      "deviation": "4.36",
+      "severity": "critical",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 17156,
+      "metric": "ram",
+      "value": 342,
+      "expected": 341,
+      "deviation": "3.00",
+      "severity": "medium",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 18660,
+      "metric": "ram",
+      "value": 343,
+      "expected": 341,
+      "deviation": "4.04",
+      "severity": "critical",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 19159,
+      "metric": "ram",
+      "value": 343,
+      "expected": 341,
+      "deviation": "2.88",
+      "severity": "medium",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 24679,
+      "metric": "fps",
+      "value": 58.77954865137644,
+      "expected": 60,
+      "deviation": "50.87",
+      "severity": "critical",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 24679,
+      "metric": "cpuTotal",
+      "value": 35.785288270377734,
+      "expected": 5,
+      "deviation": "15.86",
+      "severity": "critical",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 25180,
+      "metric": "fps",
+      "value": 50.98956035464666,
+      "expected": 60,
+      "deviation": "33.78",
+      "severity": "critical",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 25180,
+      "metric": "cpuTotal",
+      "value": 33.93213572854291,
+      "expected": 6,
+      "deviation": "3.98",
+      "severity": "high",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 25683,
+      "metric": "fps",
+      "value": 52.60585081150316,
+      "expected": 59,
+      "deviation": "3.50",
+      "severity": "high",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 26187,
+      "metric": "fps",
+      "value": 52.64736577865579,
+      "expected": 59,
+      "deviation": "2.62",
+      "severity": "medium",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 26187,
+      "metric": "cpuTotal",
+      "value": 63.492063492063494,
+      "expected": 9,
+      "deviation": "5.30",
+      "severity": "critical",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 29197,
+      "metric": "ram",
+      "value": 344,
+      "expected": 343,
+      "deviation": "2.52",
+      "severity": "medium",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 30702,
+      "metric": "fps",
+      "value": 43.18853720587372,
+      "expected": 58,
+      "deviation": "5.13",
+      "severity": "critical",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 30702,
+      "metric": "ram",
+      "value": 345,
+      "expected": 343,
+      "deviation": "3.31",
+      "severity": "high",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 31203,
+      "metric": "ram",
+      "value": 348,
+      "expected": 343,
+      "deviation": "6.68",
+      "severity": "critical",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 31703,
+      "metric": "fps",
+      "value": 28.71174595565386,
+      "expected": 57,
+      "deviation": "6.19",
+      "severity": "critical",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 31703,
+      "metric": "ram",
+      "value": 349,
+      "expected": 343,
+      "deviation": "4.37",
+      "severity": "critical",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 32203,
+      "metric": "ram",
+      "value": 349,
+      "expected": 344,
+      "deviation": "3.01",
+      "severity": "high",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 33211,
+      "metric": "ram",
+      "value": 352,
+      "expected": 344,
+      "deviation": "3.28",
+      "severity": "high",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 33707,
+      "metric": "fps",
+      "value": 35.84239489835882,
+      "expected": 55,
+      "deviation": "2.57",
+      "severity": "medium",
+      "context": {
+        "cpuSpike": true,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 33707,
+      "metric": "cpuTotal",
+      "value": 106.85483870967741,
+      "expected": 26,
+      "deviation": "4.74",
+      "severity": "critical",
+      "context": {
+        "cpuSpike": true,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 39228,
+      "metric": "fps",
+      "value": 28.926475634245055,
+      "expected": 53,
+      "deviation": "2.57",
+      "severity": "medium",
+      "context": {
+        "cpuSpike": true,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 39228,
+      "metric": "cpuTotal",
+      "value": 105.15873015873015,
+      "expected": 28,
+      "deviation": "2.89",
+      "severity": "medium",
+      "context": {
+        "cpuSpike": true,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 49853,
+      "metric": "fps",
+      "value": 27.570079212932125,
+      "expected": 54,
+      "deviation": "3.74",
+      "severity": "high",
+      "context": {
+        "cpuSpike": true,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 60901,
+      "metric": "cpuTotal",
+      "value": 126.98412698412697,
+      "expected": 29,
+      "deviation": "3.47",
+      "severity": "high",
+      "context": {
+        "cpuSpike": true,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 65916,
+      "metric": "ram",
+      "value": 357,
+      "expected": 351,
+      "deviation": "4.25",
+      "severity": "critical",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 66415,
+      "metric": "fps",
+      "value": 27.5505686015894,
+      "expected": 55,
+      "deviation": "3.56",
+      "severity": "high",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 66415,
+      "metric": "ram",
+      "value": 357,
+      "expected": 351,
+      "deviation": "2.99",
+      "severity": "medium",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 66917,
+      "metric": "ram",
+      "value": 359,
+      "expected": 351,
+      "deviation": "3.26",
+      "severity": "high",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 67421,
+      "metric": "ram",
+      "value": 359,
+      "expected": 352,
+      "deviation": "2.55",
+      "severity": "medium",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 71036,
+      "metric": "fps",
+      "value": 26.02408897393617,
+      "expected": 52,
+      "deviation": "2.75",
+      "severity": "medium",
+      "context": {
+        "cpuSpike": false,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 79695,
+      "metric": "cpuTotal",
+      "value": 93.25396825396825,
+      "expected": 36,
+      "deviation": "3.12",
+      "severity": "high",
+      "context": {
+        "cpuSpike": true,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 84716,
+      "metric": "cpuTotal",
+      "value": 111.55378486055778,
+      "expected": 56,
+      "deviation": "2.81",
+      "severity": "medium",
+      "context": {
+        "cpuSpike": true,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 84716,
+      "metric": "ram",
+      "value": 367,
+      "expected": 358,
+      "deviation": "2.79",
+      "severity": "medium",
+      "context": {
+        "cpuSpike": true,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 101786,
+      "metric": "ram",
+      "value": 375,
+      "expected": 366,
+      "deviation": "3.22",
+      "severity": "high",
+      "context": {
+        "cpuSpike": true,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    },
+    {
+      "timestamp": 106797,
+      "metric": "cpuTotal",
+      "value": 100,
+      "expected": 50,
+      "deviation": "3.11",
+      "severity": "high",
+      "context": {
+        "cpuSpike": true,
+        "memorySpike": true,
+        "simultaneousIssues": []
+      }
+    }
+  ],
+  "concurrentAnalysis": {
+    "transitions": [],
+    "suspenseBoundaries": [],
+    "deferredUpdates": [],
+    "interruptedRenders": []
+  },
+  "phaseAnalysis": [],
+  "animations": [],
+  "prediction": {
+    "predictedRenderTime": "199.00ms",
+    "risk": "HIGH",
+    "suggestions": [
+      {
+        "type": "VIRTUALIZATION",
+        "priority": "HIGH",
+        "message": "Component has many children. Consider virtualizing this list (use FlashList/FlatList)."
+      },
+      {
+        "type": "STATE_SPLITTING",
+        "priority": "MEDIUM",
+        "message": "High state count. Split component into smaller pieces with localized state."
+      },
+      {
+        "type": "CONTEXT_OPTIMIZATION",
+        "priority": "MEDIUM",
+        "message": "Uses context. Ensure context value is memoized to prevent unnecessary re-renders."
+      }
+    ]
+  },
+  "executiveSummary": "⚠️ Your app has significant performance issues that need immediate attention. We detected 81 frame drops, but they appear to be caused by native-layer operations like image loading or network requests. \n\n**Immediate Actions:**\n2. 🔴 Optimize top 3 bottleneck components",
+  "automatedFixes": []
 }

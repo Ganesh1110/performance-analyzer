@@ -234,11 +234,19 @@
   <div class="header">
     <div class="container">
       <h1>🚀 React Native Performance Analysis Report</h1>
-      <p>Generated: 6/4/2026, 12:48:53 PM</p>
+      <p>Generated: 6/4/2026, 1:48:00 PM</p>
     </div>
   </div>
 
   <div class="container">
+    
+    <div class="section" style="border-left: 8px solid #667eea;">
+      <h3 class="section-title">📝 Executive Summary</h3>
+      <div style="font-size: 1.1rem; color: #4a5568;">
+        ⚠️ Your app has significant performance issues that need immediate attention. We detected 81 frame drops, but they appear to be caused by native-layer operations like image loading or network requests. <br><br>**Immediate Actions:**<br>2. 🔴 Optimize top 3 bottleneck components
+      </div>
+    </div>
+  
     
     <div class="health-score">
       <div class="score-circle" style="--score-percent: 64%; background: conic-gradient(#FFC107 0%, #FFC107 64%, #e0e0e0 64%, #e0e0e0 100%);">
@@ -331,6 +339,27 @@
         <div class="tab" onclick="switchTab('memory')">
           💾 Memory (0 leaks)
         </div>
+        <div class="tab" onclick="switchTab('flows')">
+          🌊 Flows (0)
+        </div>
+        <div class="tab" onclick="switchTab('anomalies')">
+          🚨 Anomalies (38)
+        </div>
+        <div class="tab" onclick="switchTab('concurrent')">
+          ⚛️ Concurrent (0)
+        </div>
+        <div class="tab" onclick="switchTab('phases')">
+          🔄 Phases
+        </div>
+        <div class="tab" onclick="switchTab('animations')">
+          🎬 Animations (0)
+        </div>
+        <div class="tab" onclick="switchTab('prediction')">
+          🔮 Prediction
+        </div>
+        <div class="tab" onclick="switchTab('fixes')">
+          🛠️ Automated Fixes (0)
+        </div>
         
       </div>
 
@@ -343,7 +372,7 @@
           <th>FPS</th>
           <th>CPU</th>
           <th>Component</th>
-          <th>Confidence</th>
+          <th>Network</th>
           <th>Severity</th>
         </tr>
       </thead>
@@ -354,7 +383,7 @@
               <td>36 FPS</td>
               <td>107%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -363,7 +392,7 @@
               <td>29 FPS</td>
               <td>105%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -372,7 +401,7 @@
               <td>41 FPS</td>
               <td>86%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -381,7 +410,7 @@
               <td>40 FPS</td>
               <td>99%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -390,7 +419,7 @@
               <td>28 FPS</td>
               <td>80%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -399,7 +428,7 @@
               <td>37 FPS</td>
               <td>96%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -408,7 +437,7 @@
               <td>37 FPS</td>
               <td>97%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -417,7 +446,7 @@
               <td>40 FPS</td>
               <td>127%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -426,7 +455,7 @@
               <td>39 FPS</td>
               <td>93%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -435,7 +464,7 @@
               <td>34 FPS</td>
               <td>72%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -444,7 +473,7 @@
               <td>37 FPS</td>
               <td>74%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -453,7 +482,7 @@
               <td>36 FPS</td>
               <td>76%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -462,7 +491,7 @@
               <td>43 FPS</td>
               <td>112%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -471,7 +500,7 @@
               <td>31 FPS</td>
               <td>102%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -480,7 +509,7 @@
               <td>34 FPS</td>
               <td>77%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -489,7 +518,7 @@
               <td>34 FPS</td>
               <td>80%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -498,7 +527,7 @@
               <td>36 FPS</td>
               <td>73%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -507,7 +536,7 @@
               <td>36 FPS</td>
               <td>78%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -516,7 +545,7 @@
               <td>40 FPS</td>
               <td>100%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge critical">80%</span></td>
             </tr>
           
@@ -525,7 +554,7 @@
               <td>43 FPS</td>
               <td>54%</td>
               <td><em>Native layer</em></td>
-              <td>N/A</td>
+              <td>-</td>
               <td><span class="badge warning">70%</span></td>
             </tr>
           
@@ -562,6 +591,254 @@
       </div>
     </div>
   <p style="color: #48bb78; font-weight: 600;">✅ No memory leaks detected!</p>
+      </div>
+
+      <div id="flows" class="tab-content">
+        <p style="padding: 2rem; text-align: center; color: #718096;">ℹ️ No configured user flows detected in this trace.</p>
+      </div>
+
+      <div id="anomalies" class="tab-content">
+        
+    <table>
+      <thead>
+        <tr><th>Time</th><th>Metric</th><th>Value</th><th>Expected</th><th>Deviation (Z-Score)</th><th>Severity</th></tr>
+      </thead>
+      <tbody>
+        
+          <tr>
+            <td>12639ms</td>
+            <td><strong>FPS</strong></td>
+            <td>60</td>
+            <td>~60</td>
+            <td>34.59σ</td>
+            <td><span class="badge critical">CRITICAL</span></td>
+          </tr>
+        
+          <tr>
+            <td>14645ms</td>
+            <td><strong>CPUTOTAL</strong></td>
+            <td>10</td>
+            <td>~4</td>
+            <td>3.55σ</td>
+            <td><span class="badge warning">HIGH</span></td>
+          </tr>
+        
+          <tr>
+            <td>16653ms</td>
+            <td><strong>RAM</strong></td>
+            <td>342</td>
+            <td>~341</td>
+            <td>4.36σ</td>
+            <td><span class="badge critical">CRITICAL</span></td>
+          </tr>
+        
+          <tr>
+            <td>17156ms</td>
+            <td><strong>RAM</strong></td>
+            <td>342</td>
+            <td>~341</td>
+            <td>3.00σ</td>
+            <td><span class="badge info">MEDIUM</span></td>
+          </tr>
+        
+          <tr>
+            <td>18660ms</td>
+            <td><strong>RAM</strong></td>
+            <td>343</td>
+            <td>~341</td>
+            <td>4.04σ</td>
+            <td><span class="badge critical">CRITICAL</span></td>
+          </tr>
+        
+          <tr>
+            <td>19159ms</td>
+            <td><strong>RAM</strong></td>
+            <td>343</td>
+            <td>~341</td>
+            <td>2.88σ</td>
+            <td><span class="badge info">MEDIUM</span></td>
+          </tr>
+        
+          <tr>
+            <td>24679ms</td>
+            <td><strong>FPS</strong></td>
+            <td>59</td>
+            <td>~60</td>
+            <td>50.87σ</td>
+            <td><span class="badge critical">CRITICAL</span></td>
+          </tr>
+        
+          <tr>
+            <td>24679ms</td>
+            <td><strong>CPUTOTAL</strong></td>
+            <td>36</td>
+            <td>~5</td>
+            <td>15.86σ</td>
+            <td><span class="badge critical">CRITICAL</span></td>
+          </tr>
+        
+          <tr>
+            <td>25180ms</td>
+            <td><strong>FPS</strong></td>
+            <td>51</td>
+            <td>~60</td>
+            <td>33.78σ</td>
+            <td><span class="badge critical">CRITICAL</span></td>
+          </tr>
+        
+          <tr>
+            <td>25180ms</td>
+            <td><strong>CPUTOTAL</strong></td>
+            <td>34</td>
+            <td>~6</td>
+            <td>3.98σ</td>
+            <td><span class="badge warning">HIGH</span></td>
+          </tr>
+        
+          <tr>
+            <td>25683ms</td>
+            <td><strong>FPS</strong></td>
+            <td>53</td>
+            <td>~59</td>
+            <td>3.50σ</td>
+            <td><span class="badge warning">HIGH</span></td>
+          </tr>
+        
+          <tr>
+            <td>26187ms</td>
+            <td><strong>FPS</strong></td>
+            <td>53</td>
+            <td>~59</td>
+            <td>2.62σ</td>
+            <td><span class="badge info">MEDIUM</span></td>
+          </tr>
+        
+          <tr>
+            <td>26187ms</td>
+            <td><strong>CPUTOTAL</strong></td>
+            <td>63</td>
+            <td>~9</td>
+            <td>5.30σ</td>
+            <td><span class="badge critical">CRITICAL</span></td>
+          </tr>
+        
+          <tr>
+            <td>29197ms</td>
+            <td><strong>RAM</strong></td>
+            <td>344</td>
+            <td>~343</td>
+            <td>2.52σ</td>
+            <td><span class="badge info">MEDIUM</span></td>
+          </tr>
+        
+          <tr>
+            <td>30702ms</td>
+            <td><strong>FPS</strong></td>
+            <td>43</td>
+            <td>~58</td>
+            <td>5.13σ</td>
+            <td><span class="badge critical">CRITICAL</span></td>
+          </tr>
+        
+          <tr>
+            <td>30702ms</td>
+            <td><strong>RAM</strong></td>
+            <td>345</td>
+            <td>~343</td>
+            <td>3.31σ</td>
+            <td><span class="badge warning">HIGH</span></td>
+          </tr>
+        
+          <tr>
+            <td>31203ms</td>
+            <td><strong>RAM</strong></td>
+            <td>348</td>
+            <td>~343</td>
+            <td>6.68σ</td>
+            <td><span class="badge critical">CRITICAL</span></td>
+          </tr>
+        
+          <tr>
+            <td>31703ms</td>
+            <td><strong>FPS</strong></td>
+            <td>29</td>
+            <td>~57</td>
+            <td>6.19σ</td>
+            <td><span class="badge critical">CRITICAL</span></td>
+          </tr>
+        
+          <tr>
+            <td>31703ms</td>
+            <td><strong>RAM</strong></td>
+            <td>349</td>
+            <td>~343</td>
+            <td>4.37σ</td>
+            <td><span class="badge critical">CRITICAL</span></td>
+          </tr>
+        
+          <tr>
+            <td>32203ms</td>
+            <td><strong>RAM</strong></td>
+            <td>349</td>
+            <td>~344</td>
+            <td>3.01σ</td>
+            <td><span class="badge warning">HIGH</span></td>
+          </tr>
+        
+      </tbody>
+    </table>
+  
+      </div>
+
+      <div id="concurrent" class="tab-content">
+        <h4>⚛️ Concurrent React Analysis</h4><p style="padding: 2rem; text-align: center; color: #718096;">ℹ️ No concurrent features (transitions/suspense) detected in this trace.</p>
+      </div>
+
+      <div id="phases" class="tab-content">
+        <p style="padding: 2rem; text-align: center; color: #718096;">✅ All render phases are within healthy thresholds.</p>
+      </div>
+
+      <div id="animations" class="tab-content">
+        <p style="padding: 2rem; text-align: center; color: #718096;">✅ No animations detected.</p>
+      </div>
+
+      <div id="prediction" class="tab-content">
+        
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-title">Predicted Render Time</div>
+        <div class="metric-value">199.00ms</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Risk Level</div>
+        <div class="metric-value" style="color: #F44336">
+          HIGH
+        </div>
+      </div>
+    </div>
+    
+    <h4 style="margin: 1.5rem 0 1rem;">Predicted Optimization Needs</h4>
+    
+      <div class="issue-card critical">
+        <strong>VIRTUALIZATION</strong> [Priority: HIGH]
+        <p>Component has many children. Consider virtualizing this list (use FlashList/FlatList).</p>
+      </div>
+    
+      <div class="issue-card warning">
+        <strong>STATE_SPLITTING</strong> [Priority: MEDIUM]
+        <p>High state count. Split component into smaller pieces with localized state.</p>
+      </div>
+    
+      <div class="issue-card warning">
+        <strong>CONTEXT_OPTIMIZATION</strong> [Priority: MEDIUM]
+        <p>Uses context. Ensure context value is memoized to prevent unnecessary re-renders.</p>
+      </div>
+    
+  
+      </div>
+
+      <div id="fixes" class="tab-content">
+        <p style="padding: 2rem; text-align: center; color: #718096;">✅ No automated fixes suggested at this time.</p>
       </div>
 
       

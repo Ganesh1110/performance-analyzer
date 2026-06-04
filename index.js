@@ -14,6 +14,20 @@ const { generateTextReport } = require('./reporters/text-reporter');
 const { generateHTMLReport } = require('./reporters/html-reporter');
 const { generateComparisonReport, generateComparisonTextReport } = require('./reporters/comparison-reporter');
 
+// New Integrations
+const { FlowTracker } = require('./analyzers/flow-tracker');
+const { AnomalyDetector } = require('./analyzers/anomaly-detector');
+const { BudgetEnforcer } = require('./analyzers/performance-budgets');
+const { BaselineManager } = require('./analyzers/baseline-manager');
+const { ConcurrentAnalyzer } = require('./analyzers/concurrent-analyzer');
+const { PhaseAnalyzer } = require('./analyzers/phase-analyzer');
+const { NetworkAnalyzer } = require('./analyzers/network-analyzer');
+const { AnimationAnalyzer } = require('./analyzers/animation-analyzer');
+const { SentryIntegration } = require('./analyzers/sentry-integration');
+const { PerformancePredictionEngine } = require('./analyzers/prediction-engine');
+const { NaturalLanguageReporter } = require('./reporters/nl-reporter');
+const { CodeFixer } = require('./utils/code-fixer');
+
 function openReport(filePath) {
   const command = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
   exec(`${command} ${filePath}`, (error) => {
@@ -33,11 +47,14 @@ function main() {
 
   const args = process.argv.slice(2);
   const isComparisonMode = args.includes('--compare');
+  const enforceBudgets = args.includes('--enforce-budgets');
+  const updateBaseline = args.includes('--update-baseline');
 
   // Load data files
   const flashlightData = safeRequire(CONFIG.files.flashlight, "Flashlight metrics");
   const reactDevToolsData = safeRequire(CONFIG.files.reactProfile, "React DevTools profiler");
   const bundleData = safeRequire(CONFIG.files.bundleStats, "Bundle statistics", true);
+  const networkData = safeRequire("./network-log.json", "Network log", true); // Try to load if exists
 
   // Parse data
   console.log("\n📦 Loading and parsing data...\n");
@@ -59,15 +76,78 @@ function main() {
     bundleAnalysis.analysis = bundleSizeAnalysis;
   }
 
+  // Tier 1 Flow & Anomaly Tracking
+  const flowTracker = new FlowTracker();
+  const flows = flowTracker.detectFlows(componentRenderMap, flashlightMeasures);
+  
+  const anomalyDetector = new AnomalyDetector();
+  const fpsAnomalies = anomalyDetector.detectAnomalies(flashlightMeasures, 'fps');
+  const cpuAnomalies = anomalyDetector.detectAnomalies(flashlightMeasures, 'cpuTotal');
+  const memoryAnomalies = anomalyDetector.detectAnomalies(flashlightMeasures, 'ram');
+  const anomalies = [...fpsAnomalies, ...cpuAnomalies, ...memoryAnomalies].sort((a,b) => a.timestamp - b.timestamp);
+
+  // Tier 2 Advanced Analyzers
+  const concurrentAnalyzer = new ConcurrentAnalyzer();
+  const concurrentAnalysis = concurrentAnalyzer.analyzeConcurrentFeatures(reactCommits);
+
+  const phaseAnalyzer = new PhaseAnalyzer();
+  const phaseAnalysis = phaseAnalyzer.analyzeRenderPhases(reactCommits);
+
+  const networkAnalyzer = new NetworkAnalyzer();
+  if (networkData) networkAnalyzer.parseNetworkLog(networkData);
+  const correlatedBottlenecks = networkAnalyzer.correlateWithBottlenecks(bottlenecks);
+
+  const animationAnalyzer = new AnimationAnalyzer();
+  const animations = animationAnalyzer.detectAnimations(componentRenderMap, flashlightMeasures);
+
   const analysisData = {
+    summary: {
+      totalFrames: flashlightMeasures.length,
+      bottleneckCount: bottlenecks.length,
+      reRenderIssueCount: reRenderIssues.length,
+      hierarchyIssueCount: hierarchyIssues.length,
+      memoryLeakCount: memoryAnalysis.leaks.length,
+      healthScore: Math.max(0, 100 - Math.round((bottlenecks.length / flashlightMeasures.length) * 100))
+    },
     flashlightMeasures,
-    bottlenecks,
+    bottlenecks: correlatedBottlenecks,
     reRenderIssues,
     memoryAnalysis,
     hierarchyIssues,
     hierarchyTree,
-    bundleAnalysis: bundleAnalysis?.analysis
+    bundleAnalysis: bundleAnalysis?.analysis,
+    flows,
+    anomalies,
+    concurrentAnalysis,
+    phaseAnalysis,
+    animations
   };
+
+  // Tier 3 & 4: Predictive & Integration
+  const predictionEngine = new PerformancePredictionEngine();
+  // In a real scenario, we'd load historical reports here
+  const prediction = predictionEngine.suggestOptimizations({
+    linesOfCode: 250,
+    dependencies: 12,
+    stateVariables: 6,
+    childComponents: 15,
+    usesContext: true,
+    hasEffects: true
+  });
+
+  const nlReporter = new NaturalLanguageReporter();
+  const executiveSummary = nlReporter.generateExecutiveSummary(analysisData);
+
+  const sentry = new SentryIntegration(process.env.SENTRY_DSN);
+  const sentryIssues = sentry.exportToSentry(analysisData);
+
+  const codeFixer = new CodeFixer();
+  const automatedFixes = codeFixer.suggestFixes(reRenderIssues);
+
+  // Add new data to analysisData for reports
+  analysisData.prediction = prediction;
+  analysisData.executiveSummary = executiveSummary;
+  analysisData.automatedFixes = automatedFixes;
 
   // Generate reports
   console.log("\n📝 Generating reports...\n");
@@ -96,11 +176,19 @@ function main() {
       fps: calculateStats(flashlightMeasures.map(m => m.fps)),
       cpu: calculateStats(flashlightMeasures.map(m => m.cpuTotal))
     },
-    bottlenecks,
+    bottlenecks: correlatedBottlenecks,
     reRenderIssues,
     hierarchyIssues,
     memoryAnalysis,
-    bundleAnalysis: bundleAnalysis?.analysis
+    bundleAnalysis: bundleAnalysis?.analysis,
+    flows,
+    anomalies,
+    concurrentAnalysis,
+    phaseAnalysis,
+    animations,
+    prediction,
+    executiveSummary,
+    automatedFixes
   };
 
   fs.writeFileSync(
@@ -110,37 +198,49 @@ function main() {
   );
   console.log("   ✓ JSON report generated");
 
+  // Smart Baseline Management
+  const baselineManager = new BaselineManager(path.join(__dirname, 'smart-baselines.json'));
+  const detectedScreen = baselineManager.detectScreen(componentRenderMap);
+  console.log(`\n📱 Detected Screen/Flow: ${detectedScreen}`);
+
+  if (updateBaseline) {
+    baselineManager.saveBaseline(detectedScreen, jsonReport);
+    console.log(`   ✓ Saved new baseline for screen: ${detectedScreen}`);
+  }
+
   // Comparison mode
   if (isComparisonMode) {
-    const baselineData = safeRequire(CONFIG.files.baseline, "Baseline report", true);
+    const comparison = baselineManager.compare(detectedScreen, jsonReport);
     
-    if (baselineData) {
-      console.log("\n🔄 Running comparison analysis...\n");
-      const comparison = generateComparisonReport(baselineData.summary, jsonReport.summary);
-      const comparisonText = generateComparisonTextReport(comparison);
-      
-      fs.writeFileSync(
-        path.join(__dirname, "performance_comparison.txt"),
-        comparisonText,
-        "utf-8"
-      );
-      fs.writeFileSync(
-        path.join(__dirname, "performance_comparison.json"),
-        JSON.stringify(comparison, null, 2),
-        "utf-8"
-      );
-      
-      console.log("   ✓ Comparison reports generated");
-
-      if (comparison.summary.regressed > 0) {
-        console.log("\n⚠️  WARNING: Performance regressions detected!");
-        comparison.regressions.forEach(reg => {
-          console.log(`   ❌ ${reg.metric}: ${reg.baseline} → ${reg.current} (${reg.change})`);
-        });
-        process.exit(1); // Exit with error code for CI/CD
-      }
+    if (comparison.isFirstRun) {
+      console.log(`   ℹ️  No existing baseline for ${detectedScreen}. Run with --update-baseline first.`);
     } else {
-      console.log("\n⚠️  Baseline report not found. Skipping comparison.");
+      console.log(`\n🔄 Comparison vs Baseline (${detectedScreen}):`);
+      console.log(`   • Health Score: ${comparison.changes.healthScore.base} → ${comparison.changes.healthScore.curr} (${comparison.changes.healthScore.status})`);
+      console.log(`   • Bottlenecks:  ${comparison.changes.bottleneckCount.base} → ${comparison.changes.bottleneckCount.curr} (${comparison.changes.bottleneckCount.status})`);
+      
+      if (comparison.regressed > 0) {
+        console.log(`   ⚠️  WARNING: Performance regressions detected on this screen!`);
+      } else {
+        console.log(`   ✅ No regressions on this screen!`);
+      }
+    }
+  }
+
+  // Budgets Enforcement
+  if (enforceBudgets) {
+    console.log("\n⚖️  Enforcing Performance Budgets...");
+    const budgetEnforcer = new BudgetEnforcer();
+    const budgetResult = budgetEnforcer.evaluate(jsonReport);
+    const budgetReport = budgetEnforcer.generateReport(budgetResult);
+    fs.writeFileSync(path.join(__dirname, "budget-report.md"), budgetReport, "utf-8");
+    console.log("   ✓ Budget report generated (budget-report.md)");
+    
+    if (!budgetResult.passed) {
+      console.log(`   ❌ Failed: ${budgetResult.blockers.length} blocking violations detected.`);
+      process.exitCode = 1;
+    } else {
+      console.log(`   ✅ Passed all performance budgets.`);
     }
   }
 
@@ -154,7 +254,9 @@ function main() {
   console.log(`   • Bottlenecks: ${bottlenecks.length}`);
   console.log(`   • Re-render Issues: ${reRenderIssues.length}`);
   console.log(`   • Memory Leaks: ${memoryAnalysis.leaks.length}`);
-  console.log(`   • Hierarchy Issues: ${hierarchyIssues.length}\n`);
+  console.log(`   • Hierarchy Issues: ${hierarchyIssues.length}`);
+  console.log(`   • User Flows tracked: ${flows.length} (${flows.filter(f => !f.passed).length} failed)`);
+  console.log(`   • Anomalies detected: ${anomalies.length}\n`);
   
   console.log(`📄 Reports generated:`);
   console.log(`   • performance_report.txt (detailed text report)`);

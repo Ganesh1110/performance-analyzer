@@ -27,6 +27,14 @@ Generated: ${new Date().toLocaleString()}
 Duration: ${Math.round(flashlightMeasures[flashlightMeasures.length - 1].time)}ms
 Samples: ${totalFrames} frames analyzed
 
+${data.executiveSummary ? `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📝 EXECUTIVE SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${data.executiveSummary}
+` : ''}
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📊 OVERALL HEALTH SCORE: ${healthScore}/100 ${getHealthEmoji(healthScore)}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -55,6 +63,7 @@ Samples: ${totalFrames} frames analyzed
     • ${reRenderIssues.length} components with excessive re-renders
     • ${hierarchyIssues.length} parent-child re-render cascades
     • ${memoryAnalysis.leaks.length} potential memory leaks
+    • ${data.animations.length} animations tracked
     ${bundleAnalysis ? `• ${bundleAnalysis.largeComponents.length} large components in bundle` : ''}
 
 `;
@@ -62,6 +71,16 @@ Samples: ${totalFrames} frames analyzed
   // BOTTLENECKS
   if (bottlenecks.length > 0) {
     report += generateBottlenecksSection(bottlenecks);
+  }
+
+  // CONCURRENT REACT
+  if (data.concurrentAnalysis.transitions.length > 0 || data.concurrentAnalysis.interruptedRenders.length > 0) {
+    report += generateConcurrentSection(data.concurrentAnalysis);
+  }
+
+  // ANIMATIONS
+  if (data.animations.length > 0) {
+    report += generateAnimationsSection(data.animations);
   }
   
   // RE-RENDERS
@@ -95,6 +114,49 @@ Samples: ${totalFrames} frames analyzed
   return report;
 }
 
+function generateConcurrentSection(analysis) {
+  let section = `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚛️ SECTION: CONCURRENT REACT ANALYSIS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+`;
+
+  if (analysis.transitions.length > 0) {
+    section += `[Transitions] (${analysis.transitions.length} detected)\n`;
+    analysis.transitions.slice(0, 5).forEach(t => {
+      section += `  • ${t.timestamp}ms: ${t.duration}ms | Components: ${t.components.slice(0, 3).join(', ')}${t.components.length > 3 ? '...' : ''} ${t.wasInterrupted ? '⚠️ INTERRUPTED' : ''}\n`;
+    });
+    section += '\n';
+  }
+
+  if (analysis.interruptedRenders.length > 0) {
+    section += `[Interrupted Renders] (${analysis.interruptedRenders.length} detected)\n`;
+    analysis.interruptedRenders.slice(0, 5).forEach(r => {
+      section += `  • ${r.timestamp}ms: Actual ${r.actualDuration}ms | Interrupted ${r.interruptedDuration}ms | Efficiency: ${r.efficiency}%\n`;
+    });
+    section += '\n';
+  }
+
+  return section;
+}
+
+function generateAnimationsSection(animations) {
+  let section = `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎬 SECTION: ANIMATION PERFORMANCE (${animations.length} tracked)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+`;
+
+  animations.slice(0, 10).forEach(a => {
+    section += `  • <${a.component}>: ${a.duration}ms | ${a.avgFPS} FPS | ${a.droppedFrames} drops | ${a.smooth ? '✅ Smooth' : '⚠️ Janky'}\n`;
+    if (!a.smooth) section += `    💡 ${a.recommendation}\n`;
+  });
+
+  return section;
+}
+
 function generateBottlenecksSection(bottlenecks) {
   const maxShow = Math.min(CONFIG.report.maxBottlenecks, bottlenecks.length);
   
@@ -119,6 +181,7 @@ Showing top ${maxShow} worst bottlenecks:
 
 [Metrics]
   • FPS: ${b.fps} | CPU: ${b.cpuTotal}% | RenderThread: ${b.cpuRender}% | JS: ${b.cpuJS}%
+${b.networkActivity ? `  • Network: ${b.networkActivity.concurrentCount} concurrent requests ${b.networkActivity.likelyBlocked ? '🔴 LIKELY BLOCKED' : ''}` : ''}
 
 [Root Cause]
 ${candidate && candidate.component 
