@@ -45,21 +45,56 @@ class BaselineManager {
   }
 
   saveBaseline(screen, data) {
-    this.baselines.set(screen, {
+    const baseline = this.baselines.get(screen) || { history: [], runCount: 0 };
+    
+    baseline.history.push({
       timestamp: Date.now(),
-      data: data.summary,
-      runCount: (this.baselines.get(screen)?.runCount || 0) + 1
+      data: data.summary
     });
+
+    // Keep only last 5 runs
+    if (baseline.history.length > 5) {
+      baseline.history.shift();
+    }
+
+    baseline.runCount++;
+    baseline.timestamp = Date.now();
+    baseline.data = data.summary; // Latest data for quick access
+
+    this.baselines.set(screen, baseline);
     this.saveBaselines();
   }
 
   compare(screen, currentData) {
     const baseline = this.baselines.get(screen);
-    if (!baseline) {
+    if (!baseline || !baseline.history || baseline.history.length === 0) {
       return { isFirstRun: true, message: 'No baseline for this screen yet' };
     }
 
-    return this.generateSmartComparison(baseline.data, currentData.summary);
+    // Calculate weighted average of history
+    const averageBaseline = this.calculateAverageBaseline(baseline.history);
+    return this.generateSmartComparison(averageBaseline, currentData.summary);
+  }
+
+  calculateAverageBaseline(history) {
+    const count = history.length;
+    const avg = {
+      healthScore: 0,
+      bottleneckCount: 0,
+      reRenderIssueCount: 0
+    };
+
+    history.forEach(run => {
+      avg.healthScore += run.data.healthScore || 0;
+      avg.bottleneckCount += run.data.bottleneckCount || 0;
+      avg.reRenderIssueCount += run.data.reRenderIssueCount || 0;
+    });
+
+    avg.healthScore = Math.round(avg.healthScore / count);
+    avg.bottleneckCount = Math.round(avg.bottleneckCount / count);
+    avg.reRenderIssueCount = Math.round(avg.reRenderIssueCount / count);
+
+    return avg;
   }
 
   generateSmartComparison(baselineSummary, currentSummary) {

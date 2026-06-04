@@ -22,6 +22,9 @@ describe('BaselineManager', () => {
       'Home': {
         timestamp: Date.now(),
         data: { healthScore: 90, bottleneckCount: 2, reRenderIssueCount: 5 },
+        history: [
+          { data: { healthScore: 90, bottleneckCount: 2, reRenderIssueCount: 5 } }
+        ],
         runCount: 1
       }
     };
@@ -32,7 +35,7 @@ describe('BaselineManager', () => {
     expect(baselineManager.baselines.get('Home')).toEqual(mockData.Home);
   });
 
-  test('saveBaseline should update baselines map and call writeFileSync', () => {
+  test('saveBaseline should update baselines map and history', () => {
     const screen = 'Home';
     const reportData = {
       summary: { healthScore: 85, bottleneckCount: 3, reRenderIssueCount: 4 }
@@ -41,8 +44,35 @@ describe('BaselineManager', () => {
     baselineManager.saveBaseline(screen, reportData);
 
     expect(baselineManager.baselines.has(screen)).toBe(true);
-    expect(baselineManager.baselines.get(screen).data).toEqual(reportData.summary);
+    const baseline = baselineManager.baselines.get(screen);
+    expect(baseline.data).toEqual(reportData.summary);
+    expect(baseline.history.length).toBe(1);
+    expect(baseline.history[0].data).toEqual(reportData.summary);
     expect(fs.writeFileSync).toHaveBeenCalled();
+  });
+
+  test('saveBaseline should limit history to 5 runs', () => {
+    const screen = 'Home';
+    for (let i = 0; i < 7; i++) {
+      baselineManager.saveBaseline(screen, { summary: { healthScore: 90 + i } });
+    }
+
+    const baseline = baselineManager.baselines.get(screen);
+    expect(baseline.history.length).toBe(5);
+    expect(baseline.history[0].data.healthScore).toBe(92); // 90, 91 shifted out
+    expect(baseline.history[4].data.healthScore).toBe(96);
+  });
+
+  test('calculateAverageBaseline should return averaged metrics', () => {
+    const history = [
+      { data: { healthScore: 90, bottleneckCount: 2, reRenderIssueCount: 4 } },
+      { data: { healthScore: 80, bottleneckCount: 4, reRenderIssueCount: 6 } }
+    ];
+
+    const avg = baselineManager.calculateAverageBaseline(history);
+    expect(avg.healthScore).toBe(85);
+    expect(avg.bottleneckCount).toBe(3);
+    expect(avg.reRenderIssueCount).toBe(5);
   });
 
   test('detectScreen should identify Home screen signature', () => {

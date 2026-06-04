@@ -57,6 +57,12 @@ class AnimationAnalyzer {
       }
     }
 
+    // Handle trailing period
+    if (currentPeriod && currentPeriod.renders.length >= 5) {
+      currentPeriod.end = currentPeriod.renders[currentPeriod.renders.length - 1].timestamp;
+      periods.push(currentPeriod);
+    }
+
     return periods;
   }
 
