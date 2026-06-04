@@ -1,0 +1,4249 @@
+{
+  "timestamp": "2026-06-04T07:18:53.762Z",
+  "summary": {
+    "totalFrames": 223,
+    "bottleneckCount": 81,
+    "reRenderIssueCount": 0,
+    "hierarchyIssueCount": 0,
+    "memoryLeakCount": 0,
+    "healthScore": 64
+  },
+  "flashlightStats": {
+    "fps": {
+      "min": 25.297461055783963,
+      "max": 60,
+      "avg": 53.330945160355256,
+      "median": 59.889632007912724,
+      "p50": 59.889632007912724,
+      "p95": 60,
+      "p99": 60,
+      "stdDev": 9.841907471900386,
+      "count": 223
+    },
+    "cpu": {
+      "min": 1.9841269841269842,
+      "max": 126.98412698412697,
+      "avg": 28.541172791302102,
+      "median": 16,
+      "p50": 16,
+      "p95": 85.14851485148515,
+      "p99": 106.85483870967741,
+      "stdDev": 27.946543020649713,
+      "count": 223
+    }
+  },
+  "bottlenecks": [
+    {
+      "timestamp": 33707,
+      "fps": 36,
+      "cpuTotal": 107,
+      "cpuRender": 40,
+      "cpuUI": 24,
+      "cpuJS": 0,
+      "ram": 346,
+      "issues": [
+        "Critical FPS drop (36 FPS)",
+        "Critical CPU usage (107%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 39228,
+      "fps": 29,
+      "cpuTotal": 105,
+      "cpuRender": 36,
+      "cpuUI": 12,
+      "cpuJS": 0,
+      "ram": 339,
+      "issues": [
+        "Critical FPS drop (29 FPS)",
+        "Critical CPU usage (105%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 42744,
+      "fps": 41,
+      "cpuTotal": 86,
+      "cpuRender": 36,
+      "cpuUI": 18,
+      "cpuJS": 0,
+      "ram": 348,
+      "issues": [
+        "Critical FPS drop (41 FPS)",
+        "Critical CPU usage (86%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 46848,
+      "fps": 40,
+      "cpuTotal": 99,
+      "cpuRender": 32,
+      "cpuUI": 14,
+      "cpuJS": 0,
+      "ram": 351,
+      "issues": [
+        "Critical FPS drop (40 FPS)",
+        "Critical CPU usage (99%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 49853,
+      "fps": 28,
+      "cpuTotal": 80,
+      "cpuRender": 34,
+      "cpuUI": 18,
+      "cpuJS": 0,
+      "ram": 344,
+      "issues": [
+        "Critical FPS drop (28 FPS)",
+        "Critical CPU usage (80%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 52359,
+      "fps": 37,
+      "cpuTotal": 96,
+      "cpuRender": 32,
+      "cpuUI": 12,
+      "cpuJS": 0,
+      "ram": 352,
+      "issues": [
+        "Critical FPS drop (37 FPS)",
+        "Critical CPU usage (96%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 54368,
+      "fps": 37,
+      "cpuTotal": 97,
+      "cpuRender": 32,
+      "cpuUI": 20,
+      "cpuJS": 0,
+      "ram": 349,
+      "issues": [
+        "Critical FPS drop (37 FPS)",
+        "Critical CPU usage (97%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 60901,
+      "fps": 40,
+      "cpuTotal": 127,
+      "cpuRender": 36,
+      "cpuUI": 16,
+      "cpuJS": 0,
+      "ram": 349,
+      "issues": [
+        "Critical FPS drop (40 FPS)",
+        "Critical CPU usage (127%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 79695,
+      "fps": 39,
+      "cpuTotal": 93,
+      "cpuRender": 28,
+      "cpuUI": 18,
+      "cpuJS": 0,
+      "ram": 356,
+      "issues": [
+        "Critical FPS drop (39 FPS)",
+        "Critical CPU usage (93%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 80197,
+      "fps": 34,
+      "cpuTotal": 72,
+      "cpuRender": 42,
+      "cpuUI": 8,
+      "cpuJS": 0,
+      "ram": 357,
+      "issues": [
+        "Critical FPS drop (34 FPS)",
+        "Critical CPU usage (72%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 82705,
+      "fps": 37,
+      "cpuTotal": 74,
+      "cpuRender": 46,
+      "cpuUI": 12,
+      "cpuJS": 0,
+      "ram": 360,
+      "issues": [
+        "Critical FPS drop (37 FPS)",
+        "Critical CPU usage (74%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 84214,
+      "fps": 36,
+      "cpuTotal": 76,
+      "cpuRender": 46,
+      "cpuUI": 12,
+      "cpuJS": 0,
+      "ram": 365,
+      "issues": [
+        "Critical FPS drop (36 FPS)",
+        "Critical CPU usage (76%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 84716,
+      "fps": 43,
+      "cpuTotal": 112,
+      "cpuRender": 34,
+      "cpuUI": 22,
+      "cpuJS": 0,
+      "ram": 367,
+      "issues": [
+        "Critical FPS drop (43 FPS)",
+        "Critical CPU usage (112%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 93743,
+      "fps": 31,
+      "cpuTotal": 102,
+      "cpuRender": 30,
+      "cpuUI": 10,
+      "cpuJS": 0,
+      "ram": 364,
+      "issues": [
+        "Critical FPS drop (31 FPS)",
+        "Critical CPU usage (102%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 101786,
+      "fps": 34,
+      "cpuTotal": 77,
+      "cpuRender": 42,
+      "cpuUI": 12,
+      "cpuJS": 0,
+      "ram": 375,
+      "issues": [
+        "Critical FPS drop (34 FPS)",
+        "Critical CPU usage (77%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 102287,
+      "fps": 34,
+      "cpuTotal": 80,
+      "cpuRender": 44,
+      "cpuUI": 14,
+      "cpuJS": 0,
+      "ram": 367,
+      "issues": [
+        "Critical FPS drop (34 FPS)",
+        "Critical CPU usage (80%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 102792,
+      "fps": 36,
+      "cpuTotal": 73,
+      "cpuRender": 44,
+      "cpuUI": 14,
+      "cpuJS": 0,
+      "ram": 367,
+      "issues": [
+        "Critical FPS drop (36 FPS)",
+        "Critical CPU usage (73%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 106297,
+      "fps": 36,
+      "cpuTotal": 78,
+      "cpuRender": 44,
+      "cpuUI": 14,
+      "cpuJS": 0,
+      "ram": 373,
+      "issues": [
+        "Critical FPS drop (36 FPS)",
+        "Critical CPU usage (78%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 106797,
+      "fps": 40,
+      "cpuTotal": 100,
+      "cpuRender": 28,
+      "cpuUI": 18,
+      "cpuJS": 0,
+      "ram": 370,
+      "issues": [
+        "Critical FPS drop (40 FPS)",
+        "Critical CPU usage (100%)"
+      ],
+      "severity": 0.8,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 30702,
+      "fps": 43,
+      "cpuTotal": 54,
+      "cpuRender": 28,
+      "cpuUI": 10,
+      "cpuJS": 0,
+      "ram": 345,
+      "issues": [
+        "Critical FPS drop (43 FPS)",
+        "High CPU usage (54%)"
+      ],
+      "severity": 0.7,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 63909,
+      "fps": 41,
+      "cpuTotal": 58,
+      "cpuRender": 40,
+      "cpuUI": 8,
+      "cpuJS": 0,
+      "ram": 352,
+      "issues": [
+        "Critical FPS drop (41 FPS)",
+        "High CPU usage (58%)"
+      ],
+      "severity": 0.7,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 80701,
+      "fps": 35,
+      "cpuTotal": 62,
+      "cpuRender": 40,
+      "cpuUI": 8,
+      "cpuJS": 0,
+      "ram": 356,
+      "issues": [
+        "Critical FPS drop (35 FPS)",
+        "High CPU usage (62%)"
+      ],
+      "severity": 0.7,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 81201,
+      "fps": 36,
+      "cpuTotal": 62,
+      "cpuRender": 34,
+      "cpuUI": 12,
+      "cpuJS": 0,
+      "ram": 357,
+      "issues": [
+        "Critical FPS drop (36 FPS)",
+        "High CPU usage (62%)"
+      ],
+      "severity": 0.7,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 81711,
+      "fps": 36,
+      "cpuTotal": 61,
+      "cpuRender": 37,
+      "cpuUI": 10,
+      "cpuJS": 0,
+      "ram": 358,
+      "issues": [
+        "Critical FPS drop (36 FPS)",
+        "High CPU usage (61%)"
+      ],
+      "severity": 0.7,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 82204,
+      "fps": 35,
+      "cpuTotal": 69,
+      "cpuRender": 45,
+      "cpuUI": 6,
+      "cpuJS": 0,
+      "ram": 359,
+      "issues": [
+        "Critical FPS drop (35 FPS)",
+        "High CPU usage (69%)"
+      ],
+      "severity": 0.7,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 83209,
+      "fps": 36,
+      "cpuTotal": 65,
+      "cpuRender": 42,
+      "cpuUI": 12,
+      "cpuJS": 0,
+      "ram": 361,
+      "issues": [
+        "Critical FPS drop (36 FPS)",
+        "High CPU usage (65%)"
+      ],
+      "severity": 0.7,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 83713,
+      "fps": 36,
+      "cpuTotal": 65,
+      "cpuRender": 44,
+      "cpuUI": 8,
+      "cpuJS": 0,
+      "ram": 363,
+      "issues": [
+        "Critical FPS drop (36 FPS)",
+        "High CPU usage (65%)"
+      ],
+      "severity": 0.7,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 85217,
+      "fps": 31,
+      "cpuTotal": 62,
+      "cpuRender": 36,
+      "cpuUI": 8,
+      "cpuJS": 0,
+      "ram": 367,
+      "issues": [
+        "Critical FPS drop (31 FPS)",
+        "High CPU usage (62%)"
+      ],
+      "severity": 0.7,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 94244,
+      "fps": 27,
+      "cpuTotal": 64,
+      "cpuRender": 42,
+      "cpuUI": 8,
+      "cpuJS": 0,
+      "ram": 364,
+      "issues": [
+        "Critical FPS drop (27 FPS)",
+        "High CPU usage (64%)"
+      ],
+      "severity": 0.7,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 105295,
+      "fps": 33,
+      "cpuTotal": 52,
+      "cpuRender": 28,
+      "cpuUI": 12,
+      "cpuJS": 0,
+      "ram": 371,
+      "issues": [
+        "Critical FPS drop (33 FPS)",
+        "High CPU usage (52%)"
+      ],
+      "severity": 0.7,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 105795,
+      "fps": 37,
+      "cpuTotal": 60,
+      "cpuRender": 40,
+      "cpuUI": 4,
+      "cpuJS": 0,
+      "ram": 371,
+      "issues": [
+        "Critical FPS drop (37 FPS)",
+        "High CPU usage (60%)"
+      ],
+      "severity": 0.7,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 107299,
+      "fps": 25,
+      "cpuTotal": 54,
+      "cpuRender": 40,
+      "cpuUI": 10,
+      "cpuJS": 0,
+      "ram": 370,
+      "issues": [
+        "Critical FPS drop (25 FPS)",
+        "High CPU usage (54%)"
+      ],
+      "severity": 0.7,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 49356,
+      "fps": 49,
+      "cpuTotal": 85,
+      "cpuRender": 38,
+      "cpuUI": 16,
+      "cpuJS": 0,
+      "ram": 351,
+      "issues": [
+        "Low FPS (49 FPS)",
+        "Critical CPU usage (85%)"
+      ],
+      "severity": 0.6,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 88731,
+      "fps": 47,
+      "cpuTotal": 78,
+      "cpuRender": 24,
+      "cpuUI": 14,
+      "cpuJS": 0,
+      "ram": 366,
+      "issues": [
+        "Low FPS (47 FPS)",
+        "Critical CPU usage (78%)"
+      ],
+      "severity": 0.6,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 26187,
+      "fps": 53,
+      "cpuTotal": 63,
+      "cpuRender": 38,
+      "cpuUI": 12,
+      "cpuJS": 0,
+      "ram": 342,
+      "issues": [
+        "Low FPS (53 FPS)",
+        "High CPU usage (63%)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 31703,
+      "fps": 29,
+      "cpuTotal": 34,
+      "cpuRender": 26,
+      "cpuUI": 4,
+      "cpuJS": 0,
+      "ram": 349,
+      "issues": [
+        "Critical FPS drop (29 FPS)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 36216,
+      "fps": 42,
+      "cpuTotal": 44,
+      "cpuRender": 36,
+      "cpuUI": 4,
+      "cpuJS": 0,
+      "ram": 344,
+      "issues": [
+        "Critical FPS drop (42 FPS)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 36719,
+      "fps": 42,
+      "cpuTotal": 24,
+      "cpuRender": 18,
+      "cpuUI": 4,
+      "cpuJS": 0,
+      "ram": 343,
+      "issues": [
+        "Critical FPS drop (42 FPS)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 44749,
+      "fps": 54,
+      "cpuTotal": 60,
+      "cpuRender": 38,
+      "cpuUI": 10,
+      "cpuJS": 0,
+      "ram": 349,
+      "issues": [
+        "Low FPS (54 FPS)",
+        "High CPU usage (60%)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 45256,
+      "fps": 45,
+      "cpuTotal": 57,
+      "cpuRender": 45,
+      "cpuUI": 8,
+      "cpuJS": 0,
+      "ram": 350,
+      "issues": [
+        "Low FPS (45 FPS)",
+        "High CPU usage (57%)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 51858,
+      "fps": 49,
+      "cpuTotal": 70,
+      "cpuRender": 24,
+      "cpuUI": 14,
+      "cpuJS": 0,
+      "ram": 348,
+      "issues": [
+        "Low FPS (49 FPS)",
+        "High CPU usage (70%)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 54870,
+      "fps": 42,
+      "cpuTotal": 32,
+      "cpuRender": 22,
+      "cpuUI": 4,
+      "cpuJS": 0,
+      "ram": 349,
+      "issues": [
+        "Critical FPS drop (42 FPS)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 62906,
+      "fps": 37,
+      "cpuTotal": 42,
+      "cpuRender": 28,
+      "cpuUI": 2,
+      "cpuJS": 0,
+      "ram": 352,
+      "issues": [
+        "Critical FPS drop (37 FPS)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 66415,
+      "fps": 28,
+      "cpuTotal": 28,
+      "cpuRender": 20,
+      "cpuUI": 6,
+      "cpuJS": 0,
+      "ram": 357,
+      "issues": [
+        "Critical FPS drop (28 FPS)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 69533,
+      "fps": 45,
+      "cpuTotal": 58,
+      "cpuRender": 38,
+      "cpuUI": 8,
+      "cpuJS": 0,
+      "ram": 361,
+      "issues": [
+        "Low FPS (45 FPS)",
+        "High CPU usage (58%)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 71036,
+      "fps": 26,
+      "cpuTotal": 46,
+      "cpuRender": 16,
+      "cpuUI": 10,
+      "cpuJS": 0,
+      "ram": 358,
+      "issues": [
+        "Critical FPS drop (26 FPS)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 74670,
+      "fps": 52,
+      "cpuTotal": 54,
+      "cpuRender": 28,
+      "cpuUI": 8,
+      "cpuJS": 0,
+      "ram": 362,
+      "issues": [
+        "Low FPS (52 FPS)",
+        "High CPU usage (54%)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 76175,
+      "fps": 48,
+      "cpuTotal": 63,
+      "cpuRender": 26,
+      "cpuUI": 10,
+      "cpuJS": 0,
+      "ram": 354,
+      "issues": [
+        "Low FPS (48 FPS)",
+        "High CPU usage (63%)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 78187,
+      "fps": 48,
+      "cpuTotal": 64,
+      "cpuRender": 30,
+      "cpuUI": 12,
+      "cpuJS": 0,
+      "ram": 356,
+      "issues": [
+        "Low FPS (48 FPS)",
+        "High CPU usage (64%)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 89233,
+      "fps": 31,
+      "cpuTotal": 38,
+      "cpuRender": 32,
+      "cpuUI": 2,
+      "cpuJS": 0,
+      "ram": 366,
+      "issues": [
+        "Critical FPS drop (31 FPS)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 97757,
+      "fps": 54,
+      "cpuTotal": 52,
+      "cpuRender": 16,
+      "cpuUI": 6,
+      "cpuJS": 0,
+      "ram": 362,
+      "issues": [
+        "Low FPS (54 FPS)",
+        "High CPU usage (52%)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 99277,
+      "fps": 54,
+      "cpuTotal": 54,
+      "cpuRender": 18,
+      "cpuUI": 8,
+      "cpuJS": 0,
+      "ram": 365,
+      "issues": [
+        "Low FPS (54 FPS)",
+        "High CPU usage (54%)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 99780,
+      "fps": 44,
+      "cpuTotal": 38,
+      "cpuRender": 26,
+      "cpuUI": 0,
+      "cpuJS": 0,
+      "ram": 365,
+      "issues": [
+        "Critical FPS drop (44 FPS)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 100280,
+      "fps": 52,
+      "cpuTotal": 52,
+      "cpuRender": 20,
+      "cpuUI": 14,
+      "cpuJS": 0,
+      "ram": 367,
+      "issues": [
+        "Low FPS (52 FPS)",
+        "High CPU usage (52%)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 103287,
+      "fps": 36,
+      "cpuTotal": 44,
+      "cpuRender": 24,
+      "cpuUI": 8,
+      "cpuJS": 0,
+      "ram": 368,
+      "issues": [
+        "Critical FPS drop (36 FPS)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 103788,
+      "fps": 34,
+      "cpuTotal": 36,
+      "cpuRender": 14,
+      "cpuUI": 4,
+      "cpuJS": 0,
+      "ram": 369,
+      "issues": [
+        "Critical FPS drop (34 FPS)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 104292,
+      "fps": 35,
+      "cpuTotal": 36,
+      "cpuRender": 16,
+      "cpuUI": 6,
+      "cpuJS": 0,
+      "ram": 369,
+      "issues": [
+        "Critical FPS drop (35 FPS)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 104793,
+      "fps": 34,
+      "cpuTotal": 46,
+      "cpuRender": 22,
+      "cpuUI": 8,
+      "cpuJS": 0,
+      "ram": 370,
+      "issues": [
+        "Critical FPS drop (34 FPS)"
+      ],
+      "severity": 0.5,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 25180,
+      "fps": 51,
+      "cpuTotal": 34,
+      "cpuRender": 20,
+      "cpuUI": 6,
+      "cpuJS": 0,
+      "ram": 343,
+      "issues": [
+        "Low FPS (51 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 25683,
+      "fps": 53,
+      "cpuTotal": 30,
+      "cpuRender": 22,
+      "cpuUI": 4,
+      "cpuJS": 0,
+      "ram": 343,
+      "issues": [
+        "Low FPS (53 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 26687,
+      "fps": 54,
+      "cpuTotal": 12,
+      "cpuRender": 10,
+      "cpuUI": 2,
+      "cpuJS": 0,
+      "ram": 342,
+      "issues": [
+        "Low FPS (54 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 31203,
+      "fps": 50,
+      "cpuTotal": 46,
+      "cpuRender": 22,
+      "cpuUI": 8,
+      "cpuJS": 0,
+      "ram": 348,
+      "issues": [
+        "Low FPS (50 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 37221,
+      "fps": 49,
+      "cpuTotal": 8,
+      "cpuRender": 4,
+      "cpuUI": 2,
+      "cpuJS": 0,
+      "ram": 339,
+      "issues": [
+        "Low FPS (49 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 38724,
+      "fps": 56,
+      "cpuTotal": 74,
+      "cpuRender": 14,
+      "cpuUI": 12,
+      "cpuJS": 0,
+      "ram": 344,
+      "issues": [
+        "Critical CPU usage (74%)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 43245,
+      "fps": 45,
+      "cpuTotal": 26,
+      "cpuRender": 18,
+      "cpuUI": 6,
+      "cpuJS": 0,
+      "ram": 348,
+      "issues": [
+        "Low FPS (45 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 45752,
+      "fps": 48,
+      "cpuTotal": 24,
+      "cpuRender": 20,
+      "cpuUI": 2,
+      "cpuJS": 0,
+      "ram": 351,
+      "issues": [
+        "Low FPS (48 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 47346,
+      "fps": 48,
+      "cpuTotal": 38,
+      "cpuRender": 8,
+      "cpuUI": 6,
+      "cpuJS": 0,
+      "ram": 352,
+      "issues": [
+        "Low FPS (48 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 61403,
+      "fps": 46,
+      "cpuTotal": 48,
+      "cpuRender": 22,
+      "cpuUI": 10,
+      "cpuJS": 0,
+      "ram": 350,
+      "issues": [
+        "Low FPS (46 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 62404,
+      "fps": 47,
+      "cpuTotal": 38,
+      "cpuRender": 26,
+      "cpuUI": 10,
+      "cpuJS": 0,
+      "ram": 350,
+      "issues": [
+        "Low FPS (47 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 64412,
+      "fps": 55,
+      "cpuTotal": 10,
+      "cpuRender": 6,
+      "cpuUI": 4,
+      "cpuJS": 0,
+      "ram": 352,
+      "issues": [
+        "Low FPS (55 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 70536,
+      "fps": 55,
+      "cpuTotal": 50,
+      "cpuRender": 10,
+      "cpuUI": 10,
+      "cpuJS": 0,
+      "ram": 356,
+      "issues": [
+        "Low FPS (55 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 74169,
+      "fps": 47,
+      "cpuTotal": 48,
+      "cpuRender": 12,
+      "cpuUI": 8,
+      "cpuJS": 0,
+      "ram": 361,
+      "issues": [
+        "Low FPS (47 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 76678,
+      "fps": 54,
+      "cpuTotal": 46,
+      "cpuRender": 22,
+      "cpuUI": 10,
+      "cpuJS": 0,
+      "ram": 354,
+      "issues": [
+        "Low FPS (54 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 78691,
+      "fps": 54,
+      "cpuTotal": 32,
+      "cpuRender": 14,
+      "cpuUI": 6,
+      "cpuJS": 0,
+      "ram": 357,
+      "issues": [
+        "Low FPS (54 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 85719,
+      "fps": 51,
+      "cpuTotal": 24,
+      "cpuRender": 14,
+      "cpuUI": 4,
+      "cpuJS": 0,
+      "ram": 367,
+      "issues": [
+        "Low FPS (51 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 96249,
+      "fps": 50,
+      "cpuTotal": 14,
+      "cpuRender": 2,
+      "cpuUI": 4,
+      "cpuJS": 0,
+      "ram": 367,
+      "issues": [
+        "Low FPS (50 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 96753,
+      "fps": 49,
+      "cpuTotal": 40,
+      "cpuRender": 16,
+      "cpuUI": 6,
+      "cpuJS": 0,
+      "ram": 368,
+      "issues": [
+        "Low FPS (49 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 98261,
+      "fps": 52,
+      "cpuTotal": 36,
+      "cpuRender": 14,
+      "cpuUI": 8,
+      "cpuJS": 0,
+      "ram": 362,
+      "issues": [
+        "Low FPS (52 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 98773,
+      "fps": 54,
+      "cpuTotal": 43,
+      "cpuRender": 20,
+      "cpuUI": 6,
+      "cpuJS": 0,
+      "ram": 364,
+      "issues": [
+        "Low FPS (54 FPS)"
+      ],
+      "severity": 0.3,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 65916,
+      "fps": 56,
+      "cpuTotal": 68,
+      "cpuRender": 8,
+      "cpuUI": 10,
+      "cpuJS": 0,
+      "ram": 357,
+      "issues": [
+        "High CPU usage (68%)"
+      ],
+      "severity": 0.2,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    },
+    {
+      "timestamp": 79191,
+      "fps": 56,
+      "cpuTotal": 58,
+      "cpuRender": 16,
+      "cpuUI": 10,
+      "cpuJS": 0,
+      "ram": 359,
+      "issues": [
+        "High CPU usage (58%)"
+      ],
+      "severity": 0.2,
+      "candidates": [
+        {
+          "component": null,
+          "confidence": 0,
+          "reason": "No React commits found in time window",
+          "recommendation": "Issue may be native-only (image loading, native module, etc.)"
+        }
+      ]
+    }
+  ],
+  "reRenderIssues": [],
+  "hierarchyIssues": [],
+  "memoryAnalysis": {
+    "timeline": [
+      {
+        "timestamp": 504,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 1006,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 1508,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 2007,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 2510,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 3009,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 3512,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 4013,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 4516,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 5019,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 5523,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 6024,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 6524,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 7025,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 7527,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 8029,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 8532,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 9033,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 9534,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 10037,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 10537,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 11040,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 11540,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 12138,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 12639,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 13140,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 13646,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 14143,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 14645,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 15148,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 15648,
+        "value": 341,
+        "delta": 0
+      },
+      {
+        "timestamp": 16149,
+        "value": 342,
+        "delta": 1
+      },
+      {
+        "timestamp": 16653,
+        "value": 342,
+        "delta": 0
+      },
+      {
+        "timestamp": 17156,
+        "value": 342,
+        "delta": 0
+      },
+      {
+        "timestamp": 17657,
+        "value": 342,
+        "delta": 0
+      },
+      {
+        "timestamp": 18158,
+        "value": 342,
+        "delta": 0
+      },
+      {
+        "timestamp": 18660,
+        "value": 343,
+        "delta": 1
+      },
+      {
+        "timestamp": 19159,
+        "value": 343,
+        "delta": 0
+      },
+      {
+        "timestamp": 19662,
+        "value": 343,
+        "delta": 0
+      },
+      {
+        "timestamp": 20164,
+        "value": 343,
+        "delta": 0
+      },
+      {
+        "timestamp": 20665,
+        "value": 343,
+        "delta": 0
+      },
+      {
+        "timestamp": 21165,
+        "value": 343,
+        "delta": 0
+      },
+      {
+        "timestamp": 21668,
+        "value": 343,
+        "delta": 0
+      },
+      {
+        "timestamp": 22169,
+        "value": 343,
+        "delta": 0
+      },
+      {
+        "timestamp": 22674,
+        "value": 343,
+        "delta": 0
+      },
+      {
+        "timestamp": 23173,
+        "value": 343,
+        "delta": 0
+      },
+      {
+        "timestamp": 23675,
+        "value": 343,
+        "delta": 0
+      },
+      {
+        "timestamp": 24176,
+        "value": 343,
+        "delta": 0
+      },
+      {
+        "timestamp": 24679,
+        "value": 344,
+        "delta": 1
+      },
+      {
+        "timestamp": 25180,
+        "value": 343,
+        "delta": -1
+      },
+      {
+        "timestamp": 25683,
+        "value": 343,
+        "delta": 0
+      },
+      {
+        "timestamp": 26187,
+        "value": 342,
+        "delta": -1
+      },
+      {
+        "timestamp": 26687,
+        "value": 342,
+        "delta": 0
+      },
+      {
+        "timestamp": 27189,
+        "value": 342,
+        "delta": 0
+      },
+      {
+        "timestamp": 27687,
+        "value": 343,
+        "delta": 1
+      },
+      {
+        "timestamp": 28188,
+        "value": 343,
+        "delta": 0
+      },
+      {
+        "timestamp": 28690,
+        "value": 343,
+        "delta": 0
+      },
+      {
+        "timestamp": 29197,
+        "value": 344,
+        "delta": 1
+      },
+      {
+        "timestamp": 29692,
+        "value": 344,
+        "delta": 0
+      },
+      {
+        "timestamp": 30200,
+        "value": 344,
+        "delta": 0
+      },
+      {
+        "timestamp": 30702,
+        "value": 345,
+        "delta": 1
+      },
+      {
+        "timestamp": 31203,
+        "value": 348,
+        "delta": 3
+      },
+      {
+        "timestamp": 31703,
+        "value": 349,
+        "delta": 1
+      },
+      {
+        "timestamp": 32203,
+        "value": 349,
+        "delta": 0
+      },
+      {
+        "timestamp": 32708,
+        "value": 349,
+        "delta": 0
+      },
+      {
+        "timestamp": 33211,
+        "value": 352,
+        "delta": 3
+      },
+      {
+        "timestamp": 33707,
+        "value": 346,
+        "delta": -6
+      },
+      {
+        "timestamp": 34212,
+        "value": 346,
+        "delta": 0
+      },
+      {
+        "timestamp": 34712,
+        "value": 346,
+        "delta": 0
+      },
+      {
+        "timestamp": 35210,
+        "value": 345,
+        "delta": -1
+      },
+      {
+        "timestamp": 35712,
+        "value": 344,
+        "delta": -1
+      },
+      {
+        "timestamp": 36216,
+        "value": 344,
+        "delta": 0
+      },
+      {
+        "timestamp": 36719,
+        "value": 343,
+        "delta": -1
+      },
+      {
+        "timestamp": 37221,
+        "value": 339,
+        "delta": -4
+      },
+      {
+        "timestamp": 37722,
+        "value": 339,
+        "delta": 0
+      },
+      {
+        "timestamp": 38224,
+        "value": 339,
+        "delta": 0
+      },
+      {
+        "timestamp": 38724,
+        "value": 344,
+        "delta": 5
+      },
+      {
+        "timestamp": 39228,
+        "value": 339,
+        "delta": -5
+      },
+      {
+        "timestamp": 39728,
+        "value": 339,
+        "delta": 0
+      },
+      {
+        "timestamp": 40231,
+        "value": 339,
+        "delta": 0
+      },
+      {
+        "timestamp": 40731,
+        "value": 340,
+        "delta": 1
+      },
+      {
+        "timestamp": 41236,
+        "value": 340,
+        "delta": 0
+      },
+      {
+        "timestamp": 41735,
+        "value": 340,
+        "delta": 0
+      },
+      {
+        "timestamp": 42244,
+        "value": 340,
+        "delta": 0
+      },
+      {
+        "timestamp": 42744,
+        "value": 348,
+        "delta": 8
+      },
+      {
+        "timestamp": 43245,
+        "value": 348,
+        "delta": 0
+      },
+      {
+        "timestamp": 43746,
+        "value": 348,
+        "delta": 0
+      },
+      {
+        "timestamp": 44247,
+        "value": 349,
+        "delta": 1
+      },
+      {
+        "timestamp": 44749,
+        "value": 349,
+        "delta": 0
+      },
+      {
+        "timestamp": 45256,
+        "value": 350,
+        "delta": 1
+      },
+      {
+        "timestamp": 45752,
+        "value": 351,
+        "delta": 1
+      },
+      {
+        "timestamp": 46344,
+        "value": 351,
+        "delta": 0
+      },
+      {
+        "timestamp": 46848,
+        "value": 351,
+        "delta": 0
+      },
+      {
+        "timestamp": 47346,
+        "value": 352,
+        "delta": 1
+      },
+      {
+        "timestamp": 47848,
+        "value": 349,
+        "delta": -3
+      },
+      {
+        "timestamp": 48349,
+        "value": 349,
+        "delta": 0
+      },
+      {
+        "timestamp": 48851,
+        "value": 349,
+        "delta": 0
+      },
+      {
+        "timestamp": 49356,
+        "value": 351,
+        "delta": 2
+      },
+      {
+        "timestamp": 49853,
+        "value": 344,
+        "delta": -7
+      },
+      {
+        "timestamp": 50355,
+        "value": 344,
+        "delta": 0
+      },
+      {
+        "timestamp": 50856,
+        "value": 344,
+        "delta": 0
+      },
+      {
+        "timestamp": 51357,
+        "value": 344,
+        "delta": 0
+      },
+      {
+        "timestamp": 51858,
+        "value": 348,
+        "delta": 4
+      },
+      {
+        "timestamp": 52359,
+        "value": 352,
+        "delta": 4
+      },
+      {
+        "timestamp": 52859,
+        "value": 352,
+        "delta": 0
+      },
+      {
+        "timestamp": 53363,
+        "value": 353,
+        "delta": 1
+      },
+      {
+        "timestamp": 53862,
+        "value": 353,
+        "delta": 0
+      },
+      {
+        "timestamp": 54368,
+        "value": 349,
+        "delta": -4
+      },
+      {
+        "timestamp": 54870,
+        "value": 349,
+        "delta": 0
+      },
+      {
+        "timestamp": 55374,
+        "value": 349,
+        "delta": 0
+      },
+      {
+        "timestamp": 55871,
+        "value": 349,
+        "delta": 0
+      },
+      {
+        "timestamp": 56374,
+        "value": 349,
+        "delta": 0
+      },
+      {
+        "timestamp": 56875,
+        "value": 349,
+        "delta": 0
+      },
+      {
+        "timestamp": 57383,
+        "value": 349,
+        "delta": 0
+      },
+      {
+        "timestamp": 57884,
+        "value": 350,
+        "delta": 1
+      },
+      {
+        "timestamp": 58389,
+        "value": 350,
+        "delta": 0
+      },
+      {
+        "timestamp": 58888,
+        "value": 350,
+        "delta": 0
+      },
+      {
+        "timestamp": 59395,
+        "value": 350,
+        "delta": 0
+      },
+      {
+        "timestamp": 59897,
+        "value": 351,
+        "delta": 1
+      },
+      {
+        "timestamp": 60397,
+        "value": 354,
+        "delta": 3
+      },
+      {
+        "timestamp": 60901,
+        "value": 349,
+        "delta": -5
+      },
+      {
+        "timestamp": 61403,
+        "value": 350,
+        "delta": 1
+      },
+      {
+        "timestamp": 61908,
+        "value": 350,
+        "delta": 0
+      },
+      {
+        "timestamp": 62404,
+        "value": 350,
+        "delta": 0
+      },
+      {
+        "timestamp": 62906,
+        "value": 352,
+        "delta": 2
+      },
+      {
+        "timestamp": 63406,
+        "value": 351,
+        "delta": -1
+      },
+      {
+        "timestamp": 63909,
+        "value": 352,
+        "delta": 1
+      },
+      {
+        "timestamp": 64412,
+        "value": 352,
+        "delta": 0
+      },
+      {
+        "timestamp": 64911,
+        "value": 353,
+        "delta": 1
+      },
+      {
+        "timestamp": 65413,
+        "value": 353,
+        "delta": 0
+      },
+      {
+        "timestamp": 65916,
+        "value": 357,
+        "delta": 4
+      },
+      {
+        "timestamp": 66415,
+        "value": 357,
+        "delta": 0
+      },
+      {
+        "timestamp": 66917,
+        "value": 359,
+        "delta": 2
+      },
+      {
+        "timestamp": 67421,
+        "value": 359,
+        "delta": 0
+      },
+      {
+        "timestamp": 67919,
+        "value": 359,
+        "delta": 0
+      },
+      {
+        "timestamp": 68421,
+        "value": 359,
+        "delta": 0
+      },
+      {
+        "timestamp": 69033,
+        "value": 360,
+        "delta": 1
+      },
+      {
+        "timestamp": 69533,
+        "value": 361,
+        "delta": 1
+      },
+      {
+        "timestamp": 70035,
+        "value": 362,
+        "delta": 1
+      },
+      {
+        "timestamp": 70536,
+        "value": 356,
+        "delta": -6
+      },
+      {
+        "timestamp": 71036,
+        "value": 358,
+        "delta": 2
+      },
+      {
+        "timestamp": 71536,
+        "value": 357,
+        "delta": -1
+      },
+      {
+        "timestamp": 72037,
+        "value": 358,
+        "delta": 1
+      },
+      {
+        "timestamp": 72539,
+        "value": 358,
+        "delta": 0
+      },
+      {
+        "timestamp": 73045,
+        "value": 359,
+        "delta": 1
+      },
+      {
+        "timestamp": 73669,
+        "value": 359,
+        "delta": 0
+      },
+      {
+        "timestamp": 74169,
+        "value": 361,
+        "delta": 2
+      },
+      {
+        "timestamp": 74670,
+        "value": 362,
+        "delta": 1
+      },
+      {
+        "timestamp": 75171,
+        "value": 362,
+        "delta": 0
+      },
+      {
+        "timestamp": 75671,
+        "value": 353,
+        "delta": -9
+      },
+      {
+        "timestamp": 76175,
+        "value": 354,
+        "delta": 1
+      },
+      {
+        "timestamp": 76678,
+        "value": 354,
+        "delta": 0
+      },
+      {
+        "timestamp": 77180,
+        "value": 355,
+        "delta": 1
+      },
+      {
+        "timestamp": 77685,
+        "value": 355,
+        "delta": 0
+      },
+      {
+        "timestamp": 78187,
+        "value": 356,
+        "delta": 1
+      },
+      {
+        "timestamp": 78691,
+        "value": 357,
+        "delta": 1
+      },
+      {
+        "timestamp": 79191,
+        "value": 359,
+        "delta": 2
+      },
+      {
+        "timestamp": 79695,
+        "value": 356,
+        "delta": -3
+      },
+      {
+        "timestamp": 80197,
+        "value": 357,
+        "delta": 1
+      },
+      {
+        "timestamp": 80701,
+        "value": 356,
+        "delta": -1
+      },
+      {
+        "timestamp": 81201,
+        "value": 357,
+        "delta": 1
+      },
+      {
+        "timestamp": 81711,
+        "value": 358,
+        "delta": 1
+      },
+      {
+        "timestamp": 82204,
+        "value": 359,
+        "delta": 1
+      },
+      {
+        "timestamp": 82705,
+        "value": 360,
+        "delta": 1
+      },
+      {
+        "timestamp": 83209,
+        "value": 361,
+        "delta": 1
+      },
+      {
+        "timestamp": 83713,
+        "value": 363,
+        "delta": 2
+      },
+      {
+        "timestamp": 84214,
+        "value": 365,
+        "delta": 2
+      },
+      {
+        "timestamp": 84716,
+        "value": 367,
+        "delta": 2
+      },
+      {
+        "timestamp": 85217,
+        "value": 367,
+        "delta": 0
+      },
+      {
+        "timestamp": 85719,
+        "value": 367,
+        "delta": 0
+      },
+      {
+        "timestamp": 86221,
+        "value": 368,
+        "delta": 1
+      },
+      {
+        "timestamp": 86721,
+        "value": 367,
+        "delta": -1
+      },
+      {
+        "timestamp": 87222,
+        "value": 367,
+        "delta": 0
+      },
+      {
+        "timestamp": 87727,
+        "value": 366,
+        "delta": -1
+      },
+      {
+        "timestamp": 88231,
+        "value": 366,
+        "delta": 0
+      },
+      {
+        "timestamp": 88731,
+        "value": 366,
+        "delta": 0
+      },
+      {
+        "timestamp": 89233,
+        "value": 366,
+        "delta": 0
+      },
+      {
+        "timestamp": 89733,
+        "value": 367,
+        "delta": 1
+      },
+      {
+        "timestamp": 90236,
+        "value": 367,
+        "delta": 0
+      },
+      {
+        "timestamp": 90735,
+        "value": 368,
+        "delta": 1
+      },
+      {
+        "timestamp": 91238,
+        "value": 368,
+        "delta": 0
+      },
+      {
+        "timestamp": 91737,
+        "value": 369,
+        "delta": 1
+      },
+      {
+        "timestamp": 92239,
+        "value": 369,
+        "delta": 0
+      },
+      {
+        "timestamp": 92739,
+        "value": 369,
+        "delta": 0
+      },
+      {
+        "timestamp": 93241,
+        "value": 361,
+        "delta": -8
+      },
+      {
+        "timestamp": 93743,
+        "value": 364,
+        "delta": 3
+      },
+      {
+        "timestamp": 94244,
+        "value": 364,
+        "delta": 0
+      },
+      {
+        "timestamp": 94744,
+        "value": 365,
+        "delta": 1
+      },
+      {
+        "timestamp": 95246,
+        "value": 365,
+        "delta": 0
+      },
+      {
+        "timestamp": 95748,
+        "value": 366,
+        "delta": 1
+      },
+      {
+        "timestamp": 96249,
+        "value": 367,
+        "delta": 1
+      },
+      {
+        "timestamp": 96753,
+        "value": 368,
+        "delta": 1
+      },
+      {
+        "timestamp": 97253,
+        "value": 369,
+        "delta": 1
+      },
+      {
+        "timestamp": 97757,
+        "value": 362,
+        "delta": -7
+      },
+      {
+        "timestamp": 98261,
+        "value": 362,
+        "delta": 0
+      },
+      {
+        "timestamp": 98773,
+        "value": 364,
+        "delta": 2
+      },
+      {
+        "timestamp": 99277,
+        "value": 365,
+        "delta": 1
+      },
+      {
+        "timestamp": 99780,
+        "value": 365,
+        "delta": 0
+      },
+      {
+        "timestamp": 100280,
+        "value": 367,
+        "delta": 2
+      },
+      {
+        "timestamp": 100781,
+        "value": 368,
+        "delta": 1
+      },
+      {
+        "timestamp": 101282,
+        "value": 372,
+        "delta": 4
+      },
+      {
+        "timestamp": 101786,
+        "value": 375,
+        "delta": 3
+      },
+      {
+        "timestamp": 102287,
+        "value": 367,
+        "delta": -8
+      },
+      {
+        "timestamp": 102792,
+        "value": 367,
+        "delta": 0
+      },
+      {
+        "timestamp": 103287,
+        "value": 368,
+        "delta": 1
+      },
+      {
+        "timestamp": 103788,
+        "value": 369,
+        "delta": 1
+      },
+      {
+        "timestamp": 104292,
+        "value": 369,
+        "delta": 0
+      },
+      {
+        "timestamp": 104793,
+        "value": 370,
+        "delta": 1
+      },
+      {
+        "timestamp": 105295,
+        "value": 371,
+        "delta": 1
+      },
+      {
+        "timestamp": 105795,
+        "value": 371,
+        "delta": 0
+      },
+      {
+        "timestamp": 106297,
+        "value": 373,
+        "delta": 2
+      },
+      {
+        "timestamp": 106797,
+        "value": 370,
+        "delta": -3
+      },
+      {
+        "timestamp": 107299,
+        "value": 370,
+        "delta": 0
+      },
+      {
+        "timestamp": 107804,
+        "value": 371,
+        "delta": 1
+      },
+      {
+        "timestamp": 108304,
+        "value": 371,
+        "delta": 0
+      },
+      {
+        "timestamp": 108814,
+        "value": 371,
+        "delta": 0
+      },
+      {
+        "timestamp": 109318,
+        "value": 370,
+        "delta": -1
+      },
+      {
+        "timestamp": 109818,
+        "value": 371,
+        "delta": 1
+      },
+      {
+        "timestamp": 110321,
+        "value": 371,
+        "delta": 0
+      },
+      {
+        "timestamp": 110822,
+        "value": 371,
+        "delta": 0
+      },
+      {
+        "timestamp": 111325,
+        "value": 371,
+        "delta": 0
+      },
+      {
+        "timestamp": 111824,
+        "value": 371,
+        "delta": 0
+      },
+      {
+        "timestamp": 112326,
+        "value": 371,
+        "delta": 0
+      }
+    ],
+    "trend": "increasing",
+    "avgMemory": 353,
+    "maxMemory": 375,
+    "minMemory": 339,
+    "spikes": [
+      {
+        "timestamp": 504,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 1006,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 1508,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 2007,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 2510,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 3009,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 3512,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 4013,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 4516,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 5019,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 5523,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 6024,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 6524,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 7025,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 7527,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 8029,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 8532,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 9033,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 9534,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 10037,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 10537,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 11040,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 11540,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 12138,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 12639,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 13140,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 13646,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 14143,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 14645,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 15148,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 15648,
+        "value": 341,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 16149,
+        "value": 342,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 16653,
+        "value": 342,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 17156,
+        "value": 342,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 17657,
+        "value": 342,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 18158,
+        "value": 342,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 18660,
+        "value": 343,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 19159,
+        "value": 343,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 19662,
+        "value": 343,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 20164,
+        "value": 343,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 20665,
+        "value": 343,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 21165,
+        "value": 343,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 21668,
+        "value": 343,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 22169,
+        "value": 343,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 22674,
+        "value": 343,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 23173,
+        "value": 343,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 23675,
+        "value": 343,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 24176,
+        "value": 343,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 24679,
+        "value": 344,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 25180,
+        "value": 343,
+        "delta": -1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 25683,
+        "value": 343,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 26187,
+        "value": 342,
+        "delta": -1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 26687,
+        "value": 342,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 27189,
+        "value": 342,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 27687,
+        "value": 343,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 28188,
+        "value": 343,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 28690,
+        "value": 343,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 29197,
+        "value": 344,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 29692,
+        "value": 344,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 30200,
+        "value": 344,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 30702,
+        "value": 345,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 31203,
+        "value": 348,
+        "delta": 3,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 31703,
+        "value": 349,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 32203,
+        "value": 349,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 32708,
+        "value": 349,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 33211,
+        "value": 352,
+        "delta": 3,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 33707,
+        "value": 346,
+        "delta": -6,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 34212,
+        "value": 346,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 34712,
+        "value": 346,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 35210,
+        "value": 345,
+        "delta": -1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 35712,
+        "value": 344,
+        "delta": -1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 36216,
+        "value": 344,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 36719,
+        "value": 343,
+        "delta": -1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 37221,
+        "value": 339,
+        "delta": -4,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 37722,
+        "value": 339,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 38224,
+        "value": 339,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 38724,
+        "value": 344,
+        "delta": 5,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 39228,
+        "value": 339,
+        "delta": -5,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 39728,
+        "value": 339,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 40231,
+        "value": 339,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 40731,
+        "value": 340,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 41236,
+        "value": 340,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 41735,
+        "value": 340,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 42244,
+        "value": 340,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 42744,
+        "value": 348,
+        "delta": 8,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 43245,
+        "value": 348,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 43746,
+        "value": 348,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 44247,
+        "value": 349,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 44749,
+        "value": 349,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 45256,
+        "value": 350,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 45752,
+        "value": 351,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 46344,
+        "value": 351,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 46848,
+        "value": 351,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 47346,
+        "value": 352,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 47848,
+        "value": 349,
+        "delta": -3,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 48349,
+        "value": 349,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 48851,
+        "value": 349,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 49356,
+        "value": 351,
+        "delta": 2,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 49853,
+        "value": 344,
+        "delta": -7,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 50355,
+        "value": 344,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 50856,
+        "value": 344,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 51357,
+        "value": 344,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 51858,
+        "value": 348,
+        "delta": 4,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 52359,
+        "value": 352,
+        "delta": 4,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 52859,
+        "value": 352,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 53363,
+        "value": 353,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 53862,
+        "value": 353,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 54368,
+        "value": 349,
+        "delta": -4,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 54870,
+        "value": 349,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 55374,
+        "value": 349,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 55871,
+        "value": 349,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 56374,
+        "value": 349,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 56875,
+        "value": 349,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 57383,
+        "value": 349,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 57884,
+        "value": 350,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 58389,
+        "value": 350,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 58888,
+        "value": 350,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 59395,
+        "value": 350,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 59897,
+        "value": 351,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 60397,
+        "value": 354,
+        "delta": 3,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 60901,
+        "value": 349,
+        "delta": -5,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 61403,
+        "value": 350,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 61908,
+        "value": 350,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 62404,
+        "value": 350,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 62906,
+        "value": 352,
+        "delta": 2,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 63406,
+        "value": 351,
+        "delta": -1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 63909,
+        "value": 352,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 64412,
+        "value": 352,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 64911,
+        "value": 353,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 65413,
+        "value": 353,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 65916,
+        "value": 357,
+        "delta": 4,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 66415,
+        "value": 357,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 66917,
+        "value": 359,
+        "delta": 2,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 67421,
+        "value": 359,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 67919,
+        "value": 359,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 68421,
+        "value": 359,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 69033,
+        "value": 360,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 69533,
+        "value": 361,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 70035,
+        "value": 362,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 70536,
+        "value": 356,
+        "delta": -6,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 71036,
+        "value": 358,
+        "delta": 2,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 71536,
+        "value": 357,
+        "delta": -1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 72037,
+        "value": 358,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 72539,
+        "value": 358,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 73045,
+        "value": 359,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 73669,
+        "value": 359,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 74169,
+        "value": 361,
+        "delta": 2,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 74670,
+        "value": 362,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 75171,
+        "value": 362,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 75671,
+        "value": 353,
+        "delta": -9,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 76175,
+        "value": 354,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 76678,
+        "value": 354,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 77180,
+        "value": 355,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 77685,
+        "value": 355,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 78187,
+        "value": 356,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 78691,
+        "value": 357,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 79191,
+        "value": 359,
+        "delta": 2,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 79695,
+        "value": 356,
+        "delta": -3,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 80197,
+        "value": 357,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 80701,
+        "value": 356,
+        "delta": -1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 81201,
+        "value": 357,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 81711,
+        "value": 358,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 82204,
+        "value": 359,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 82705,
+        "value": 360,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 83209,
+        "value": 361,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 83713,
+        "value": 363,
+        "delta": 2,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 84214,
+        "value": 365,
+        "delta": 2,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 84716,
+        "value": 367,
+        "delta": 2,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 85217,
+        "value": 367,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 85719,
+        "value": 367,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 86221,
+        "value": 368,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 86721,
+        "value": 367,
+        "delta": -1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 87222,
+        "value": 367,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 87727,
+        "value": 366,
+        "delta": -1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 88231,
+        "value": 366,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 88731,
+        "value": 366,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 89233,
+        "value": 366,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 89733,
+        "value": 367,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 90236,
+        "value": 367,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 90735,
+        "value": 368,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 91238,
+        "value": 368,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 91737,
+        "value": 369,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 92239,
+        "value": 369,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 92739,
+        "value": 369,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 93241,
+        "value": 361,
+        "delta": -8,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 93743,
+        "value": 364,
+        "delta": 3,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 94244,
+        "value": 364,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 94744,
+        "value": 365,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 95246,
+        "value": 365,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 95748,
+        "value": 366,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 96249,
+        "value": 367,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 96753,
+        "value": 368,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 97253,
+        "value": 369,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 97757,
+        "value": 362,
+        "delta": -7,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 98261,
+        "value": 362,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 98773,
+        "value": 364,
+        "delta": 2,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 99277,
+        "value": 365,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 99780,
+        "value": 365,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 100280,
+        "value": 367,
+        "delta": 2,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 100781,
+        "value": 368,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 101282,
+        "value": 372,
+        "delta": 4,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 101786,
+        "value": 375,
+        "delta": 3,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 102287,
+        "value": 367,
+        "delta": -8,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 102792,
+        "value": 367,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 103287,
+        "value": 368,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 103788,
+        "value": 369,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 104292,
+        "value": 369,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 104793,
+        "value": 370,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 105295,
+        "value": 371,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 105795,
+        "value": 371,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 106297,
+        "value": 373,
+        "delta": 2,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 106797,
+        "value": 370,
+        "delta": -3,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 107299,
+        "value": 370,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 107804,
+        "value": 371,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 108304,
+        "value": 371,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 108814,
+        "value": 371,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 109318,
+        "value": 370,
+        "delta": -1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 109818,
+        "value": 371,
+        "delta": 1,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 110321,
+        "value": 371,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 110822,
+        "value": 371,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 111325,
+        "value": 371,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 111824,
+        "value": 371,
+        "delta": 0,
+        "severity": "warning"
+      },
+      {
+        "timestamp": 112326,
+        "value": 371,
+        "delta": 0,
+        "severity": "warning"
+      }
+    ],
+    "leaks": []
+  }
+}
