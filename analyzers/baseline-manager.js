@@ -37,9 +37,9 @@ class BaselineManager {
 
   getScreenName(signature) {
     const screenPatterns = {
-      'HomeScreen:ProductList:Header': 'Home',
-      'CheckoutScreen:PaymentForm:CartSummary': 'Checkout',
-      'ProfileScreen:SettingsMenu:Avatar': 'Profile'
+      'Header:HomeScreen:ProductList': 'Home',
+      'CartSummary:CheckoutScreen:PaymentForm': 'Checkout',
+      'Avatar:ProfileScreen:SettingsMenu': 'Profile'
     };
     return screenPatterns[signature];
   }

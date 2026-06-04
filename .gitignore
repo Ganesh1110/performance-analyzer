@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build output
+performance_report.html
+performance_report.json
+performance_report.txt
+profiling-data.json
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE / OS
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# Test coverage
+coverage/
+
+# Misc
+*.tsbuildinfo

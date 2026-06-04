@@ -37,24 +37,31 @@ function activate(context) {
 function updateDiagnostics(report, collection) {
   collection.clear();
 
+  const componentPaths = report.bundleAnalysis ? report.bundleAnalysis.componentPaths : {};
   const diagnosticsMap = new Map();
 
   report.reRenderIssues.forEach(issue => {
-    // In a real extension, we would resolve the component name to a file path
-    // For this placeholder, we'll look for files named after the component
-    
-    // This is a simplified mock implementation
-    const fileName = `${issue.component}.js`; 
-    
-    const diagnostic = new vscode.Diagnostic(
-      new vscode.Range(0, 0, 0, 100),
-      `⚠️ Performance Issue: This component renders ${issue.renderCount} times (${issue.totalTimeSpent}ms wasted). Consider React.memo().`,
-      vscode.DiagnosticSeverity.Warning
-    );
-    diagnostic.source = 'React Performance Analyzer';
-    diagnostic.code = 'PERF001';
+    const componentPath = componentPaths[issue.component];
+    if (componentPath) {
+      const fileUri = vscode.Uri.file(componentPath);
+      
+      const diagnostic = new vscode.Diagnostic(
+        new vscode.Range(0, 0, 0, 100),
+        `⚠️ Performance Issue: This component renders ${issue.renderCount} times (${issue.totalTimeSpent}ms wasted). Consider React.memo().`,
+        vscode.DiagnosticSeverity.Warning
+      );
+      diagnostic.source = 'React Performance Analyzer';
+      diagnostic.code = 'PERF001';
 
-    // Since we don't have the actual file paths here, we just show how it would work
+      if (!diagnosticsMap.has(fileUri.toString())) {
+        diagnosticsMap.set(fileUri.toString(), []);
+      }
+      diagnosticsMap.get(fileUri.toString()).push(diagnostic);
+    }
+  });
+
+  diagnosticsMap.forEach((diagnostics, uriString) => {
+    collection.set(vscode.Uri.parse(uriString), diagnostics);
   });
 }
 

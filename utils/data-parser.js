@@ -140,6 +140,7 @@ function parseBundleStats(bundleData) {
   const modules = bundleData.modules || bundleData.assets || [];
   
   const componentSizes = new Map();
+  const componentPaths = new Map();
   
   modules.forEach(module => {
     const name = module.name || module.path || 'Unknown';
@@ -151,6 +152,7 @@ function parseBundleStats(bundleData) {
       const componentName = match[1];
       if (!componentSizes.has(componentName)) {
         componentSizes.set(componentName, 0);
+        componentPaths.set(componentName, name);
       }
       componentSizes.set(componentName, componentSizes.get(componentName) + size);
     }
@@ -161,6 +163,7 @@ function parseBundleStats(bundleData) {
   return {
     totalSize: modules.reduce((sum, m) => sum + (m.size || 0), 0),
     componentSizes,
+    componentPaths,
     modules
   };
 }

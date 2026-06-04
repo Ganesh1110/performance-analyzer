@@ -61,6 +61,7 @@ function analyzeBundleSize(bundleData, componentRenderMap) {
     largeComponents: largeComponents.sort((a, b) => 
       parseFloat(b.sizeKB) - parseFloat(a.sizeKB)
     ),
+    componentPaths: Object.fromEntries(componentPaths),
     performanceCorrelation,
     correlationCoefficient: correlation
   };
