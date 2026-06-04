@@ -8,7 +8,7 @@ const { safeRequire, parseFlashlightData, parseReactDevToolsData, parseBundleSta
 const { detectBottlenecks } = require('./analyzers/bottleneck-analyzer');
 const { analyzeReRenders } = require('./analyzers/rerender-analyzer');
 const { analyzeMemory } = require('./analyzers/memory-analyzer');
-const { buildComponentHierarchy, buildHierarchyTree } = require('./analyzers/hierarchy-analyzer');
+const { buildComponentHierarchy, buildHierarchyTree, detectContextCascades } = require('./analyzers/hierarchy-analyzer');
 const { analyzeBundleSize } = require('./analyzers/bundle-analyzer');
 const { generateTextReport } = require('./reporters/text-reporter');
 const { generateHTMLReport } = require('./reporters/html-reporter');
@@ -29,6 +29,9 @@ const { NaturalLanguageReporter } = require('./reporters/nl-reporter');
 const { CodeFixer } = require('./utils/code-fixer');
 
 const { JSThreadAnalyzer } = require('./analyzers/js-thread-analyzer');
+
+const { NavigationAnalyzer } = require('./analyzers/navigation-analyzer');
+const { FlatListAnalyzer } = require('./analyzers/flatlist-analyzer');
 
 function openReport(filePath) {
   const command = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
@@ -93,6 +96,7 @@ function main() {
   const reRenderIssues = analyzeReRenders(componentRenderMap);
   const memoryAnalysis = analyzeMemory(flashlightMeasures, componentRenderMap);
   const hierarchyIssues = buildComponentHierarchy(componentRenderMap, fiberHierarchy);
+  const contextCascades = detectContextCascades(componentRenderMap);
   const hierarchyTree = buildHierarchyTree(componentRenderMap, fiberHierarchy);
   
   if (bundleAnalysis) {
@@ -127,14 +131,23 @@ function main() {
   const jsThreadAnalyzer = new JSThreadAnalyzer();
   const jsBottlenecks = jsThreadAnalyzer.analyze(flashlightMeasures, reactCommits);
 
+  const navigationAnalyzer = new NavigationAnalyzer();
+  const navigationAnalysis = navigationAnalyzer.analyze(componentRenderMap, reactCommits);
+
+  const flatListAnalyzer = new FlatListAnalyzer();
+  const flatListAnalysis = flatListAnalyzer.analyze(componentRenderMap, fiberHierarchy);
+
   const analysisData = {
     summary: {
       totalFrames: flashlightMeasures.length,
       bottleneckCount: bottlenecks.length,
       reRenderIssueCount: reRenderIssues.length,
       hierarchyIssueCount: hierarchyIssues.length,
+      contextCascadeCount: contextCascades.length,
       memoryLeakCount: memoryAnalysis.leaks.length,
       jsBottleneckCount: jsBottlenecks.length,
+      navigationIssueCount: navigationAnalysis.filter(n => n.severity !== 'good').length,
+      flatListIssueCount: flatListAnalysis.length,
       healthScore: Math.max(0, 100 - Math.round((bottlenecks.length / flashlightMeasures.length) * 100))
     },
     flashlightMeasures,
@@ -142,6 +155,7 @@ function main() {
     reRenderIssues,
     memoryAnalysis,
     hierarchyIssues,
+    contextCascades,
     hierarchyTree,
     bundleAnalysis: bundleAnalysis?.analysis,
     flows,
@@ -150,7 +164,9 @@ function main() {
     phaseAnalysis,
     animations,
     commits: reactCommits,
-    jsBottlenecks
+    jsBottlenecks,
+    navigationAnalysis,
+    flatListAnalysis
   };
 
   // Tier 3 & 4: Predictive & Integration
@@ -209,6 +225,7 @@ function main() {
     bottlenecks: correlatedBottlenecks,
     reRenderIssues,
     hierarchyIssues,
+    contextCascades,
     memoryAnalysis,
     bundleAnalysis: bundleAnalysis?.analysis,
     flows,
@@ -216,6 +233,8 @@ function main() {
     concurrentAnalysis,
     phaseAnalysis,
     animations,
+    navigationAnalysis,
+    flatListAnalysis,
     prediction,
     executiveSummary,
     automatedFixes

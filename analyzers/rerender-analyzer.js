@@ -23,6 +23,7 @@ function analyzeReRenders(componentRenderMap) {
     const stateChangeCounts = {};
     let contextChangeCount = 0;
     let parentTriggeredCount = 0;
+    let hookChangeCount = 0;
 
     renders.forEach(render => {
       const { reason } = render;
@@ -49,7 +50,31 @@ function analyzeReRenders(componentRenderMap) {
         });
       }
       if (hasContextChanges) contextChangeCount++;
+      if (hasHookChanges) hookChangeCount++;
     });
+
+    // Determine Primary Cause and Confidence
+    let primaryCause = "Unknown";
+    let confidence = 0;
+
+    if (wastedRenders > renders.length * 0.5) {
+      primaryCause = "Parent Re-render (Wasted)";
+      confidence = (wastedRenders / renders.length) * 100;
+    } else if (contextChangeCount > renders.length * 0.5) {
+      primaryCause = "Context Update";
+      confidence = (contextChangeCount / renders.length) * 100;
+    } else if (Object.keys(propChangeCounts).length > 0) {
+      const topProp = Object.entries(propChangeCounts).sort((a, b) => b[1] - a[1])[0];
+      primaryCause = `Prop Change: ${topProp[0]}`;
+      confidence = (topProp[1] / renders.length) * 100;
+    } else if (Object.keys(stateChangeCounts).length > 0) {
+      const topState = Object.entries(stateChangeCounts).sort((a, b) => b[1] - a[1])[0];
+      primaryCause = `State Change: ${topState[0]}`;
+      confidence = (topState[1] / renders.length) * 100;
+    } else if (hookChangeCount > 0) {
+      primaryCause = "Hook Update";
+      confidence = (hookChangeCount / renders.length) * 100;
+    }
 
     const issues = [];
     let severity = 0;
@@ -76,13 +101,10 @@ function analyzeReRenders(componentRenderMap) {
       severity += (wastedRenders / renders.length) * 0.5;
     }
 
-    // Identify unstable props
-    const unstableProps = Object.entries(propChangeCounts)
-      .filter(([prop, count]) => count > renders.length * 0.8)
-      .map(([prop]) => prop);
-    
-    if (unstableProps.length > 0) {
-      issues.push(`Unstable props detected: ${unstableProps.join(', ')} (changes in ${((Object.values(propChangeCounts)[0] / renders.length) * 100).toFixed(0)}% of renders)`);
+    if (contextChangeCount > 0) {
+      const contextPercent = ((contextChangeCount / renders.length) * 100).toFixed(0);
+      issues.push(`Context changes detected in ${contextChangeCount} renders (${contextPercent}%)`);
+      severity += (contextChangeCount / renders.length) * 0.2;
     }
     
     if (issues.length > 0) {
@@ -90,11 +112,15 @@ function analyzeReRenders(componentRenderMap) {
         component: componentName,
         renderCount: renders.length,
         wastedRenders,
+        primaryCause,
+        confidence: Math.round(confidence),
         parentTriggeredCount,
         contextChangeCount,
         propChangeCounts,
         stateChangeCounts,
-        unstableProps,
+        unstableProps: Object.entries(propChangeCounts)
+          .filter(([prop, count]) => count > renders.length * 0.8)
+          .map(([prop]) => prop),
         frequency: frequency.toFixed(2),
         avgInterval: Math.round(avgInterval),
         avgRenderTime: avgRenderTime.toFixed(2),

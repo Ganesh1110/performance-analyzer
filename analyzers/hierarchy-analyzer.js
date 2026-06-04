@@ -82,6 +82,52 @@ function buildComponentHierarchy(componentRenderMap, fiberHierarchy) {
   return sorted;
 }
 
+function detectContextCascades(componentRenderMap) {
+  console.log("🌊 Detecting context re-render cascades...");
+  
+  const contextCascades = [];
+  const timeBuckets = new Map(); // timestamp -> Set of components
+  
+  componentRenderMap.forEach((renders, componentName) => {
+    renders.forEach(render => {
+      if (render.reason && (render.reason.context === true || (Array.isArray(render.reason.context) && render.reason.context.length > 0))) {
+        const bucket = Math.round(render.timestamp / 50) * 50; // 50ms buckets
+        if (!timeBuckets.has(bucket)) timeBuckets.set(bucket, new Set());
+        timeBuckets.get(bucket).add({
+          name: componentName,
+          duration: render.duration,
+          context: render.reason.context
+        });
+      }
+    });
+  });
+  
+  timeBuckets.forEach((components, timestamp) => {
+    if (components.size > 5) { // Threshold for a "cascade"
+      const totalCost = Array.from(components).reduce((sum, c) => sum + c.duration, 0);
+      
+      // Try to identify the source context if available
+      const contextSources = new Set();
+      components.forEach(c => {
+        if (Array.isArray(c.context)) {
+          c.context.forEach(ctx => contextSources.add(ctx));
+        }
+      });
+
+      contextCascades.push({
+        timestamp,
+        affectedCount: components.size,
+        components: Array.from(components).map(c => c.name).slice(0, 10),
+        totalCost: totalCost.toFixed(2),
+        sources: Array.from(contextSources),
+        severity: components.size > 20 ? 'high' : 'medium'
+      });
+    }
+  });
+  
+  return contextCascades.sort((a, b) => b.affectedCount - a.affectedCount);
+}
+
 function buildHierarchyTree(componentRenderMap, fiberHierarchy) {
   const roots = [];
   const visited = new Set();
@@ -102,7 +148,7 @@ function buildHierarchyTree(componentRenderMap, fiberHierarchy) {
     
     // Build tree from root
     function buildNode(nodeId, depth = 0) {
-      if (depth > 10) return null; // Prevent infinite recursion
+      if (depth > 15) return null; // Prevent infinite recursion
       
       const node = fiberHierarchy.get(nodeId);
       if (!node) return null;
@@ -110,16 +156,25 @@ function buildHierarchyTree(componentRenderMap, fiberHierarchy) {
       visited.add(node.name);
       
       const renders = componentRenderMap.get(node.name) || [];
+      const totalDuration = renders.reduce((sum, r) => sum + r.duration, 0);
+      
+      const children = node.children
+          .map(childId => buildNode(childId, depth + 1))
+          .filter(Boolean);
+
+      // A node is on the "hot path" if it or its children have high total duration
+      const childrenHotPath = children.some(c => c.isHotPath);
+      const isHotPath = totalDuration > 100 || childrenHotPath; // 100ms threshold
       
       return {
         name: node.name,
         renderCount: renders.length,
+        totalDuration: totalDuration.toFixed(2),
         avgRenderTime: renders.length > 0
-          ? (renders.reduce((sum, r) => sum + r.duration, 0) / renders.length).toFixed(2)
+          ? (totalDuration / renders.length).toFixed(2)
           : 0,
-        children: node.children
-          .map(childId => buildNode(childId, depth + 1))
-          .filter(Boolean)
+        isHotPath,
+        children
       };
     }
     
@@ -132,4 +187,4 @@ function buildHierarchyTree(componentRenderMap, fiberHierarchy) {
   return roots;
 }
 
-module.exports = { buildComponentHierarchy, buildHierarchyTree };
+module.exports = { buildComponentHierarchy, buildHierarchyTree, detectContextCascades };

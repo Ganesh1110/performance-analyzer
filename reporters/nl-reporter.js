@@ -34,7 +34,25 @@ class NaturalLanguageReporter {
     if (reRenderIssues.length > 0) {
       const topRerenderer = reRenderIssues[0];
       nl += `Additionally, <${topRerenderer.component}> is re-rendering ${topRerenderer.renderCount} times, wasting ${topRerenderer.totalTimeSpent}ms. `;
+      if (topRerenderer.primaryCause === 'Context Update') {
+        nl += `The primary cause is frequent Context updates. `;
+      }
       nl += `This is a clear candidate for memoization. `;
+    }
+
+    // Context Cascades
+    if (analysisData.contextCascades && analysisData.contextCascades.length > 0) {
+      const topCascade = analysisData.contextCascades[0];
+      nl += `🌊 We detected ${analysisData.contextCascades.length} context re-render cascades. `;
+      nl += `The worst one affected ${topCascade.affectedCount} components simultaneously. `;
+    }
+
+    // Navigation
+    if (analysisData.navigationAnalysis && analysisData.navigationAnalysis.length > 0) {
+      const heavyNav = analysisData.navigationAnalysis.find(n => n.severity === 'critical');
+      if (heavyNav) {
+        nl += `🚦 Transitions to <${heavyNav.toScreen}> are very heavy (${heavyNav.totalDuration}ms), likely causing visible lag. `;
+      }
     }
 
     // Memory

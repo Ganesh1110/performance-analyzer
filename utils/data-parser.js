@@ -88,7 +88,58 @@ function parseReactDevToolsData(reactData) {
     });
   }
 
+  // 1.5 Extract Fiber Hierarchy (Deep Search)
+  console.log("   🌳 Extracting fiber hierarchy...");
+  
+  function findHierarchyData(obj, visited = new Set()) {
+    if (!obj || typeof obj !== 'object' || visited.has(obj)) return;
+    visited.add(obj);
+
+    if (Array.isArray(obj)) {
+      obj.forEach(item => findHierarchyData(item, visited));
+    } else {
+      // Look for any property that looks like a parent map
+      if (obj.fiberIDToParentIDMap) {
+        Object.entries(obj.fiberIDToParentIDMap).forEach(([id, pid]) => {
+          const fid = Number(id);
+          const parentId = Number(pid);
+          if (!fiberHierarchy.has(fid)) fiberHierarchy.set(fid, { id: fid, name: fiberIDToNameMap.get(fid) || `Unknown(${fid})`, parentId, children: [] });
+          else fiberHierarchy.get(fid).parentId = parentId;
+          
+          if (parentId !== 0) {
+            if (!fiberHierarchy.has(parentId)) fiberHierarchy.set(parentId, { id: parentId, name: fiberIDToNameMap.get(parentId) || `Unknown(${parentId})`, parentId: null, children: [fid] });
+            else if (!fiberHierarchy.get(parentId).children.includes(fid)) fiberHierarchy.get(parentId).children.push(fid);
+          }
+        });
+      }
+
+      // Look for snapshots (common in some versions)
+      if (obj.snapshots && Array.isArray(obj.snapshots)) {
+        obj.snapshots.forEach(snapshot => {
+          if (Array.isArray(snapshot)) {
+            for (let i = 0; i < snapshot.length; i += 2) {
+              const id = snapshot[i];
+              const parentId = snapshot[i+1];
+              if (typeof id === 'number' && typeof parentId === 'number') {
+                if (!fiberHierarchy.has(id)) fiberHierarchy.set(id, { id, name: fiberIDToNameMap.get(id) || `Unknown(${id})`, parentId, children: [] });
+                if (parentId !== 0) {
+                   if (!fiberHierarchy.has(parentId)) fiberHierarchy.set(parentId, { id: parentId, name: fiberIDToNameMap.get(parentId) || `Unknown(${parentId})`, parentId: null, children: [id] });
+                   else if (!fiberHierarchy.get(parentId).children.includes(id)) fiberHierarchy.get(parentId).children.push(id);
+                }
+              }
+            }
+          }
+        });
+      }
+
+      for (const key in obj) findHierarchyData(obj[key], visited);
+    }
+  }
+
+  findHierarchyData(data);
+
   console.log(`   ✓ Discovered ${fiberIDToNameMap.size} unique component names`);
+  console.log(`   ✓ Built hierarchy with ${fiberHierarchy.size} fiber nodes`);
 
   // 2. Time scaling detection
   let timeScale = 1;

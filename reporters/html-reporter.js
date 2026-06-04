@@ -1141,6 +1141,22 @@ function generateMetricGridHTML(data) {
       status: hierarchyIssues.length < 3 ? "good" : "warning",
       change: "neutral",
     },
+    {
+      icon: "fa-route",
+      title: "Heavy Transitions",
+      value: (data.navigationAnalysis || []).filter(n => n.severity !== 'good').length,
+      target: "Slow screen changes",
+      status: (data.navigationAnalysis || []).some(n => n.severity === 'critical') ? "critical" : "good",
+      change: "neutral",
+    },
+    {
+      icon: "fa-list-ul",
+      title: "List Issues",
+      value: (data.flatListAnalysis || []).length,
+      target: "FlatList optimizations",
+      status: (data.flatListAnalysis || []).length > 2 ? "warning" : "good",
+      change: "neutral",
+    },
   ];
 
   return `
@@ -1229,7 +1245,7 @@ function generateIssueTabsHTML(data) {
       id: "hierarchy",
       icon: "fa-sitemap",
       label: "Component Tree",
-      count: hierarchyIssues.length,
+      count: (data.hierarchyTree || []).length,
     },
     {
       id: "memory",
@@ -1263,6 +1279,18 @@ function generateIssueTabsHTML(data) {
       icon: "fa-play-circle",
       label: "Animations",
       count: animations.length,
+    },
+    {
+      id: "navigation",
+      icon: "fa-route",
+      label: "Navigation",
+      count: (data.navigationAnalysis || []).length,
+    },
+    {
+      id: "lists",
+      icon: "fa-list-ul",
+      label: "Lists",
+      count: (data.flatListAnalysis || []).length,
     },
     {
       id: "jsThread",
@@ -1319,7 +1347,7 @@ function generateIssueTabsHTML(data) {
       </div>
 
       <div id="hierarchy" class="tab-content">
-        ${generateHierarchyHTML(hierarchyIssues, hierarchyTree)}
+        ${generateHierarchyHTML(hierarchyIssues, hierarchyTree, data.contextCascades)}
       </div>
 
       <div id="memory" class="tab-content">
@@ -1344,6 +1372,14 @@ function generateIssueTabsHTML(data) {
 
       <div id="animations" class="tab-content">
         ${generateAnimationsHTML(animations)}
+      </div>
+
+      <div id="navigation" class="tab-content">
+        ${generateNavigationHTML(data.navigationAnalysis)}
+      </div>
+
+      <div id="lists" class="tab-content">
+        ${generateListsHTML(data.flatListAnalysis)}
       </div>
 
       <div id="jsThread" class="tab-content">
@@ -1449,6 +1485,7 @@ function generateReRendersTableHTML(reRenderIssues) {
           <th>Component</th>
           <th>Renders (Wasted)</th>
           <th>Primary Cause</th>
+          <th>Confidence</th>
           <th>Avg Time</th>
           <th>Total Time</th>
           <th>Severity</th>
@@ -1463,19 +1500,12 @@ function generateReRendersTableHTML(reRenderIssues) {
             100
           ).toFixed(0);
 
-          let primaryCause = "Mixed";
-          if (issue.parentTriggeredCount > issue.renderCount * 0.5)
-            primaryCause = "Parent Render";
-          if (issue.contextChangeCount > issue.renderCount * 0.5)
-            primaryCause = "Context Change";
-          if (issue.unstableProps.length > 0) primaryCause = "Prop Instability";
-
           return `
             <tr>
               <td>
                 <strong><code>&lt;${issue.component}&gt;</code></strong>
                 ${
-                  issue.unstableProps.length > 0
+                  issue.unstableProps && issue.unstableProps.length > 0
                     ? `<br><small style="color: var(--danger)">⚠️ Unstable: ${issue.unstableProps.slice(0, 2).join(", ")}</small>`
                     : ""
                 }
@@ -1486,7 +1516,13 @@ function generateReRendersTableHTML(reRenderIssues) {
                   ${wastedPercent}% wasted
                 </span>
               </td>
-              <td><span class="badge info" style="text-transform: none; font-weight: 500;">${primaryCause}</span></td>
+              <td><span class="badge info" style="text-transform: none; font-weight: 500;">${issue.primaryCause || "Mixed"}</span></td>
+              <td>
+                <div class="progress-bar" style="height: 8px; width: 60px; display: inline-block; margin-right: 5px;">
+                  <div class="progress-fill" style="width: ${issue.confidence || 0}%"></div>
+                </div>
+                <small>${issue.confidence || 0}%</small>
+              </td>
               <td>${issue.avgRenderTime}ms</td>
               <td><strong>${issue.totalTimeSpent}ms</strong></td>
               <td><span class="badge ${severityClass}">${(issue.severity * 100).toFixed(0)}%</span></td>
@@ -1577,7 +1613,7 @@ function generateCommitAnalysisHTML(commits) {
   `;
 }
 
-function generateHierarchyHTML(hierarchyIssues, hierarchyTree) {
+function generateHierarchyHTML(hierarchyIssues, hierarchyTree, contextCascades = []) {
   let html =
     '<h4 style="margin-bottom: 1.5rem;"><i class="fas fa-project-diagram"></i> Parent-Child Re-render Cascades</h4>';
 
@@ -1613,6 +1649,30 @@ function generateHierarchyHTML(hierarchyIssues, hierarchyTree) {
     });
   }
 
+  if (contextCascades && contextCascades.length > 0) {
+    html += '<h4 style="margin: 3rem 0 1.5rem;"><i class="fas fa-water"></i> Context Cascades</h4>';
+    contextCascades.forEach(cascade => {
+      const severityClass = cascade.severity === 'high' ? 'critical' : 'warning';
+      html += `
+        <div class="issue-card ${severityClass}">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+            <div>
+              <strong style="font-size: 1.125rem;">Context Update @ ${cascade.timestamp}ms</strong>
+            </div>
+            <span class="badge ${severityClass}">${cascade.affectedCount} components affected</span>
+          </div>
+          <p style="margin: 0.75rem 0;">
+            Total impact: <strong>${cascade.totalCost}ms</strong> across the tree.
+          </p>
+          ${cascade.sources.length > 0 ? `<p><small>Possible sources: ${cascade.sources.join(', ')}</small></p>` : ''}
+          <div style="margin-top: 1rem;">
+            <small style="color: var(--text-muted);">Impacted components: ${cascade.components.join(', ')}${cascade.affectedCount > 10 ? '...' : ''}</small>
+          </div>
+        </div>
+      `;
+    });
+  }
+
   html +=
     '<h4 style="margin: 3rem 0 1.5rem;"><i class="fas fa-sitemap"></i> Component Hierarchy Tree</h4>';
   html += '<div class="component-tree">';
@@ -1635,10 +1695,14 @@ function renderTreeNode(node, depth) {
   const indent = "  ".repeat(depth);
   const hasChildren = node.children && node.children.length > 0;
   const nodeClass = hasChildren ? "has-children" : "";
+  const hotPathClass = node.isHotPath ? "hot-path" : "";
 
-  let html = `<div class="tree-node ${nodeClass}" style="padding-left: ${depth * 2}rem;" data-depth="${depth}">`;
+  let html = `<div class="tree-node ${nodeClass} ${hotPathClass}" style="padding-left: ${depth * 2}rem; ${node.isHotPath ? "border-left: 2px solid var(--danger); background: rgba(239, 68, 68, 0.05);" : ""}" data-depth="${depth}">`;
   html += `${indent}<strong>&lt;${node.name}&gt;</strong> `;
-  html += `<span style="color: var(--text-muted);">(${node.renderCount} renders, avg ${node.avgRenderTime}ms)</span>`;
+  if (node.isHotPath) {
+    html += `<span class="badge critical" style="font-size: 0.5rem; padding: 0.1rem 0.3rem;">HOT PATH</span> `;
+  }
+  html += `<span style="color: var(--text-muted);">(${node.renderCount} renders, total ${node.totalDuration}ms, avg ${node.avgRenderTime}ms)</span>`;
 
   if (hasChildren) {
     html += `<div class="tree-children">`;
@@ -1901,6 +1965,109 @@ function generateAnomaliesHTML(anomalies) {
             <td>~${a.expected}</td>
             <td>${a.deviation}σ</td>
             <td><span class="badge ${a.severity === "critical" ? "critical" : a.severity === "high" ? "warning" : "info"}">${a.severity.toUpperCase()}</span></td>
+          </tr>
+        `,
+          )
+          .join("")}
+      </tbody>
+    </table>
+  `;
+}
+
+function generateListsHTML(flatListAnalysis) {
+  if (!flatListAnalysis || flatListAnalysis.length === 0) {
+    return `
+      <div class="empty-state">
+        <div class="empty-state-icon">📋</div>
+        <div class="empty-state-text">No Virtualized List issues detected.</div>
+      </div>
+    `;
+  }
+
+  return `
+    <h4 style="margin-bottom: 1.5rem;"><i class="fas fa-list-ul"></i> FlatList & VirtualizedList Analysis</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Type</th>
+          <th>Renders</th>
+          <th>Wasted</th>
+          <th>Avg Time</th>
+          <th>Issues</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${flatListAnalysis
+          .map(
+            (l) => `
+          <tr>
+            <td><strong><code>${l.component}</code></strong></td>
+            <td><span class="badge info">${l.type}</span></td>
+            <td>${l.renderCount}</td>
+            <td><span class="badge ${l.wastedRenders > 0 ? "warning" : "good"}">${l.wastedRenders}</span></td>
+            <td>${l.avgRenderTime}ms</td>
+            <td>
+              <ul style="margin: 0; padding-left: 1rem; font-size: 0.8rem;">
+                ${l.issues.map((i) => `<li>${i}</li>`).join("")}
+              </ul>
+            </td>
+          </tr>
+        `,
+          )
+          .join("")}
+      </tbody>
+    </table>
+    
+    <div class="issue-card info" style="margin-top: 2rem;">
+      <strong style="display: block; margin-bottom: 1rem; font-size: 1.125rem;">
+        <i class="fas fa-lightbulb"></i> FlatList Best Practices
+      </strong>
+      <ul style="margin: 0; padding-left: 1.5rem; color: var(--text-secondary);">
+        <li style="margin: 0.75rem 0;">Use <code>getItemLayout</code> if all items have the same height to avoid dynamic measurement.</li>
+        <li style="margin: 0.75rem 0;">Ensure <code>keyExtractor</code> returns stable, unique keys (avoid using index).</li>
+        <li style="margin: 0.75rem 0;">Wrap <code>renderItem</code> components in <code>React.memo()</code>.</li>
+        <li style="margin: 0.75rem 0;">Avoid anonymous functions in <code>renderItem</code>, <code>keyExtractor</code>, or <code>ListHeaderComponent</code>.</li>
+        <li style="margin: 0.75rem 0;">Adjust <code>windowSize</code> and <code>initialNumToRender</code> for large datasets.</li>
+      </ul>
+    </div>
+  `;
+}
+
+function generateNavigationHTML(navigationAnalysis) {
+  if (!navigationAnalysis || navigationAnalysis.length === 0) {
+    return `
+      <div class="empty-state">
+        <div class="empty-state-icon">🚦</div>
+        <div class="empty-state-text">No screen transitions detected in this trace.</div>
+      </div>
+    `;
+  }
+
+  return `
+    <h4 style="margin-bottom: 1.5rem;"><i class="fas fa-route"></i> Screen Transition Analysis</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>To Screen</th>
+          <th>Time</th>
+          <th>Commits</th>
+          <th>Total Duration</th>
+          <th>Avg Commit</th>
+          <th>Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${navigationAnalysis
+          .map(
+            (n) => `
+          <tr>
+            <td><strong><code>${n.toScreen}</code></strong></td>
+            <td>${n.timestamp}ms</td>
+            <td>${n.commitCount}</td>
+            <td><strong style="color: ${n.severity === "critical" ? "var(--danger)" : n.severity === "warning" ? "var(--warning)" : "inherit"}">${n.totalDuration}ms</strong></td>
+            <td>${n.avgCommitDuration}ms</td>
+            <td><span class="badge ${n.severity === "critical" ? "critical" : n.severity === "warning" ? "warning" : "good"}">${n.impact}</span></td>
           </tr>
         `,
           )
