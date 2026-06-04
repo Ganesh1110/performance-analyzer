@@ -33,6 +33,9 @@ function detectBottlenecks(flashlightMeasures, reactCommits) {
     
     if (issues.length === 0) return;
     
+    // Cap severity at 1.0
+    severity = Math.min(severity, 1.0);
+    
     const candidates = findMatchingCommits(measure.time, reactCommits);
     
     bottlenecks.push({

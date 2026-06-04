@@ -49,7 +49,7 @@ function buildComponentHierarchy(componentRenderMap, fiberHierarchy) {
     
     childRenders.forEach(childRender => {
       const matchingParent = parentRenders.find(parentRender => 
-        Math.abs(childRender.timestamp - parentRender.timestamp) < 10
+        Math.abs(childRender.timestamp - parentRender.timestamp) < 30
       );
       
       if (matchingParent) {

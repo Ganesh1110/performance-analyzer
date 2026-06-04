@@ -26,14 +26,14 @@ function safeRequire(filePath, friendlyName, optional = false) {
 function parseFlashlightData(flashlightData) {
   console.log("📊 Parsing Flashlight native metrics...");
   
-  if (!flashlightData.iterations || flashlightData.iterations.length === 0) {
-    console.error("❌ No iterations found in Flashlight data");
+  if (!flashlightData || !flashlightData.iterations || !Array.isArray(flashlightData.iterations) || flashlightData.iterations.length === 0) {
+    console.error("❌ No valid iterations found in Flashlight data");
     process.exit(1);
   }
   
   const measures = flashlightData.iterations.flatMap((iteration) =>
     (iteration.measures || []).map((m) => ({
-      time: m.time,
+      time: m.time || 0,
       fps: m.fps || 60,
       ram: Math.round(m.ram || 0),
       cpuTotal: m.cpu?.perCore 
@@ -44,6 +44,9 @@ function parseFlashlightData(flashlightData) {
       cpuJS: m.cpu?.perName?.["mqt_js"] || m.cpu?.perName?.["JavaScriptThread"] || 0
     }))
   );
+  
+  // Sort by time just in case
+  measures.sort((a, b) => a.time - b.time);
   
   console.log(`   ✓ Loaded ${measures.length} native performance samples`);
   return measures;
