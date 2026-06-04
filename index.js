@@ -28,6 +28,8 @@ const { PerformancePredictionEngine } = require('./analyzers/prediction-engine')
 const { NaturalLanguageReporter } = require('./reporters/nl-reporter');
 const { CodeFixer } = require('./utils/code-fixer');
 
+const { JSThreadAnalyzer } = require('./analyzers/js-thread-analyzer');
+
 function openReport(filePath) {
   const command = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
   exec(`${command} ${filePath}`, (error) => {
@@ -122,6 +124,9 @@ function main() {
   const animationAnalyzer = new AnimationAnalyzer();
   const animations = animationAnalyzer.detectAnimations(componentRenderMap, flashlightMeasures);
 
+  const jsThreadAnalyzer = new JSThreadAnalyzer();
+  const jsBottlenecks = jsThreadAnalyzer.analyze(flashlightMeasures, reactCommits);
+
   const analysisData = {
     summary: {
       totalFrames: flashlightMeasures.length,
@@ -129,6 +134,7 @@ function main() {
       reRenderIssueCount: reRenderIssues.length,
       hierarchyIssueCount: hierarchyIssues.length,
       memoryLeakCount: memoryAnalysis.leaks.length,
+      jsBottleneckCount: jsBottlenecks.length,
       healthScore: Math.max(0, 100 - Math.round((bottlenecks.length / flashlightMeasures.length) * 100))
     },
     flashlightMeasures,
@@ -142,7 +148,9 @@ function main() {
     anomalies,
     concurrentAnalysis,
     phaseAnalysis,
-    animations
+    animations,
+    commits: reactCommits,
+    jsBottlenecks
   };
 
   // Tier 3 & 4: Predictive & Integration

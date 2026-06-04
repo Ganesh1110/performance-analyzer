@@ -919,6 +919,7 @@ function generateHTMLReport(data) {
     ${generateExecutiveSummaryHTML(data)}
     ${generateHealthScoreHTML(data)}
     ${generateMetricGridHTML(data)}
+    ${generateHeatmapHTML(reRenderIssues)}
     ${generateChartsHTML(data)}
     ${generateIssueTabsHTML(data)}
   </div>
@@ -1264,6 +1265,12 @@ function generateIssueTabsHTML(data) {
       count: animations.length,
     },
     {
+      id: "jsThread",
+      icon: "fa-microchip",
+      label: "JS Thread",
+      count: (data.jsBottlenecks || []).length,
+    },
+    {
       id: "prediction",
       icon: "fa-brain",
       label: "Prediction",
@@ -1307,6 +1314,7 @@ function generateIssueTabsHTML(data) {
       </div>
 
       <div id="rerenders" class="tab-content">
+        ${generateCommitAnalysisHTML(data.commits)}
         ${generateReRendersTableHTML(reRenderIssues)}
       </div>
 
@@ -1336,6 +1344,10 @@ function generateIssueTabsHTML(data) {
 
       <div id="animations" class="tab-content">
         ${generateAnimationsHTML(animations)}
+      </div>
+
+      <div id="jsThread" class="tab-content">
+        ${generateJSThreadHTML(data.jsBottlenecks)}
       </div>
 
       <div id="prediction" class="tab-content">
@@ -1430,36 +1442,132 @@ function generateReRendersTableHTML(reRenderIssues) {
   }
 
   return `
+    <h4 style="margin: 3rem 0 1rem;"><i class="fas fa-sync"></i> Excessive Re-renders (Quantitative Analysis)</h4>
     <table>
       <thead>
         <tr>
           <th>Component</th>
-          <th>Render Count</th>
-          <th>Frequency</th>
+          <th>Renders (Wasted)</th>
+          <th>Primary Cause</th>
           <th>Avg Time</th>
-          <th>Total Wasted</th>
+          <th>Total Time</th>
           <th>Severity</th>
         </tr>
       </thead>
       <tbody>
-        ${reRenderIssues
-          .slice(0, 20)
-          .map((issue) => {
-            const severityClass =
-              issue.severity > 0.7
-                ? "critical"
-                : issue.severity > 0.4
-                  ? "warning"
-                  : "good";
+        ${reRenderIssues.slice(0, 25).map((issue) => {
+          const severityClass =
+            issue.severity > 0.7 ? "critical" : issue.severity > 0.4 ? "warning" : "good";
+          const wastedPercent = (
+            (issue.wastedRenders / issue.renderCount) *
+            100
+          ).toFixed(0);
 
-            return `
+          let primaryCause = "Mixed";
+          if (issue.parentTriggeredCount > issue.renderCount * 0.5)
+            primaryCause = "Parent Render";
+          if (issue.contextChangeCount > issue.renderCount * 0.5)
+            primaryCause = "Context Change";
+          if (issue.unstableProps.length > 0) primaryCause = "Prop Instability";
+
+          return `
             <tr>
-              <td><strong><code>&lt;${issue.component}&gt;</code></strong></td>
-              <td><span class="tooltip" data-tooltip="Number of times rendered">${issue.renderCount}</span></td>
-              <td>${issue.frequency}/sec</td>
+              <td>
+                <strong><code>&lt;${issue.component}&gt;</code></strong>
+                ${
+                  issue.unstableProps.length > 0
+                    ? `<br><small style="color: var(--danger)">⚠️ Unstable: ${issue.unstableProps.slice(0, 2).join(", ")}</small>`
+                    : ""
+                }
+              </td>
+              <td>
+                ${issue.renderCount} 
+                <span class="badge ${issue.wastedRenders > 0 ? "warning" : "good"}" style="font-size: 0.6rem; padding: 0.1rem 0.4rem; text-transform: none;">
+                  ${wastedPercent}% wasted
+                </span>
+              </td>
+              <td><span class="badge info" style="text-transform: none; font-weight: 500;">${primaryCause}</span></td>
               <td>${issue.avgRenderTime}ms</td>
               <td><strong>${issue.totalTimeSpent}ms</strong></td>
               <td><span class="badge ${severityClass}">${(issue.severity * 100).toFixed(0)}%</span></td>
+            </tr>
+          `;
+        }).join("")}
+      </tbody>
+    </table>
+  `;
+}
+
+function generateHeatmapHTML(reRenderIssues) {
+  const topByTime = [...reRenderIssues]
+    .sort((a, b) => b.totalTimeSpent - a.totalTimeSpent)
+    .slice(0, 5);
+  const totalTime = reRenderIssues.reduce(
+    (sum, i) => sum + parseFloat(i.totalTimeSpent),
+    0,
+  );
+
+  return `
+    <div class="chart-container" style="margin-top: 2rem;">
+      <h3 class="section-title"><i class="fas fa-fire"></i> Component Cost Heatmap (Top Contributors)</h3>
+      <div style="margin-top: 1.5rem;">
+        ${topByTime
+          .map((issue) => {
+            const percent = ((issue.totalTimeSpent / totalTime) * 100).toFixed(1);
+            return `
+            <div style="margin-bottom: 1rem;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                <span><code>&lt;${issue.component}&gt;</code></span>
+                <span>${issue.totalTimeSpent}ms (${percent}%)</span>
+              </div>
+              <div class="progress-bar" style="height: 12px;">
+                <div class="progress-fill" style="width: ${percent}%;"></div>
+              </div>
+            </div>
+          `;
+          })
+          .join("")}
+      </div>
+    </div>
+  `;
+}
+
+function generateCommitAnalysisHTML(commits) {
+  const worstCommits = [...commits]
+    .sort((a, b) => b.duration - a.duration)
+    .slice(0, 10);
+
+  return `
+    <h4 style="margin: 2rem 0 1rem;"><i class="fas fa-layer-group"></i> Worst Commits (Longest Render Cycles)</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Duration</th>
+          <th>Triggered By</th>
+          <th>Main Contributors</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${worstCommits
+          .map((c) => {
+            const mainContributors = c.components
+              .sort((a, b) => b.duration - a.duration)
+              .slice(0, 3)
+              .map((comp) => `<code>&lt;${comp.name}&gt;</code>`)
+              .join(", ");
+
+            const updaters =
+              c.updaters && c.updaters.length > 0
+                ? c.updaters.map((u) => u.name).join(", ")
+                : "Unknown";
+
+            return `
+            <tr>
+              <td>${Math.round(c.timestamp)}ms</td>
+              <td><strong style="color: ${c.duration > 16 ? "var(--danger)" : "var(--text-primary)"}">${c.duration.toFixed(2)}ms</strong></td>
+              <td><small>${updaters}</small></td>
+              <td><small>${mainContributors}</small></td>
             </tr>
           `;
           })
@@ -2268,6 +2376,53 @@ function generateTreeScript() {
     document.querySelectorAll('.tree-node.has-children').forEach(node => {
       node.classList.add('expanded');
     });
+  `;
+}
+
+function generateJSThreadHTML(jsBottlenecks) {
+  if (!jsBottlenecks || jsBottlenecks.length === 0) {
+    return `
+      <div class="empty-state">
+        <div class="empty-state-icon">✅</div>
+        <div class="empty-state-text">No JS thread bottlenecks detected!</div>
+      </div>
+    `;
+  }
+
+  return `
+    <h4 style="margin: 3rem 0 1rem;"><i class="fas fa-microchip"></i> JS Thread Bottlenecks</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Duration</th>
+          <th>Peak Usage</th>
+          <th>Type</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${jsBottlenecks.map(b => `
+          <tr>
+            <td>${Math.round(b.timestamp)}ms</td>
+            <td>${b.duration}ms</td>
+            <td><strong style="color: ${b.maxUsage > 90 ? 'var(--danger)' : 'var(--warning)'}">${b.maxUsage}%</strong></td>
+            <td><span class="badge ${b.type.includes('React') ? 'info' : 'critical'}">${b.type}</span></td>
+            <td><small>${b.details}</small></td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+    
+    <div class="issue-card info" style="margin-top: 2rem;">
+      <strong><i class="fas fa-lightbulb"></i> Optimization Tips:</strong>
+      <ul style="margin: 1rem 0 0 1.5rem;">
+        <li>Use <code>InteractionManager.runAfterInteractions</code> for heavy logic</li>
+        <li>Offload heavy computation to Native Modules or Web Workers</li>
+        <li>Optimize large <code>JSON.parse</code> calls (e.g. by chunking)</li>
+        <li>Review expensive Redux selectors or large object clones</li>
+      </ul>
+    </div>
   `;
 }
 

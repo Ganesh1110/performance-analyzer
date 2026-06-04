@@ -102,11 +102,24 @@ function parseReactDevToolsData(reactData) {
   // 3. Process Commits
   function processCommit(commit) {
     const relativeTimestamp = (commit.timestamp - profilingStartTime) * timeScale;
+    
+    // Extract change descriptions into a map for easy lookup
+    const changeDescriptions = new Map();
+    if (commit.changeDescriptions) {
+      commit.changeDescriptions.forEach(([id, description]) => {
+        changeDescriptions.set(Number(id), description);
+      });
+    }
+
     const commitData = {
       timestamp: relativeTimestamp,
       duration: commit.duration || 0,
       effectDuration: commit.effectDuration || 0,
       priorityLevel: commit.priorityLevel || 'Normal',
+      updaters: (commit.updaters || []).map(u => ({
+        name: u.displayName || `Unknown(${u.id})`,
+        id: u.id
+      })),
       components: []
     };
 
@@ -119,15 +132,28 @@ function parseReactDevToolsData(reactData) {
       if (fiberId === undefined) return;
       
       const componentName = fiberIDToNameMap.get(Number(fiberId)) || `Unknown(${fiberId})`;
+      const description = changeDescriptions.get(Number(fiberId));
       
-      commitData.components.push({ name: componentName, duration, fiberId });
-      
-      if (!componentRenderMap.has(componentName)) componentRenderMap.set(componentName, []);
-      componentRenderMap.get(componentName).push({
+      const renderInfo = {
         timestamp: relativeTimestamp,
         duration,
-        fiberId
+        fiberId,
+        reason: description ? {
+          props: description.props,
+          state: description.state,
+          context: description.context,
+          hooks: description.hooks,
+          isFirstMount: description.isFirstMount
+        } : null
+      };
+
+      commitData.components.push({ 
+        name: componentName, 
+        ...renderInfo
       });
+      
+      if (!componentRenderMap.has(componentName)) componentRenderMap.set(componentName, []);
+      componentRenderMap.get(componentName).push(renderInfo);
     });
     commits.push(commitData);
   }
