@@ -12,6 +12,13 @@
     "serve": "node -e \"require('http').createServer((req,res)=>{res.writeHead(200,{'Content-Type':'text/html'});res.end(require('fs').readFileSync('performance_report.html'));}).listen(3000);console.log('Report available at http://localhost:3000');\""
   },
   "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/generator": "^7.29.7",
+    "@babel/parser": "^7.29.7",
+    "@babel/plugin-syntax-jsx": "^7.29.7",
+    "@babel/plugin-syntax-typescript": "^7.29.7",
+    "@babel/traverse": "^7.29.7",
+    "@babel/types": "^7.29.7",
     "jest": "^30.4.2"
   }
 }
