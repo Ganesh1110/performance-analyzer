@@ -62,6 +62,28 @@ function main() {
   const { commits: reactCommits, componentRenderMap, fiberHierarchy } = parseReactDevToolsData(reactDevToolsData);
   const bundleAnalysis = bundleData ? parseBundleStats(bundleData) : null;
 
+  // Alignment check
+  if (flashlightMeasures.length > 0 && reactCommits.length > 0) {
+    const nativeStart = flashlightMeasures[0].time;
+    const nativeEnd = flashlightMeasures[flashlightMeasures.length - 1].time;
+    const reactStart = reactCommits[0].timestamp;
+    const reactEnd = reactCommits[reactCommits.length - 1].timestamp;
+
+    console.log(`\n🕒 Time Alignment Check:`);
+    console.log(`   • Native Trace: ${Math.round(nativeStart)}ms to ${Math.round(nativeEnd)}ms (Duration: ${Math.round(nativeEnd - nativeStart)}ms)`);
+    console.log(`   • React Trace:  ${Math.round(reactStart)}ms to ${Math.round(reactEnd)}ms (Duration: ${Math.round(reactEnd - reactStart)}ms)`);
+
+    const overlapStart = Math.max(nativeStart, reactStart);
+    const overlapEnd = Math.min(nativeEnd, reactEnd);
+    
+    if (overlapStart > overlapEnd) {
+      console.warn(`   ⚠️  WARNING: No temporal overlap between native and React traces! Correlation will fail.`);
+      console.warn(`      Ensure you start both recordings at roughly the same time.`);
+    } else {
+      console.log(`   ✅ Traces overlap for ${Math.round(overlapEnd - overlapStart)}ms`);
+    }
+  }
+
   // Run all analyses
   console.log("\n🔍 Running comprehensive analysis...\n");
   

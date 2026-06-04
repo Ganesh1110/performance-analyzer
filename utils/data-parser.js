@@ -1,23 +1,18 @@
 const fs = require('fs');
 const path = require('path');
+const CONFIG = require('../config');
 
 function safeRequire(filePath, friendlyName, optional = false) {
   try {
     const fullPath = path.resolve(filePath);
     if (!fs.existsSync(fullPath)) {
-      if (optional) {
-        console.log(`ℹ️  Optional file not found: ${friendlyName}`);
-        return null;
-      }
+      if (optional) return null;
       console.error(`❌ Error: ${friendlyName} file not found at: ${fullPath}`);
       process.exit(1);
     }
     return require(fullPath);
   } catch (error) {
-    if (optional) {
-      console.log(`ℹ️  Could not load optional file: ${friendlyName}`);
-      return null;
-    }
+    if (optional) return null;
     console.error(`❌ Error loading ${friendlyName}:`, error.message);
     process.exit(1);
   }
@@ -25,109 +20,127 @@ function safeRequire(filePath, friendlyName, optional = false) {
 
 function parseFlashlightData(flashlightData) {
   console.log("📊 Parsing Flashlight native metrics...");
-  
-  if (!flashlightData || !flashlightData.iterations || !Array.isArray(flashlightData.iterations) || flashlightData.iterations.length === 0) {
-    console.error("❌ No valid iterations found in Flashlight data");
+  if (!flashlightData || !flashlightData.iterations) {
+    console.error("❌ Invalid Flashlight data format");
     process.exit(1);
   }
-  
-  const measures = flashlightData.iterations.flatMap((iteration) =>
-    (iteration.measures || []).map((m) => ({
+  const measures = flashlightData.iterations.flatMap((it) =>
+    (it.measures || []).map((m) => ({
       time: m.time || 0,
       fps: m.fps || 60,
       ram: Math.round(m.ram || 0),
-      cpuTotal: m.cpu?.perCore 
-        ? Object.values(m.cpu.perCore).reduce((a, b) => a + b, 0) 
-        : 0,
+      cpuTotal: Object.values(m.cpu?.perCore || {}).reduce((a, b) => a + b, 0),
       cpuRender: m.cpu?.perName?.["RenderThread"] || 0,
       cpuUI: m.cpu?.perName?.["UI Thread"] || 0,
       cpuJS: m.cpu?.perName?.["mqt_js"] || m.cpu?.perName?.["JavaScriptThread"] || 0
     }))
   );
-  
-  // Sort by time just in case
   measures.sort((a, b) => a.time - b.time);
-  
-  console.log(`   ✓ Loaded ${measures.length} native performance samples`);
   return measures;
 }
 
 function parseReactDevToolsData(reactData) {
   console.log("⚛️  Parsing React DevTools profiler data...");
+  const data = reactData.data || reactData;
+  const profilingStartTime = data.profilingStartTime || 0;
   
-  const stringTable = reactData.stringTable || [];
-  const fiberIDToNameIndexMap = reactData.fiberIDToNameIndexMap || {};
-  const profilingStartTime = reactData.profilingStartTime || 0;
-  
-  const commits = [];
+  const fiberIDToNameMap = new Map();
   const componentRenderMap = new Map();
   const fiberHierarchy = new Map();
-  
-  // Build fiber hierarchy
-  if (reactData.snapshots) {
-    reactData.snapshots.forEach(snapshot => {
-      if (snapshot.nodes) {
-        snapshot.nodes.forEach(node => {
-          if (node.id && node.parentID !== undefined) {
-            fiberHierarchy.set(node.id, {
-              parentId: node.parentID,
-              name: stringTable[fiberIDToNameIndexMap[node.id]] || `Fiber(${node.id})`,
-              children: []
-            });
-          }
+  const commits = [];
+
+  // 1. "Scorched Earth" Name Discovery (Unconditional Recursion)
+  function discover(obj, visited = new Set()) {
+    if (!obj || typeof obj !== 'object' || visited.has(obj)) return;
+    visited.add(obj);
+
+    if (Array.isArray(obj)) {
+      for (let i = 0; i < obj.length; i++) discover(obj[i], visited);
+    } else {
+      // Logic A: Standard displayName property
+      if (obj.displayName && (obj.id !== undefined || obj.fiberId !== undefined)) {
+        const id = obj.id !== undefined ? obj.id : obj.fiberId;
+        fiberIDToNameMap.set(Number(id), String(obj.displayName));
+      }
+      
+      // Logic B: Old code stringTable + Index map support
+      if (obj.fiberIDToNameIndexMap && obj.stringTable) {
+        Object.entries(obj.fiberIDToNameIndexMap).forEach(([id, idx]) => {
+          fiberIDToNameMap.set(Number(id), obj.stringTable[idx]);
         });
       }
-    });
-    
-    // Build parent-child relationships
-    fiberHierarchy.forEach((node, id) => {
-      if (node.parentId && fiberHierarchy.has(node.parentId)) {
-        fiberHierarchy.get(node.parentId).children.push(id);
+
+      // Logic C: Recursively scan every property
+      for (const key in obj) {
+        const val = obj[key];
+        if (val && typeof val === 'object') discover(val, visited);
       }
+    }
+  }
+
+  console.log("   🔍 Scanning file for all component names...");
+  discover(data);
+  
+  // Extra pass for root IDs
+  if (data.dataForRoots) {
+    data.dataForRoots.forEach(root => {
+      if (root.displayName && root.rootID) fiberIDToNameMap.set(Number(root.rootID), root.displayName);
     });
   }
-  
-  (reactData.timelineData || []).forEach((timeline) => {
-    (timeline.commits || []).forEach((commit) => {
-      const relativeTimestamp = commit.timestamp - profilingStartTime;
+
+  console.log(`   ✓ Discovered ${fiberIDToNameMap.size} unique component names`);
+
+  // 2. Time scaling detection
+  let timeScale = 1;
+  const firstRoot = data.dataForRoots?.[0];
+  const firstCommit = firstRoot?.commitData?.[0] || data.timelineData?.[0]?.commits?.[0];
+  if (firstCommit && firstCommit.timestamp > 100000000) {
+     timeScale = 0.001; 
+     console.log("   ℹ️  Microsecond timestamps detected, applying 1/1000 scaling");
+  }
+
+  // 3. Process Commits
+  function processCommit(commit) {
+    const relativeTimestamp = (commit.timestamp - profilingStartTime) * timeScale;
+    const commitData = {
+      timestamp: relativeTimestamp,
+      duration: commit.duration || 0,
+      effectDuration: commit.effectDuration || 0,
+      priorityLevel: commit.priorityLevel || 'Normal',
+      components: []
+    };
+
+    const durations = commit.fiberActualDurations || commit.actualDurations || [];
+    durations.forEach((item) => {
+      let fiberId, duration;
+      if (Array.isArray(item)) [fiberId, duration] = item;
+      else if (typeof item === 'object') { fiberId = item.id; duration = item.duration; }
+
+      if (fiberId === undefined) return;
       
-      const commitData = {
+      const componentName = fiberIDToNameMap.get(Number(fiberId)) || `Unknown(${fiberId})`;
+      
+      commitData.components.push({ name: componentName, duration, fiberId });
+      
+      if (!componentRenderMap.has(componentName)) componentRenderMap.set(componentName, []);
+      componentRenderMap.get(componentName).push({
         timestamp: relativeTimestamp,
-        duration: commit.duration || 0,
-        effectDuration: commit.effectDuration || 0,
-        priorityLevel: commit.priorityLevel || 'Normal',
-        components: []
-      };
-      
-      if (commit.fiberActualDurations) {
-        commit.fiberActualDurations.forEach(([fiberId, duration]) => {
-          const nameIndex = fiberIDToNameIndexMap[fiberId];
-          const componentName = nameIndex !== undefined 
-            ? stringTable[nameIndex] 
-            : `Unknown(${fiberId})`;
-          
-          commitData.components.push({
-            name: componentName,
-            duration,
-            fiberId
-          });
-          
-          if (!componentRenderMap.has(componentName)) {
-            componentRenderMap.set(componentName, []);
-          }
-          componentRenderMap.get(componentName).push({
-            timestamp: relativeTimestamp,
-            duration,
-            commitDuration: commit.duration,
-            fiberId
-          });
-        });
-      }
-      
-      commits.push(commitData);
+        duration,
+        fiberId
+      });
     });
-  });
-  
+    commits.push(commitData);
+  }
+
+  if (data.dataForRoots) {
+    data.dataForRoots.forEach(root => {
+      if (root.commitData) root.commitData.forEach(processCommit);
+    });
+  }
+  if (data.timelineData) {
+    data.timelineData.forEach(t => (t.commits || []).forEach(processCommit));
+  }
+
   console.log(`   ✓ Loaded ${commits.length} React commits`);
   console.log(`   ✓ Tracked ${componentRenderMap.size} unique components`);
   
@@ -136,20 +149,12 @@ function parseReactDevToolsData(reactData) {
 
 function parseBundleStats(bundleData) {
   if (!bundleData) return null;
-  
-  console.log("📦 Parsing bundle statistics...");
-  
-  // Support different bundle analyzer formats
   const modules = bundleData.modules || bundleData.assets || [];
-  
   const componentSizes = new Map();
   const componentPaths = new Map();
-  
   modules.forEach(module => {
     const name = module.name || module.path || 'Unknown';
     const size = module.size || module.bundleSize || 0;
-    
-    // Extract component name from path
     const match = name.match(/\/([A-Z][a-zA-Z0-9]+)\.(js|tsx?)$/);
     if (match) {
       const componentName = match[1];
@@ -160,20 +165,7 @@ function parseBundleStats(bundleData) {
       componentSizes.set(componentName, componentSizes.get(componentName) + size);
     }
   });
-  
-  console.log(`   ✓ Analyzed ${componentSizes.size} component bundle sizes`);
-  
-  return {
-    totalSize: modules.reduce((sum, m) => sum + (m.size || 0), 0),
-    componentSizes,
-    componentPaths,
-    modules
-  };
+  return { totalSize: modules.reduce((sum, m) => sum + (m.size || 0), 0), componentSizes, componentPaths, modules };
 }
 
-module.exports = {
-  safeRequire,
-  parseFlashlightData,
-  parseReactDevToolsData,
-  parseBundleStats
-};
+module.exports = { safeRequire, parseFlashlightData, parseReactDevToolsData, parseBundleStats };
