@@ -97,4 +97,16 @@ describe('BudgetEnforcer', () => {
     expect(report).toContain('BUDGET VIOLATIONS DETECTED');
     expect(report).toContain('healthScore');
   });
+
+  test('generateBadge should return an SVG string', () => {
+    const budgetResult = { passed: true, violations: [] };
+    const badge = budgetEnforcer.generateBadge(budgetResult);
+    expect(badge).toContain('<svg');
+    expect(badge).toContain('PASSED');
+    
+    const failResult = { passed: false, violations: [{}] };
+    const failBadge = budgetEnforcer.generateBadge(failResult);
+    expect(failBadge).toContain('FAILED');
+    expect(failBadge).toContain('#ef4444'); // Red color
+  });
 });

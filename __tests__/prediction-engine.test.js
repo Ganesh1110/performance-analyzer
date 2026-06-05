@@ -28,4 +28,24 @@ describe('PerformancePredictionEngine', () => {
     expect(result.suggestions.some(s => s.type === 'VIRTUALIZATION')).toBe(true);
     expect(result.suggestions.some(s => s.type === 'STATE_SPLITTING')).toBe(true);
   });
+
+  test('trainModel should refine weights based on historical data', () => {
+    const historicalRuns = [
+      {
+        componentMetrics: { stateVariables: 1, childComponents: 1 },
+        actualRenderTime: 100.0 
+      },
+      {
+        componentMetrics: { stateVariables: 1, childComponents: 1 },
+        actualRenderTime: 98.0 
+      }
+    ];
+
+    const initialWeights = { ...engine.weights };
+    engine.trainModel(historicalRuns);
+    
+    // Weights for stateVariables and childComponents should have increased
+    expect(engine.weights.stateVariables).toBeGreaterThan(initialWeights.stateVariables);
+    expect(engine.weights.childComponents).toBeGreaterThan(initialWeights.childComponents);
+  });
 });

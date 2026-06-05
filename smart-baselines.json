@@ -1055,5 +1055,74 @@
       "avgFPS": 51,
       "healthScore": 47
     }
+  },
+  "Screen(HeavyComponent:SubCo...)": {
+    "history": [
+      {
+        "timestamp": 1780648520451,
+        "data": {
+          "totalFrames": 3,
+          "bottleneckCount": 1,
+          "reRenderIssueCount": 0,
+          "hierarchyIssueCount": 0,
+          "memoryLeakCount": 0,
+          "jsBottleneckCount": 1,
+          "avgFPS": 50,
+          "healthScore": 67
+        }
+      },
+      {
+        "timestamp": 1780648520668,
+        "data": {
+          "totalFrames": 3,
+          "bottleneckCount": 1,
+          "reRenderIssueCount": 0,
+          "hierarchyIssueCount": 0,
+          "memoryLeakCount": 0,
+          "jsBottleneckCount": 1,
+          "avgFPS": 50,
+          "healthScore": 67
+        }
+      },
+      {
+        "timestamp": 1780648673800,
+        "data": {
+          "totalFrames": 3,
+          "bottleneckCount": 1,
+          "reRenderIssueCount": 0,
+          "hierarchyIssueCount": 0,
+          "memoryLeakCount": 0,
+          "jsBottleneckCount": 1,
+          "avgFPS": 50,
+          "healthScore": 67
+        }
+      },
+      {
+        "timestamp": 1780648673924,
+        "data": {
+          "totalFrames": 3,
+          "bottleneckCount": 1,
+          "reRenderIssueCount": 0,
+          "hierarchyIssueCount": 0,
+          "memoryLeakCount": 0,
+          "jsBottleneckCount": 1,
+          "avgFPS": 50,
+          "healthScore": 67
+        }
+      }
+    ],
+    "runCount": 4,
+    "trainingData": [],
+    "timestamp": 1780648673924,
+    "data": {
+      "totalFrames": 3,
+      "bottleneckCount": 1,
+      "reRenderIssueCount": 0,
+      "hierarchyIssueCount": 0,
+      "memoryLeakCount": 0,
+      "jsBottleneckCount": 1,
+      "avgFPS": 50,
+      "healthScore": 67
+    }
   }
 }

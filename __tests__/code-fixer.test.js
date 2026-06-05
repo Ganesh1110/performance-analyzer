@@ -50,4 +50,30 @@ describe('CodeFixer', () => {
     expect(result.code).toContain('memo(MyComponent)');
     expect(result.code).toContain('import { memo } from "react";');
   });
+
+  test('applyUseCallbackFix should wrap arrow functions in useCallback', () => {
+    if (!fixer.parser) return;
+
+    const inputCode = 'const MyComponent = () => { const onPress = () => {}; return null; };';
+    fs.readFileSync.mockReturnValue(inputCode);
+
+    const result = fixer.applyUseCallbackFix('MyComponent', 'path/to/MyComponent.js', ['onPress']);
+    
+    expect(result.success).toBe(true);
+    expect(result.code).toContain('useCallback(() => {}, [])');
+    expect(result.code).toContain('import { useCallback } from "react";');
+  });
+
+  test('applyUseMemoFix should wrap .map in useMemo', () => {
+    if (!fixer.parser) return;
+
+    const inputCode = 'const MyComponent = () => { const data = items.map(i => i.id); return null; };';
+    fs.readFileSync.mockReturnValue(inputCode);
+
+    const result = fixer.applyUseMemoFix('MyComponent', 'path/to/MyComponent.js');
+    
+    expect(result.success).toBe(true);
+    expect(result.code).toContain('useMemo(() => items.map((i) => i.id), [])');
+    expect(result.code).toContain('import { useMemo } from "react";');
+  });
 });

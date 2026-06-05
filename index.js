@@ -76,6 +76,7 @@ function runAnalysis(args) {
   const enforceBudgets   = args.includes('--enforce-budgets');
   const updateBaseline   = args.includes('--update-baseline');
   const applyFixes       = args.includes('--fix');
+  const noOpen           = args.includes('--no-open');
 
   // CLI-overridable correlation settings (P3.2)
   const searchWindowArg  = args.find(a => a.startsWith('--search-window='));
@@ -463,7 +464,9 @@ function runAnalysis(args) {
   }
 
   // Automatically open the report
-  openReport(path.join(__dirname, "performance_report.html"));
+  if (!noOpen) {
+    openReport(path.join(__dirname, "performance_report.html"));
+  }
 }
 
 // Run the analyzer
