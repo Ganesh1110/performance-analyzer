@@ -26,9 +26,22 @@
           "avgFPS": 51,
           "healthScore": 47
         }
+      },
+      {
+        "timestamp": 1780647700883,
+        "data": {
+          "totalFrames": 194,
+          "bottleneckCount": 102,
+          "reRenderIssueCount": 1853,
+          "hierarchyIssueCount": 0,
+          "memoryLeakCount": 0,
+          "jsBottleneckCount": 0,
+          "avgFPS": 51,
+          "healthScore": 47
+        }
       }
     ],
-    "runCount": 2,
+    "runCount": 3,
     "trainingData": [
       {
         "componentMetrics": {
@@ -1031,7 +1044,7 @@
         "actualRenderTime": 8.55
       }
     ],
-    "timestamp": 1780646208883,
+    "timestamp": 1780647700885,
     "data": {
       "totalFrames": 194,
       "bottleneckCount": 102,

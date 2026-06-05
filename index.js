@@ -28,6 +28,7 @@ const { SentryIntegration } = require('./analyzers/sentry-integration');
 const { PerformancePredictionEngine } = require('./analyzers/prediction-engine');
 const { NaturalLanguageReporter } = require('./reporters/nl-reporter');
 const { CodeFixer } = require('./utils/code-fixer');
+const { PerformanceRecorder } = require('./utils/recorder');
 
 const { JSThreadAnalyzer } = require('./analyzers/js-thread-analyzer');
 
@@ -46,12 +47,31 @@ function openReport(filePath) {
 }
 
 function main() {
+  const args = process.argv.slice(2);
+  const recordArg = args.find(a => a.startsWith('--record'));
+  
+  if (recordArg) {
+    const bundleId = recordArg.split('=')[1];
+    if (!bundleId) {
+      console.error('   ❌ Error: --record requires a bundle ID. Example: --record=com.myapp');
+      process.exit(1);
+    }
+    const recorder = new PerformanceRecorder();
+    recorder.start(bundleId).then(() => {
+      console.log('   ✅ Recording complete. Starting analysis...');
+      runAnalysis(args);
+    });
+  } else {
+    runAnalysis(args);
+  }
+}
+
+function runAnalysis(args) {
   console.clear();
   console.log("╔════════════════════════════════════════════════════════════════╗");
   console.log("║   React Native Performance Analyzer v2.0 - Full Suite        ║");
   console.log("╚════════════════════════════════════════════════════════════════╝\n");
 
-  const args = process.argv.slice(2);
   const isComparisonMode = args.includes('--compare');
   const enforceBudgets   = args.includes('--enforce-budgets');
   const updateBaseline   = args.includes('--update-baseline');
@@ -75,23 +95,34 @@ function main() {
   const { commits: reactCommits, componentRenderMap, fiberHierarchy, fiberIDToSourceMap } = parseReactDevToolsData(reactDevToolsData);
   const bundleAnalysis = bundleData ? parseBundleStats(bundleData) : null;
 
-  // Alignment check
+  // Alignment check & Calibration (P5.2)
   if (flashlightMeasures.length > 0 && reactCommits.length > 0) {
+    const recorder = new PerformanceRecorder();
+    const offset = recorder.calibrateAlignment(flashlightMeasures, reactCommits);
+    
+    // Apply calibration offset to react commits
+    if (offset !== 0) {
+      reactCommits.forEach(c => {
+        c.timestamp += offset;
+        c.components.forEach(comp => comp.timestamp += offset);
+      });
+      console.log(`   🕒 Applied ${Math.round(offset)}ms calibration offset to React trace.`);
+    }
+
     const nativeStart = flashlightMeasures[0].time;
     const nativeEnd = flashlightMeasures[flashlightMeasures.length - 1].time;
     const reactStart = reactCommits[0].timestamp;
     const reactEnd = reactCommits[reactCommits.length - 1].timestamp;
 
-    console.log(`\n🕒 Time Alignment Check:`);
-    console.log(`   • Native Trace: ${Math.round(nativeStart)}ms to ${Math.round(nativeEnd)}ms (Duration: ${Math.round(nativeEnd - nativeStart)}ms)`);
-    console.log(`   • React Trace:  ${Math.round(reactStart)}ms to ${Math.round(reactEnd)}ms (Duration: ${Math.round(reactEnd - reactStart)}ms)`);
+    console.log(`\n🕒 Time Alignment:`);
+    console.log(`   • Native Trace: ${Math.round(nativeStart)}ms to ${Math.round(nativeEnd)}ms`);
+    console.log(`   • React Trace:  ${Math.round(reactStart)}ms to ${Math.round(reactEnd)}ms`);
 
     const overlapStart = Math.max(nativeStart, reactStart);
     const overlapEnd = Math.min(nativeEnd, reactEnd);
     
     if (overlapStart > overlapEnd) {
-      console.warn(`   ⚠️  WARNING: No temporal overlap between native and React traces! Correlation will fail.`);
-      console.warn(`      Ensure you start both recordings at roughly the same time.`);
+      console.warn(`   ⚠️  WARNING: No temporal overlap! Correlation will fail.`);
     } else {
       console.log(`   ✅ Traces overlap for ${Math.round(overlapEnd - overlapStart)}ms`);
     }
@@ -450,7 +481,7 @@ try {
         fs.watchFile(file, { interval: 1000 }, (curr, prev) => {
           if (curr.mtime > prev.mtime) {
             console.log(`\n🔄 Data file ${path.basename(file)} changed. Re-running analysis...`);
-            main();
+            runAnalysis(args);
           }
         });
       }

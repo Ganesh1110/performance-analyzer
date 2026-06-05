@@ -1,92 +1,122 @@
 [
   {
     "type": "transaction",
-    "name": "Performance Bottleneck: <Unknown(2284)>",
+    "name": "Performance Bottleneck: <Unknown(1891)>",
     "op": "performance.bottleneck",
     "tags": {
       "severity": "critical",
-      "fps": 34,
-      "component": "Unknown(2284)"
+      "fps": 35,
+      "component": "Unknown(1891)"
     },
     "data": {
-      "timestamp": 62324,
-      "renderTime": 17.984,
-      "cpuTotal": 79
+      "timestamp": 36207,
+      "renderTime": 17.614,
+      "cpuTotal": 93
     }
   },
   {
     "type": "transaction",
-    "name": "Performance Bottleneck: <StaffListingScreen>",
+    "name": "Performance Bottleneck: <Unknown(2784)>",
     "op": "performance.bottleneck",
     "tags": {
       "severity": "critical",
-      "fps": 39,
-      "component": "StaffListingScreen"
+      "fps": 40,
+      "component": "Unknown(2784)"
     },
     "data": {
-      "timestamp": 63330,
-      "renderTime": 10.154,
+      "timestamp": 65338,
+      "renderTime": 21.613,
       "cpuTotal": 72
     }
   },
   {
     "type": "transaction",
-    "name": "Performance Bottleneck: <Unknown(3355)>",
-    "op": "performance.bottleneck",
-    "tags": {
-      "severity": "critical",
-      "fps": 36,
-      "component": "Unknown(3355)"
-    },
-    "data": {
-      "timestamp": 87489,
-      "renderTime": 16.702,
-      "cpuTotal": 72
-    }
-  },
-  {
-    "type": "transaction",
-    "name": "Performance Bottleneck: <CheckInListScreen>",
+    "name": "Performance Bottleneck: <NavigationContent>",
     "op": "performance.bottleneck",
     "tags": {
       "severity": "warning",
       "fps": 40,
-      "component": "CheckInListScreen"
+      "component": "NavigationContent"
     },
     "data": {
-      "timestamp": 50264,
-      "renderTime": 15.402,
+      "timestamp": 49259,
+      "renderTime": 16.735,
+      "cpuTotal": 65
+    }
+  },
+  {
+    "type": "transaction",
+    "name": "Performance Bottleneck: <FlashList>",
+    "op": "performance.bottleneck",
+    "tags": {
+      "severity": "warning",
+      "fps": 38,
+      "component": "FlashList"
+    },
+    "data": {
+      "timestamp": 64336,
+      "renderTime": 10.176,
+      "cpuTotal": 64
+    }
+  },
+  {
+    "type": "transaction",
+    "name": "Performance Bottleneck: <Unknown(3806)>",
+    "op": "performance.bottleneck",
+    "tags": {
+      "severity": "warning",
+      "fps": 40,
+      "component": "Unknown(3806)"
+    },
+    "data": {
+      "timestamp": 77462,
+      "renderTime": 20.018,
       "cpuTotal": 62
     }
   },
   {
     "type": "transaction",
-    "name": "Performance Bottleneck: <Unknown(2284)>",
+    "name": "Performance Bottleneck: <PinKeypad>",
     "op": "performance.bottleneck",
     "tags": {
       "severity": "warning",
-      "fps": 41,
-      "component": "Unknown(2284)"
+      "fps": 37,
+      "component": "PinKeypad"
     },
     "data": {
-      "timestamp": 63834,
-      "renderTime": 19.739,
-      "cpuTotal": 60
+      "timestamp": 79966,
+      "renderTime": 24.966,
+      "cpuTotal": 67
     }
   },
   {
     "type": "transaction",
-    "name": "Performance Bottleneck: <SceneView>",
+    "name": "Performance Bottleneck: <Pin>",
     "op": "performance.bottleneck",
     "tags": {
       "severity": "warning",
-      "fps": 52,
-      "component": "SceneView"
+      "fps": 47,
+      "component": "Pin"
     },
     "data": {
-      "timestamp": 12063,
-      "renderTime": 25.227,
-      "cpuTotal": 76
+      "timestamp": 47249,
+      "renderTime": 15.452,
+      "cpuTotal": 91
+    }
+  },
+  {
+    "type": "transaction",
+    "name": "Performance Bottleneck: <PinKeypad>",
+    "op": "performance.bottleneck",
+    "tags": {
+      "severity": "warning",
+      "fps": 54,
+      "component": "PinKeypad"
+    },
+    "data": {
+      "timestamp": 78965,
+      "renderTime": 12.972,
+      "cpuTotal": 66
     }
   },
   {
@@ -95,13 +125,13 @@
     "op": "performance.bottleneck",
     "tags": {
       "severity": "warning",
-      "fps": 38,
+      "fps": 50,
       "component": "StaffListingScreen"
     },
     "data": {
-      "timestamp": 88494,
-      "renderTime": 15.779,
-      "cpuTotal": 48
+      "timestamp": 30689,
+      "renderTime": 8.638,
+      "cpuTotal": 18
     }
   },
   {
@@ -115,7 +145,37 @@
     },
     "data": {
       "timestamp": 45230,
-      "renderTime": 14.36,
+      "renderTime": 18.381,
+      "cpuTotal": 50
+    }
+  },
+  {
+    "type": "transaction",
+    "name": "Performance Bottleneck: <Pin>",
+    "op": "performance.bottleneck",
+    "tags": {
+      "severity": "warning",
+      "fps": 54,
+      "component": "Pin"
+    },
+    "data": {
+      "timestamp": 46236,
+      "renderTime": 14.204,
+      "cpuTotal": 36
+    }
+  },
+  {
+    "type": "transaction",
+    "name": "Performance Bottleneck: <Pin>",
+    "op": "performance.bottleneck",
+    "tags": {
+      "severity": "warning",
+      "fps": 51,
+      "component": "Pin"
+    },
+    "data": {
+      "timestamp": 57305,
+      "renderTime": 16.25,
       "cpuTotal": 50
     }
   },
