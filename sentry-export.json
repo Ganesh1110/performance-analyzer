@@ -1,27 +1,410 @@
 [
   {
     "type": "transaction",
-    "name": "Performance Bottleneck: <SlowComp>",
+    "name": "Performance Bottleneck: <Unknown(2284)>",
     "op": "performance.bottleneck",
     "tags": {
       "severity": "critical",
-      "fps": 30,
-      "component": "SlowComp"
+      "fps": 34,
+      "component": "Unknown(2284)"
     },
     "data": {
-      "timestamp": 1000,
-      "renderTime": 50,
-      "cpuTotal": 90
+      "timestamp": 62324,
+      "renderTime": 17.984,
+      "cpuTotal": 79
+    }
+  },
+  {
+    "type": "transaction",
+    "name": "Performance Bottleneck: <StaffListingScreen>",
+    "op": "performance.bottleneck",
+    "tags": {
+      "severity": "critical",
+      "fps": 39,
+      "component": "StaffListingScreen"
+    },
+    "data": {
+      "timestamp": 63330,
+      "renderTime": 10.154,
+      "cpuTotal": 72
+    }
+  },
+  {
+    "type": "transaction",
+    "name": "Performance Bottleneck: <Unknown(3355)>",
+    "op": "performance.bottleneck",
+    "tags": {
+      "severity": "critical",
+      "fps": 36,
+      "component": "Unknown(3355)"
+    },
+    "data": {
+      "timestamp": 87489,
+      "renderTime": 16.702,
+      "cpuTotal": 72
+    }
+  },
+  {
+    "type": "transaction",
+    "name": "Performance Bottleneck: <CheckInListScreen>",
+    "op": "performance.bottleneck",
+    "tags": {
+      "severity": "warning",
+      "fps": 40,
+      "component": "CheckInListScreen"
+    },
+    "data": {
+      "timestamp": 50264,
+      "renderTime": 15.402,
+      "cpuTotal": 62
+    }
+  },
+  {
+    "type": "transaction",
+    "name": "Performance Bottleneck: <Unknown(2284)>",
+    "op": "performance.bottleneck",
+    "tags": {
+      "severity": "warning",
+      "fps": 41,
+      "component": "Unknown(2284)"
+    },
+    "data": {
+      "timestamp": 63834,
+      "renderTime": 19.739,
+      "cpuTotal": 60
+    }
+  },
+  {
+    "type": "transaction",
+    "name": "Performance Bottleneck: <SceneView>",
+    "op": "performance.bottleneck",
+    "tags": {
+      "severity": "warning",
+      "fps": 52,
+      "component": "SceneView"
+    },
+    "data": {
+      "timestamp": 12063,
+      "renderTime": 25.227,
+      "cpuTotal": 76
+    }
+  },
+  {
+    "type": "transaction",
+    "name": "Performance Bottleneck: <StaffListingScreen>",
+    "op": "performance.bottleneck",
+    "tags": {
+      "severity": "warning",
+      "fps": 38,
+      "component": "StaffListingScreen"
+    },
+    "data": {
+      "timestamp": 88494,
+      "renderTime": 15.779,
+      "cpuTotal": 48
+    }
+  },
+  {
+    "type": "transaction",
+    "name": "Performance Bottleneck: <PinKeypad>",
+    "op": "performance.bottleneck",
+    "tags": {
+      "severity": "warning",
+      "fps": 50,
+      "component": "PinKeypad"
+    },
+    "data": {
+      "timestamp": 45230,
+      "renderTime": 14.36,
+      "cpuTotal": 50
     }
   },
   {
     "type": "breadcrumb",
-    "category": "memory",
-    "message": "Potential Memory Leak: +100MB growth",
+    "category": "performance.rerender",
+    "message": "Excessive Re-renders: <Text> rendered 74 times",
     "level": "error",
     "data": {
-      "suspectComponents": [
-        "LeakyComp"
+      "component": "Text",
+      "renderCount": 74,
+      "wastedRenders": 74,
+      "primaryCause": "Parent Re-render (Wasted)",
+      "totalTimeSpentMs": "10.16"
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.rerender",
+    "message": "Excessive Re-renders: <Unknown(1778)> rendered 21 times",
+    "level": "error",
+    "data": {
+      "component": "Unknown(1778)",
+      "renderCount": 21,
+      "wastedRenders": 17,
+      "primaryCause": "Parent Re-render (Wasted)",
+      "totalTimeSpentMs": "313.29"
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.rerender",
+    "message": "Excessive Re-renders: <CheckIn> rendered 36 times",
+    "level": "error",
+    "data": {
+      "component": "CheckIn",
+      "renderCount": 36,
+      "wastedRenders": 32,
+      "primaryCause": "Parent Re-render (Wasted)",
+      "totalTimeSpentMs": "421.40"
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.rerender",
+    "message": "Excessive Re-renders: <Unknown(3354)> rendered 26 times",
+    "level": "error",
+    "data": {
+      "component": "Unknown(3354)",
+      "renderCount": 26,
+      "wastedRenders": 22,
+      "primaryCause": "Parent Re-render (Wasted)",
+      "totalTimeSpentMs": "487.49"
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.rerender",
+    "message": "Excessive Re-renders: <Unknown(3960)> rendered 5 times",
+    "level": "error",
+    "data": {
+      "component": "Unknown(3960)",
+      "renderCount": 5,
+      "wastedRenders": 4,
+      "primaryCause": "Parent Re-render (Wasted)",
+      "totalTimeSpentMs": "72.20"
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.rerender",
+    "message": "Excessive Re-renders: <Unknown(4275)> rendered 3 times",
+    "level": "error",
+    "data": {
+      "component": "Unknown(4275)",
+      "renderCount": 3,
+      "wastedRenders": 2,
+      "primaryCause": "Parent Re-render (Wasted)",
+      "totalTimeSpentMs": "0.02"
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.rerender",
+    "message": "Excessive Re-renders: <Unknown(4276)> rendered 3 times",
+    "level": "error",
+    "data": {
+      "component": "Unknown(4276)",
+      "renderCount": 3,
+      "wastedRenders": 2,
+      "primaryCause": "Parent Re-render (Wasted)",
+      "totalTimeSpentMs": "0.44"
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.rerender",
+    "message": "Excessive Re-renders: <Unknown(4675)> rendered 4 times",
+    "level": "error",
+    "data": {
+      "component": "Unknown(4675)",
+      "renderCount": 4,
+      "wastedRenders": 3,
+      "primaryCause": "Parent Re-render (Wasted)",
+      "totalTimeSpentMs": "6.64"
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.rerender",
+    "message": "Excessive Re-renders: <Unknown(1068)> rendered 12 times",
+    "level": "error",
+    "data": {
+      "component": "Unknown(1068)",
+      "renderCount": 12,
+      "wastedRenders": 9,
+      "primaryCause": "Parent Re-render (Wasted)",
+      "totalTimeSpentMs": "153.24"
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.rerender",
+    "message": "Excessive Re-renders: <ThemeProvider> rendered 26 times",
+    "level": "error",
+    "data": {
+      "component": "ThemeProvider",
+      "renderCount": 26,
+      "wastedRenders": 16,
+      "primaryCause": "Parent Re-render (Wasted)",
+      "totalTimeSpentMs": "1192.51"
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.context-cascade",
+    "message": "Context Cascade: 13 components re-rendered at t=93100ms",
+    "level": "warning",
+    "data": {
+      "affectedCount": 13,
+      "components": [
+        "NativeStackNavigator",
+        "Unknown(3298)",
+        "Unknown(3319)",
+        "Unknown(3323)",
+        "Unknown(3616)",
+        "Unknown(3637)",
+        "Unknown(3641)",
+        "Unknown(3748)",
+        "Unknown(3769)",
+        "Unknown(3773)"
+      ],
+      "sources": [
+        "unknown-context"
+      ]
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.context-cascade",
+    "message": "Context Cascade: 10 components re-rendered at t=48900ms",
+    "level": "warning",
+    "data": {
+      "affectedCount": 10,
+      "components": [
+        "NativeStackNavigator",
+        "Unknown(1722)",
+        "Unknown(1743)",
+        "Unknown(1747)",
+        "Unknown(1856)",
+        "Unknown(1877)",
+        "Unknown(1881)",
+        "Unknown(1982)",
+        "Unknown(2003)",
+        "Unknown(2007)"
+      ],
+      "sources": [
+        "unknown-context"
+      ]
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.context-cascade",
+    "message": "Context Cascade: 10 components re-rendered at t=63850ms",
+    "level": "warning",
+    "data": {
+      "affectedCount": 10,
+      "components": [
+        "NativeStackNavigator",
+        "Unknown(2249)",
+        "Unknown(2270)",
+        "Unknown(2274)",
+        "Unknown(2383)",
+        "Unknown(2404)",
+        "Unknown(2408)",
+        "Unknown(2483)",
+        "Unknown(2504)",
+        "Unknown(2508)"
+      ],
+      "sources": [
+        "unknown-context"
+      ]
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.context-cascade",
+    "message": "Context Cascade: 10 components re-rendered at t=90000ms",
+    "level": "warning",
+    "data": {
+      "affectedCount": 10,
+      "components": [
+        "NativeStackNavigator",
+        "Unknown(3298)",
+        "Unknown(3319)",
+        "Unknown(3323)",
+        "Unknown(3616)",
+        "Unknown(3637)",
+        "Unknown(3641)",
+        "Unknown(3748)",
+        "Unknown(3769)",
+        "Unknown(3773)"
+      ],
+      "sources": [
+        "unknown-context"
+      ]
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.context-cascade",
+    "message": "Context Cascade: 7 components re-rendered at t=42900ms",
+    "level": "warning",
+    "data": {
+      "affectedCount": 7,
+      "components": [
+        "NativeStackNavigator",
+        "Unknown(1722)",
+        "Unknown(1743)",
+        "Unknown(1747)",
+        "Unknown(1856)",
+        "Unknown(1877)",
+        "Unknown(1881)"
+      ],
+      "sources": [
+        "unknown-context"
+      ]
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.context-cascade",
+    "message": "Context Cascade: 7 components re-rendered at t=57050ms",
+    "level": "warning",
+    "data": {
+      "affectedCount": 7,
+      "components": [
+        "NativeStackNavigator",
+        "Unknown(2249)",
+        "Unknown(2270)",
+        "Unknown(2274)",
+        "Unknown(2383)",
+        "Unknown(2404)",
+        "Unknown(2408)"
+      ],
+      "sources": [
+        "unknown-context"
+      ]
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "performance.context-cascade",
+    "message": "Context Cascade: 7 components re-rendered at t=76750ms",
+    "level": "warning",
+    "data": {
+      "affectedCount": 7,
+      "components": [
+        "NativeStackNavigator",
+        "Unknown(3298)",
+        "Unknown(3319)",
+        "Unknown(3323)",
+        "Unknown(3616)",
+        "Unknown(3637)",
+        "Unknown(3641)"
+      ],
+      "sources": [
+        "unknown-context"
       ]
     }
   }

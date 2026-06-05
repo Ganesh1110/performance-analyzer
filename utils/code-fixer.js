@@ -171,6 +171,187 @@ class CodeFixer {
       return { success: false, error: e.message };
     }
   }
+
+  /**
+   * Wraps callback functions (usually on* props) in useCallback().
+   * Logic: Finds the component, looks for arrow functions or function expressions
+   * defined in the body that are assigned to variables matching the propNames.
+   */
+  applyUseCallbackFix(componentName, filePath, propNames) {
+    if (!this.parser || !this.traverse || !this.t || !this.generate) {
+      return { success: false, error: 'Babel parser/tools not installed' };
+    }
+
+    try {
+      const code = fs.readFileSync(filePath, 'utf8');
+      const ast  = this.parser.parse(code, {
+        sourceType: 'module',
+        plugins: ['jsx', 'typescript']
+      });
+
+      let modified = false;
+      let hasUseCallbackImport = false;
+      const t = this.t;
+
+      this.traverse(ast, {
+        ImportDeclaration: (nodePath) => {
+          if (nodePath.node.source.value === 'react') {
+            if (nodePath.node.specifiers.some(s =>
+              (s.type === 'ImportSpecifier' && s.imported.name === 'useCallback') ||
+              (s.type === 'ImportDefaultSpecifier' && s.local.name === 'React')
+            )) {
+              hasUseCallbackImport = true;
+            }
+          }
+        },
+
+        // Find the component function
+        Function: (nodePath) => {
+          let isTargetComponent = false;
+          if (nodePath.node.id && nodePath.node.id.name === componentName) isTargetComponent = true;
+          else if (nodePath.parentPath.isVariableDeclarator() && nodePath.parentPath.node.id.name === componentName) isTargetComponent = true;
+
+          if (!isTargetComponent) return;
+
+          nodePath.traverse({
+            VariableDeclarator: (vPath) => {
+              if (!t.isIdentifier(vPath.node.id) || !propNames.includes(vPath.node.id.name)) return;
+              
+              const init = vPath.node.init;
+              if (t.isArrowFunctionExpression(init) || t.isFunctionExpression(init)) {
+                // Wrap in useCallback
+                // For simplicity, we use an empty dependency array [] for now. 
+                // A better implementation would analyze dependencies.
+                vPath.node.init = t.callExpression(
+                  t.identifier('useCallback'),
+                  [init, t.arrayExpression([])]
+                );
+                modified = true;
+              }
+            }
+          });
+        }
+      });
+
+      if (modified) {
+        if (!hasUseCallbackImport) {
+          // Add useCallback to react import
+          const reactImport = ast.program.body.find(n => 
+            t.isImportDeclaration(n) && n.source.value === 'react'
+          );
+          if (reactImport) {
+            reactImport.specifiers.push(t.importSpecifier(t.identifier('useCallback'), t.identifier('useCallback')));
+          } else {
+            const newImport = t.importDeclaration(
+              [t.importSpecifier(t.identifier('useCallback'), t.identifier('useCallback'))],
+              t.stringLiteral('react')
+            );
+            ast.program.body.unshift(newImport);
+          }
+        }
+        const output = this.generate(ast, { retainLines: true }, code);
+        return { success: true, code: output.code };
+      }
+
+      return { success: false, error: `Could not apply useCallback fix to <${componentName}>. No matching callbacks found in component body.` };
+    } catch (e) {
+      return { success: false, error: e.message };
+    }
+  }
+
+  /**
+   * Wraps expensive-looking calculations in useMemo().
+   * Logic: Looks for .map(), .filter(), .reduce() calls or complex objects.
+   */
+  applyUseMemoFix(componentName, filePath) {
+    if (!this.parser || !this.traverse || !this.t || !this.generate) {
+      return { success: false, error: 'Babel parser/tools not installed' };
+    }
+
+    try {
+      const code = fs.readFileSync(filePath, 'utf8');
+      const ast  = this.parser.parse(code, {
+        sourceType: 'module',
+        plugins: ['jsx', 'typescript']
+      });
+
+      let modified = false;
+      let hasUseMemoImport = false;
+      const t = this.t;
+
+      this.traverse(ast, {
+        ImportDeclaration: (nodePath) => {
+          if (nodePath.node.source.value === 'react') {
+            if (nodePath.node.specifiers.some(s =>
+              (s.type === 'ImportSpecifier' && s.imported.name === 'useMemo') ||
+              (s.type === 'ImportDefaultSpecifier' && s.local.name === 'React')
+            )) {
+              hasUseMemoImport = true;
+            }
+          }
+        },
+
+        Function: (nodePath) => {
+          let isTargetComponent = false;
+          if (nodePath.node.id && nodePath.node.id.name === componentName) isTargetComponent = true;
+          else if (nodePath.parentPath.isVariableDeclarator() && nodePath.parentPath.node.id.name === componentName) isTargetComponent = true;
+
+          if (!isTargetComponent) return;
+
+          nodePath.traverse({
+            VariableDeclarator: (vPath) => {
+              const init = vPath.node.init;
+              if (!init) return;
+
+              // Check for .map, .filter, .reduce
+              let isExpensive = false;
+              if (t.isCallExpression(init) && t.isMemberExpression(init.callee)) {
+                const methodName = init.callee.property.name;
+                if (['map', 'filter', 'reduce', 'sort'].includes(methodName)) {
+                  isExpensive = true;
+                }
+              }
+
+              if (isExpensive) {
+                // Wrap in useMemo(() => init, [])
+                vPath.node.init = t.callExpression(
+                  t.identifier('useMemo'),
+                  [
+                    t.arrowFunctionExpression([], init),
+                    t.arrayExpression([])
+                  ]
+                );
+                modified = true;
+              }
+            }
+          });
+        }
+      });
+
+      if (modified) {
+        if (!hasUseMemoImport) {
+          const reactImport = ast.program.body.find(n => 
+            t.isImportDeclaration(n) && n.source.value === 'react'
+          );
+          if (reactImport) {
+            reactImport.specifiers.push(t.importSpecifier(t.identifier('useMemo'), t.identifier('useMemo')));
+          } else {
+            const newImport = t.importDeclaration(
+              [t.importSpecifier(t.identifier('useMemo'), t.identifier('useMemo'))],
+              t.stringLiteral('react')
+            );
+            ast.program.body.unshift(newImport);
+          }
+        }
+        const output = this.generate(ast, { retainLines: true }, code);
+        return { success: true, code: output.code };
+      }
+
+      return { success: false, error: `Could not apply useMemo fix to <${componentName}>. No expensive calculations identified.` };
+    } catch (e) {
+      return { success: false, error: e.message };
+    }
+  }
 }
 
 module.exports = { CodeFixer };

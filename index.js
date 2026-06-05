@@ -13,6 +13,7 @@ const { analyzeBundleSize } = require('./analyzers/bundle-analyzer');
 const { generateTextReport } = require('./reporters/text-reporter');
 const { generateHTMLReport } = require('./reporters/html-reporter');
 const { generateComparisonReport, generateComparisonTextReport } = require('./reporters/comparison-reporter');
+const { calculateStats } = require('./utils/stats');
 
 // New Integrations
 const { FlowTracker } = require('./analyzers/flow-tracker');
@@ -71,7 +72,7 @@ function main() {
   // Parse data
   console.log("\n📦 Loading and parsing data...\n");
   const flashlightMeasures = parseFlashlightData(flashlightData);
-  const { commits: reactCommits, componentRenderMap, fiberHierarchy } = parseReactDevToolsData(reactDevToolsData);
+  const { commits: reactCommits, componentRenderMap, fiberHierarchy, fiberIDToSourceMap } = parseReactDevToolsData(reactDevToolsData);
   const bundleAnalysis = bundleData ? parseBundleStats(bundleData) : null;
 
   // Alignment check
@@ -223,8 +224,14 @@ function main() {
   fs.writeFileSync(path.join(__dirname, "performance_report.html"), htmlReport, "utf-8");
   console.log("   ✓ HTML report generated");
 
-  // Save JSON for programmatic access and baseline comparison
-  const { calculateStats } = require('./utils/stats');
+  // Resolve component paths from both bundle analysis and React source info
+  const resolvedComponentPaths = { ...(bundleAnalysis?.analysis?.componentPaths || {}) };
+  componentRenderMap.forEach((renders, name) => {
+    if (!resolvedComponentPaths[name] && renders[0].source && renders[0].source.fileName) {
+      resolvedComponentPaths[name] = renders[0].source.fileName;
+    }
+  });
+
   const jsonReport = {
     timestamp: new Date().toISOString(),
     summary: {
@@ -237,7 +244,7 @@ function main() {
       avgFPS:               Math.round(calculateStats(flashlightMeasures.map(m => m.fps)).avg), // P1.3
       healthScore:          Math.max(0, 100 - Math.round((bottlenecks.length / flashlightMeasures.length) * 100))
     },
-    componentPaths: bundleAnalysis?.analysis?.componentPaths || {}, // P3.4: top-level for VSCode extension
+    componentPaths: resolvedComponentPaths, // Use resolved paths
     flashlightStats: {
       fps: calculateStats(flashlightMeasures.map(m => m.fps)),
       cpu: calculateStats(flashlightMeasures.map(m => m.cpuTotal))
@@ -349,7 +356,33 @@ function main() {
           fs.writeFileSync(filePath, result.code, 'utf8');
           console.log(`   ✅ Applied React.memo() to <${component}>`);
         } else {
-          console.log(`   ❌ Could not fix <${component}>: ${result.error}`);
+          console.log(`   ❌ Could not fix <${component}> (memo): ${result.error}`);
+        }
+      }
+
+      const callbackSuggestion = suggestions.find(s => s.type === 'USE_CALLBACK');
+      if (callbackSuggestion) {
+        // Extract prop names from the description or use a better way to pass data
+        const propNames = reRenderIssues.find(i => i.component === component)?.unstableProps.filter(p => /^on[A-Z]/.test(p)) || [];
+        if (propNames.length > 0) {
+          const result = codeFixer.applyUseCallbackFix(component, filePath, propNames);
+          if (result.success) {
+            fs.writeFileSync(filePath, result.code, 'utf8');
+            console.log(`   ✅ Applied useCallback() for [${propNames.join(', ')}] in <${component}>`);
+          } else {
+            console.log(`   ❌ Could not fix <${component}> (useCallback): ${result.error}`);
+          }
+        }
+      }
+
+      const memoHookSuggestion = suggestions.find(s => s.type === 'USE_MEMO_HOOK');
+      if (memoHookSuggestion) {
+        const result = codeFixer.applyUseMemoFix(component, filePath);
+        if (result.success) {
+          fs.writeFileSync(filePath, result.code, 'utf8');
+          console.log(`   ✅ Applied useMemo() to <${component}>`);
+        } else {
+          console.log(`   ❌ Could not fix <${component}> (useMemo): ${result.error}`);
         }
       }
     });
@@ -388,7 +421,27 @@ function main() {
 
 // Run the analyzer
 try {
-  main();
+  const args = process.argv.slice(2);
+  const watchMode = args.includes('--watch');
+
+  if (watchMode) {
+    console.log("👀 Watch mode active. Initializing...");
+    main();
+
+    const filesToWatch = [CONFIG.files.flashlight, CONFIG.files.reactProfile];
+    filesToWatch.forEach(file => {
+      if (fs.existsSync(file)) {
+        fs.watchFile(file, { interval: 1000 }, (curr, prev) => {
+          if (curr.mtime > prev.mtime) {
+            console.log(`\n🔄 Data file ${path.basename(file)} changed. Re-running analysis...`);
+            main();
+          }
+        });
+      }
+    });
+  } else {
+    main();
+  }
 } catch (error) {
   console.error("\n❌ Fatal error:", error.message);
   console.error(error.stack);

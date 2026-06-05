@@ -45,6 +45,7 @@ function parseReactDevToolsData(reactData) {
   const profilingStartTime = data.profilingStartTime || 0;
   
   const fiberIDToNameMap = new Map();
+  const fiberIDToSourceMap = new Map(); // New: Track source files
   const componentRenderMap = new Map();
   const fiberHierarchy = new Map();
   const commits = [];
@@ -57,20 +58,28 @@ function parseReactDevToolsData(reactData) {
     if (Array.isArray(obj)) {
       for (let i = 0; i < obj.length; i++) discover(obj[i], visited);
     } else {
-      // Logic A: Standard displayName property
-      if (obj.displayName && (obj.id !== undefined || obj.fiberId !== undefined)) {
-        const id = obj.id !== undefined ? obj.id : obj.fiberId;
-        fiberIDToNameMap.set(Number(id), String(obj.displayName));
+      const id = obj.id !== undefined ? obj.id : obj.fiberId;
+      const numericId = id !== undefined ? Number(id) : null;
+
+      // Logic A: Standard displayName or name property
+      const name = obj.displayName || obj.name || (obj.type && (obj.type.displayName || obj.type.name));
+      if (name && numericId !== null) {
+        fiberIDToNameMap.set(numericId, String(name));
       }
       
-      // Logic B: Old code stringTable + Index map support
+      // Logic B: Capture source information if available
+      if (numericId !== null && obj.source) {
+        fiberIDToSourceMap.set(numericId, obj.source);
+      }
+
+      // Logic C: Old code stringTable + Index map support
       if (obj.fiberIDToNameIndexMap && obj.stringTable) {
         Object.entries(obj.fiberIDToNameIndexMap).forEach(([id, idx]) => {
           fiberIDToNameMap.set(Number(id), obj.stringTable[idx]);
         });
       }
 
-      // Logic C: Recursively scan every property
+      // Logic D: Recursively scan every property
       for (const key in obj) {
         const val = obj[key];
         if (val && typeof val === 'object') discover(val, visited);
@@ -182,13 +191,27 @@ function parseReactDevToolsData(reactData) {
 
       if (fiberId === undefined) return;
       
-      const componentName = fiberIDToNameMap.get(Number(fiberId)) || `Unknown(${fiberId})`;
-      const description = changeDescriptions.get(Number(fiberId));
+      const numericId = Number(fiberId);
+      let componentName = fiberIDToNameMap.get(numericId);
+      const sourceInfo = fiberIDToSourceMap.get(numericId);
+
+      // Fallback to file name if display name is missing
+      if (!componentName && sourceInfo && sourceInfo.fileName) {
+        const baseName = path.basename(sourceInfo.fileName, path.extname(sourceInfo.fileName));
+        componentName = `${baseName}(${fiberId})`;
+      }
+
+      if (!componentName) {
+        componentName = `Unknown(${fiberId})`;
+      }
+
+      const description = changeDescriptions.get(numericId);
       
       const renderInfo = {
         timestamp: relativeTimestamp,
         duration,
-        fiberId,
+        fiberId: numericId,
+        source: sourceInfo,
         reason: description ? {
           props: description.props,
           state: description.state,
@@ -221,7 +244,7 @@ function parseReactDevToolsData(reactData) {
   console.log(`   ✓ Loaded ${commits.length} React commits`);
   console.log(`   ✓ Tracked ${componentRenderMap.size} unique components`);
   
-  return { commits, componentRenderMap, fiberHierarchy };
+  return { commits, componentRenderMap, fiberHierarchy, fiberIDToSourceMap };
 }
 
 function parseBundleStats(bundleData) {
