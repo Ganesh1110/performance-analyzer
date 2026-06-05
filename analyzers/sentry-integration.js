@@ -8,7 +8,7 @@ class SentryIntegration {
     this.enabled = !!dsn;
   }
 
-  exportToSentry(analysisData) {
+  exportToSentry(analysisData, exportDir = process.cwd()) {
     if (!this.enabled) {
       console.log('   ℹ️  Sentry DSN not provided — writing sentry-export.json for manual import.');
     } else {
@@ -85,8 +85,14 @@ class SentryIntegration {
     });
 
     // ── Always write JSON export ──────────────────────────────────────────────
-    const exportPath = path.join(process.cwd(), 'sentry-export.json');
+    const exportPath = path.join(exportDir, 'sentry-export.json');
     fs.writeFileSync(exportPath, JSON.stringify(issues, null, 2), 'utf8');
+    
+    // Also save a latest copy in the root if we are in a subfolder
+    if (exportDir !== process.cwd()) {
+      fs.writeFileSync(path.join(process.cwd(), 'sentry-export.json'), JSON.stringify(issues, null, 2), 'utf8');
+    }
+
     console.log(`   ✓ Wrote ${issues.length} issues to sentry-export.json`);
 
     // ── Optional: real Sentry SDK send ───────────────────────────────────────

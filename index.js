@@ -78,6 +78,23 @@ function runAnalysis(args) {
   const applyFixes       = args.includes('--fix');
   const noOpen           = args.includes('--no-open');
 
+  // --- Initialize Output Management ---
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+  const outputDir = path.join(__dirname, CONFIG.outputs.dir, `run-${timestamp}`);
+  
+  if (!fs.existsSync(path.join(__dirname, CONFIG.outputs.dir))) {
+    fs.mkdirSync(path.join(__dirname, CONFIG.outputs.dir));
+  }
+  fs.mkdirSync(outputDir);
+
+  const getPath = (name) => path.join(outputDir, name);
+  const saveResult = (name, content) => {
+    fs.writeFileSync(getPath(name), content, "utf-8");
+    // Also save a "latest" copy in the root for VSCode and Browser
+    fs.writeFileSync(path.join(__dirname, name), content, "utf-8");
+  };
+  // ------------------------------------
+
   // CLI-overridable correlation settings (P3.2)
   const searchWindowArg  = args.find(a => a.startsWith('--search-window='));
   if (searchWindowArg)  CONFIG.correlation.searchWindowMs = parseInt(searchWindowArg.split('=')[1]);
@@ -129,14 +146,23 @@ function runAnalysis(args) {
     }
   }
 
+  // Copy raw traces if enabled
+  if (CONFIG.outputs.copyTraces) {
+    [CONFIG.files.flashlight, CONFIG.files.reactProfile].forEach(file => {
+      const src = path.resolve(__dirname, file);
+      if (fs.existsSync(src)) {
+        fs.copyFileSync(src, getPath(path.basename(file)));
+      }
+    });
+    console.log("   ✓ Raw traces archived to result folder");
+  }
+
   // Run all analyses
   console.log("\n🔍 Running comprehensive analysis...\n");
   
   // Smart Baseline Management - moved up to provide training data
   const baselineManager = new BaselineManager(path.join(__dirname, 'smart-baselines.json'));
   const detectedScreen = baselineManager.detectScreen(componentRenderMap);
-
-  const bottlenecks = detectBottlenecks(flashlightMeasures, reactCommits);
   const reRenderIssues = analyzeReRenders(componentRenderMap);
   const memoryAnalysis = analyzeMemory(flashlightMeasures, componentRenderMap);
   const hierarchyIssues = buildComponentHierarchy(componentRenderMap, fiberHierarchy);
@@ -253,7 +279,7 @@ function runAnalysis(args) {
   const executiveSummary = nlReporter.generateExecutiveSummary(analysisData);
 
   const sentry = new SentryIntegration(process.env.SENTRY_DSN);
-  const sentryIssues = sentry.exportToSentry(analysisData);
+  const sentryIssues = sentry.exportToSentry(analysisData, outputDir);
 
   const codeFixer = new CodeFixer();
   const automatedFixes = codeFixer.suggestFixes(reRenderIssues);
@@ -268,12 +294,14 @@ function runAnalysis(args) {
   console.log("\n📝 Generating reports...\n");
 
   const textReport = generateTextReport(analysisData);
-  fs.writeFileSync(path.join(__dirname, "performance_report.txt"), textReport, "utf-8");
+  saveResult("performance_report.txt", textReport);
   console.log("   ✓ Text report generated");
 
   const htmlReport = generateHTMLReport(analysisData);
-  fs.writeFileSync(path.join(__dirname, "performance_report.html"), htmlReport, "utf-8");
+  saveResult("performance_report.html", htmlReport);
   console.log("   ✓ HTML report generated");
+
+  // ... (resolvedComponentPaths logic remains same)
 
   // Resolve component paths from both bundle analysis and React source info
   const resolvedComponentPaths = { ...(bundleAnalysis?.analysis?.componentPaths || {}) };
@@ -319,10 +347,9 @@ function runAnalysis(args) {
     automatedFixes
   };
 
-  fs.writeFileSync(
-    path.join(__dirname, "performance_report.json"),
-    JSON.stringify(jsonReport, null, 2),
-    "utf-8"
+  saveResult(
+    "performance_report.json",
+    JSON.stringify(jsonReport, null, 2)
   );
   console.log("   ✓ JSON report generated");
 
@@ -354,7 +381,7 @@ function runAnalysis(args) {
         jsonReport.summary
       );
       const compText = generateComparisonTextReport(comparisonData);
-      fs.writeFileSync(path.join(__dirname, 'comparison-report.txt'), compText, 'utf-8');
+      saveResult('comparison-report.txt', compText);
       console.log('   ✓ Comparison report generated (comparison-report.txt)');
 
       if (comparison.regressed > 0) {
@@ -372,11 +399,11 @@ function runAnalysis(args) {
     const budgetEnforcer = BudgetEnforcer.loadFromFile(path.join(__dirname, '.performance-budget.json'));
     const budgetResult   = budgetEnforcer.evaluate(jsonReport);
     const budgetReport   = budgetEnforcer.generateReport(budgetResult);
-    fs.writeFileSync(path.join(__dirname, "budget-report.md"), budgetReport, "utf-8");
+    saveResult("budget-report.md", budgetReport);
     console.log("   ✓ Budget report generated (budget-report.md)");
 
     const badgeSvg = budgetEnforcer.generateBadge(budgetResult);
-    fs.writeFileSync(path.join(__dirname, "performance-badge.svg"), badgeSvg, "utf-8");
+    saveResult("performance-badge.svg", badgeSvg);
     console.log("   ✓ Performance badge generated (performance-badge.svg)");
     
     if (!budgetResult.passed) {
@@ -455,6 +482,9 @@ function runAnalysis(args) {
   console.log(`   • performance_report.html (interactive charts)`);
   console.log(`   • performance_report.json (programmatic access)\n`);
   
+  console.log(`📁 Archive location:`);
+  console.log(`   • ${outputDir}\n`);
+
   console.log(`💡 Next steps:`);
   console.log(`   1. Review high-severity issues in the automatically opened browser`);
   console.log(`   2. Run 'npm run serve' if you need to re-share the report at http://localhost:3000\n`);

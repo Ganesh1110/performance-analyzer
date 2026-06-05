@@ -69,6 +69,13 @@ module.exports = {
     }
   },
 
+  // Output settings
+  outputs: {
+    dir: "./perf-results",
+    keepHistory: true,
+    copyTraces: true // Save raw input traces along with the report
+  },
+
   // User-defined performance flows (edit to add custom flows)
   // Format: 'flow-name': { start: 'StartComponentName', end: 'EndComponentName', budget: { duration: ms, fps: number } }
   flows: {
