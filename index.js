@@ -52,8 +52,15 @@ function main() {
 
   const args = process.argv.slice(2);
   const isComparisonMode = args.includes('--compare');
-  const enforceBudgets = args.includes('--enforce-budgets');
-  const updateBaseline = args.includes('--update-baseline');
+  const enforceBudgets   = args.includes('--enforce-budgets');
+  const updateBaseline   = args.includes('--update-baseline');
+  const applyFixes       = args.includes('--fix');
+
+  // CLI-overridable correlation settings (P3.2)
+  const searchWindowArg  = args.find(a => a.startsWith('--search-window='));
+  if (searchWindowArg)  CONFIG.correlation.searchWindowMs = parseInt(searchWindowArg.split('=')[1]);
+  const pipelineDelayArg = args.find(a => a.startsWith('--pipeline-delay='));
+  if (pipelineDelayArg) CONFIG.correlation.pipelineDelay  = parseInt(pipelineDelayArg.split('=')[1]);
 
   // Load data files
   const flashlightData = safeRequire(CONFIG.files.flashlight, "Flashlight metrics");
@@ -132,7 +139,8 @@ function main() {
   const jsBottlenecks = jsThreadAnalyzer.analyze(flashlightMeasures, reactCommits);
 
   const navigationAnalyzer = new NavigationAnalyzer();
-  const navigationAnalysis = navigationAnalyzer.analyze(componentRenderMap, reactCommits);
+  // P0.2: pass flashlightMeasures for real FPS data in transition windows
+  const navigationAnalysis = navigationAnalyzer.analyze(componentRenderMap, reactCommits, flashlightMeasures);
 
   const flatListAnalyzer = new FlatListAnalyzer();
   const flatListAnalysis = flatListAnalyzer.analyze(componentRenderMap, fiberHierarchy);
@@ -171,15 +179,23 @@ function main() {
 
   // Tier 3 & 4: Predictive & Integration
   const predictionEngine = new PerformancePredictionEngine();
-  // In a real scenario, we'd load historical reports here
-  const prediction = predictionEngine.suggestOptimizations({
-    linesOfCode: 250,
-    dependencies: 12,
-    stateVariables: 6,
-    childComponents: 15,
-    usesContext: true,
-    hasEffects: true
+  // P2.1: Wire prediction engine to real component data from re-render analysis
+  const predictions = reRenderIssues.slice(0, 10).map(issue => {
+    const hasContext  = issue.contextChangeCount > 0;
+    const childCount  = hierarchyIssues.filter(h => h.parent === issue.component).length;
+    return {
+      component: issue.component,
+      ...predictionEngine.suggestOptimizations({
+        stateVariables:  Object.keys(issue.stateChangeCounts || {}).length,
+        childComponents: childCount,
+        usesContext:     hasContext,
+        hasEffects:      issue.renders?.some(r => r.reason?.hooks?.length > 0) || false,
+        linesOfCode:     0, // Not available at runtime; future: AST-based LOC count
+        dependencies:    0
+      })
+    };
   });
+  const prediction = predictions;
 
   const nlReporter = new NaturalLanguageReporter();
   const executiveSummary = nlReporter.generateExecutiveSummary(analysisData);
@@ -190,10 +206,11 @@ function main() {
   const codeFixer = new CodeFixer();
   const automatedFixes = codeFixer.suggestFixes(reRenderIssues);
 
-  // Add new data to analysisData for reports
-  analysisData.prediction = prediction;
+  // P2.5: Add network summary to analysis data
+  analysisData.networkSummary = networkAnalyzer.getSummary();
+  analysisData.prediction     = prediction;
   analysisData.executiveSummary = executiveSummary;
-  analysisData.automatedFixes = automatedFixes;
+  analysisData.automatedFixes   = automatedFixes;
 
   // Generate reports
   console.log("\n📝 Generating reports...\n");
@@ -211,13 +228,16 @@ function main() {
   const jsonReport = {
     timestamp: new Date().toISOString(),
     summary: {
-      totalFrames: flashlightMeasures.length,
-      bottleneckCount: bottlenecks.length,
-      reRenderIssueCount: reRenderIssues.length,
-      hierarchyIssueCount: hierarchyIssues.length,
-      memoryLeakCount: memoryAnalysis.leaks.length,
-      healthScore: Math.max(0, 100 - Math.round((bottlenecks.length / flashlightMeasures.length) * 100))
+      totalFrames:          flashlightMeasures.length,
+      bottleneckCount:      bottlenecks.length,
+      reRenderIssueCount:   reRenderIssues.length,
+      hierarchyIssueCount:  hierarchyIssues.length,
+      memoryLeakCount:      memoryAnalysis.leaks.length,
+      jsBottleneckCount:    jsBottlenecks.length,     // P1.3
+      avgFPS:               Math.round(calculateStats(flashlightMeasures.map(m => m.fps)).avg), // P1.3
+      healthScore:          Math.max(0, 100 - Math.round((bottlenecks.length / flashlightMeasures.length) * 100))
     },
+    componentPaths: bundleAnalysis?.analysis?.componentPaths || {}, // P3.4: top-level for VSCode extension
     flashlightStats: {
       fps: calculateStats(flashlightMeasures.map(m => m.fps)),
       cpu: calculateStats(flashlightMeasures.map(m => m.cpuTotal))
@@ -235,6 +255,7 @@ function main() {
     animations,
     navigationAnalysis,
     flatListAnalysis,
+    networkSummary: networkAnalyzer.getSummary(), // P2.5
     prediction,
     executiveSummary,
     automatedFixes
@@ -267,7 +288,20 @@ function main() {
       console.log(`\n🔄 Comparison vs Baseline (${detectedScreen}):`);
       console.log(`   • Health Score: ${comparison.changes.healthScore.base} → ${comparison.changes.healthScore.curr} (${comparison.changes.healthScore.status})`);
       console.log(`   • Bottlenecks:  ${comparison.changes.bottleneckCount.base} → ${comparison.changes.bottleneckCount.curr} (${comparison.changes.bottleneckCount.status})`);
-      
+
+      // P1.4: Actually write the comparison report
+      const comparisonData = generateComparisonReport(
+        {
+          flashlightStats: jsonReport.flashlightStats,
+          bottleneckCount:    comparison.changes.bottleneckCount.base,
+          reRenderIssueCount: comparison.changes.reRenderIssueCount?.base
+        },
+        jsonReport.summary
+      );
+      const compText = generateComparisonTextReport(comparisonData);
+      fs.writeFileSync(path.join(__dirname, 'comparison-report.txt'), compText, 'utf-8');
+      console.log('   ✓ Comparison report generated (comparison-report.txt)');
+
       if (comparison.regressed > 0) {
         console.log(`   ⚠️  WARNING: Performance regressions detected on this screen!`);
       } else {
@@ -279,9 +313,10 @@ function main() {
   // Budgets Enforcement
   if (enforceBudgets) {
     console.log("\n⚖️  Enforcing Performance Budgets...");
-    const budgetEnforcer = new BudgetEnforcer();
-    const budgetResult = budgetEnforcer.evaluate(jsonReport);
-    const budgetReport = budgetEnforcer.generateReport(budgetResult);
+    // P1.1: load from .performance-budget.json if present, else use defaults
+    const budgetEnforcer = BudgetEnforcer.loadFromFile(path.join(__dirname, '.performance-budget.json'));
+    const budgetResult   = budgetEnforcer.evaluate(jsonReport);
+    const budgetReport   = budgetEnforcer.generateReport(budgetResult);
     fs.writeFileSync(path.join(__dirname, "budget-report.md"), budgetReport, "utf-8");
     console.log("   ✓ Budget report generated (budget-report.md)");
     
@@ -291,6 +326,29 @@ function main() {
     } else {
       console.log(`   ✅ Passed all performance budgets.`);
     }
+  }
+
+  // P2.3: Apply automated code fixes if --fix flag is set
+  if (applyFixes && automatedFixes.length > 0) {
+    console.log('\n🔧 Applying automated fixes...');
+    const componentFilePaths = jsonReport.componentPaths || {};
+    automatedFixes.forEach(({ component, suggestions }) => {
+      const filePath = componentFilePaths[component];
+      if (!filePath) {
+        console.log(`   ⚠️  No file path for <${component}> — skipping (provide bundle-stats.json for file paths)`);
+        return;
+      }
+      const memoSuggestion = suggestions.find(s => s.type === 'ADD_MEMO');
+      if (memoSuggestion) {
+        const result = codeFixer.applyMemoFix(component, filePath);
+        if (result.success) {
+          fs.writeFileSync(filePath, result.code, 'utf8');
+          console.log(`   ✅ Applied React.memo() to <${component}>`);
+        } else {
+          console.log(`   ❌ Could not fix <${component}>: ${result.error}`);
+        }
+      }
+    });
   }
 
   // Print summary

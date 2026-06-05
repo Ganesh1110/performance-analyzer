@@ -1,6 +1,7 @@
-const fs = require('fs');
+const fs   = require('fs');
 const path = require('path');
 const { calculatePercentileChange } = require('../utils/stats');
+const CONFIG = require('../config');
 
 class BaselineManager {
   constructor(storagePath) {
@@ -36,12 +37,13 @@ class BaselineManager {
   }
 
   getScreenName(signature) {
-    const screenPatterns = {
-      'Header:HomeScreen:ProductList': 'Home',
-      'CartSummary:CheckoutScreen:PaymentForm': 'Checkout',
-      'Avatar:ProfileScreen:SettingsMenu': 'Profile'
-    };
-    return screenPatterns[signature];
+    // Read screen patterns from config — users add their own entries there
+    const screenPatterns = CONFIG.screenPatterns || {};
+    // Partial match: check if all parts of a pattern key appear in the signature
+    for (const [key, name] of Object.entries(screenPatterns)) {
+      if (key.split(':').every(part => signature.includes(part))) return name;
+    }
+    return null;
   }
 
   saveBaseline(screen, data) {
@@ -78,38 +80,46 @@ class BaselineManager {
 
   calculateAverageBaseline(history) {
     const count = history.length;
+    // Track 6 metrics (was 3)
     const avg = {
-      healthScore: 0,
-      bottleneckCount: 0,
-      reRenderIssueCount: 0
+      healthScore:        0,
+      bottleneckCount:    0,
+      reRenderIssueCount: 0,
+      memoryLeakCount:    0,
+      jsBottleneckCount:  0,
+      avgFPS:             0
     };
 
     history.forEach(run => {
-      avg.healthScore += run.data.healthScore || 0;
-      avg.bottleneckCount += run.data.bottleneckCount || 0;
+      avg.healthScore        += run.data.healthScore        || 0;
+      avg.bottleneckCount    += run.data.bottleneckCount    || 0;
       avg.reRenderIssueCount += run.data.reRenderIssueCount || 0;
+      avg.memoryLeakCount    += run.data.memoryLeakCount    || 0;
+      avg.jsBottleneckCount  += run.data.jsBottleneckCount  || 0;
+      avg.avgFPS             += run.data.avgFPS             || 0;
     });
 
-    avg.healthScore = Math.round(avg.healthScore / count);
-    avg.bottleneckCount = Math.round(avg.bottleneckCount / count);
-    avg.reRenderIssueCount = Math.round(avg.reRenderIssueCount / count);
-
+    Object.keys(avg).forEach(k => { avg[k] = Math.round(avg[k] / count); });
     return avg;
   }
 
   generateSmartComparison(baselineSummary, currentSummary) {
     const changes = {};
     let regressed = 0;
-    let improved = 0;
+    let improved  = 0;
 
-    ['healthScore', 'bottleneckCount', 'reRenderIssueCount'].forEach(key => {
-      const base = baselineSummary[key] || 0;
-      const curr = currentSummary[key] || 0;
-      const diff = curr - base;
+    // Metrics where a higher value is better (regression = drop, improvement = rise)
+    const higherIsBetter = new Set(['healthScore', 'avgFPS']);
+
+    ['healthScore', 'bottleneckCount', 'reRenderIssueCount',
+     'memoryLeakCount', 'jsBottleneckCount', 'avgFPS'].forEach(key => {
+      const base    = baselineSummary[key] || 0;
+      const curr    = currentSummary[key]  || 0;
+      const diff    = curr - base;
       const percent = calculatePercentileChange(base, curr);
       
       let status = 'unchanged';
-      if (key === 'healthScore') {
+      if (higherIsBetter.has(key)) {
         if (diff <= -5) status = 'regressed';
         else if (diff >= 5) status = 'improved';
       } else {
@@ -118,7 +128,7 @@ class BaselineManager {
       }
 
       if (status === 'regressed') regressed++;
-      if (status === 'improved') improved++;
+      if (status === 'improved')  improved++;
 
       changes[key] = { base, curr, diff, percent, status };
     });
@@ -128,3 +138,4 @@ class BaselineManager {
 }
 
 module.exports = { BaselineManager };
+

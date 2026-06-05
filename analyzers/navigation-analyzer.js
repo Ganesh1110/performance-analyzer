@@ -5,7 +5,12 @@ class NavigationAnalyzer {
     this.screenSignatures = ['Screen', 'Navigator', 'Route', 'Tab'];
   }
 
-  analyze(componentRenderMap, reactCommits) {
+  /**
+   * @param {Map} componentRenderMap - component name → render array
+   * @param {Array} reactCommits - parsed React DevTools commit data
+   * @param {Array} flashlightMeasures - native frame metrics from Flashlight (optional)
+   */
+  analyze(componentRenderMap, reactCommits, flashlightMeasures = []) {
     console.log("🚦 Analyzing navigation transitions...");
     
     const transitions = [];
@@ -36,7 +41,14 @@ class NavigationAnalyzer {
 
       if (cycleCommits.length > 0) {
         const totalDuration = cycleCommits.reduce((sum, c) => sum + c.duration, 0);
-        const avgFPS = cycleCommits.length > 0 ? (60 * (cycleCommits.length / (totalDuration / 16.6))).toFixed(1) : 60; // Simplified FPS estimation
+
+        // Compute real avgFPS from Flashlight frames in the transition window
+        const windowStart  = mount.timestamp - 500;
+        const windowEnd    = mount.timestamp + 500;
+        const windowFrames = flashlightMeasures.filter(m => m.time >= windowStart && m.time <= windowEnd);
+        const avgFPS = windowFrames.length > 0
+          ? Math.round(windowFrames.reduce((s, m) => s + m.fps, 0) / windowFrames.length)
+          : null; // null = no native frame data available in this window
 
         transitions.push({
           toScreen: mount.name,
@@ -44,6 +56,7 @@ class NavigationAnalyzer {
           commitCount: cycleCommits.length,
           totalDuration: totalDuration.toFixed(2),
           avgCommitDuration: (totalDuration / cycleCommits.length).toFixed(2),
+          avgFPS,
           severity: totalDuration > 100 ? 'critical' : totalDuration > 50 ? 'warning' : 'good',
           impact: totalDuration > 100 ? 'Heavy transition - may cause visible lag' : 'Normal transition'
         });

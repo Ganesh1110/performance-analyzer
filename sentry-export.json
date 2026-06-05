@@ -1,0 +1,28 @@
+[
+  {
+    "type": "transaction",
+    "name": "Performance Bottleneck: <SlowComp>",
+    "op": "performance.bottleneck",
+    "tags": {
+      "severity": "critical",
+      "fps": 30,
+      "component": "SlowComp"
+    },
+    "data": {
+      "timestamp": 1000,
+      "renderTime": 50,
+      "cpuTotal": 90
+    }
+  },
+  {
+    "type": "breadcrumb",
+    "category": "memory",
+    "message": "Potential Memory Leak: +100MB growth",
+    "level": "error",
+    "data": {
+      "suspectComponents": [
+        "LeakyComp"
+      ]
+    }
+  }
+]

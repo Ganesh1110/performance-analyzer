@@ -1568,7 +1568,7 @@ function generateHeatmapHTML(reRenderIssues) {
   `;
 }
 
-function generateCommitAnalysisHTML(commits) {
+function generateCommitAnalysisHTML(commits = []) {
   const worstCommits = [...commits]
     .sort((a, b) => b.duration - a.duration)
     .slice(0, 10);
@@ -2224,7 +2224,8 @@ function generateAnimationsHTML(animations) {
 }
 
 function generatePredictionHTML(prediction) {
-  if (!prediction) {
+  const predictionArray = Array.isArray(prediction) ? prediction : (prediction ? [prediction] : []);
+  if (predictionArray.length === 0) {
     return `
       <div class="empty-state">
         <div class="empty-state-icon">ℹ️</div>
@@ -2233,44 +2234,49 @@ function generatePredictionHTML(prediction) {
     `;
   }
 
-  return `
-    <div class="metric-grid">
-      <div class="metric-card">
-        <div class="metric-header">
-          <div class="metric-icon"><i class="fas fa-clock"></i></div>
+  return predictionArray.map(p => {
+    const compHeader = p.component ? `<h3 style="margin-top: 2rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem;"><i class="fas fa-cube"></i> &lt;${p.component}&gt;</h3>` : '';
+    const renderTime = String(p.predictedRenderTime).endsWith('ms') ? p.predictedRenderTime : p.predictedRenderTime + 'ms';
+    const suggestionsHTML = (p.suggestions || [])
+      .map(
+        (s) => `
+        <div class="issue-card ${s.priority === "HIGH" ? "critical" : "warning"}">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <strong>${s.type}</strong>
+              <span class="badge ${s.priority === "HIGH" ? "critical" : "warning"}">Priority: ${s.priority}</span>
+          </div>
+          <p>${s.message}</p>
         </div>
-        <div class="metric-title">Predicted Render Time</div>
-        <div class="metric-value">${prediction.predictedRenderTime}ms</div>
+      `,
+      )
+      .join("") ||
+      "<p>✅ No major risks predicted for this component structure.</p>";
+
+    return `
+      ${compHeader}
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-header">
+            <div class="metric-icon"><i class="fas fa-clock"></i></div>
+          </div>
+          <div class="metric-title">Predicted Render Time</div>
+          <div class="metric-value">${renderTime}</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-header">
+            <div class="metric-icon"><i class="fas fa-shield-alt"></i></div>
+          </div>
+          <div class="metric-title">Risk Level</div>
+          <div class="metric-value" style="color: ${p.risk === "HIGH" ? "var(--danger)" : p.risk === "MEDIUM" ? "var(--warning)" : "var(--success)"}">
+            ${p.risk}
+          </div>
+        </div>
       </div>
-      <div class="metric-card">
-        <div class="metric-header">
-          <div class="metric-icon"><i class="fas fa-shield-alt"></i></div>
-        </div>
-        <div class="metric-title">Risk Level</div>
-        <div class="metric-value" style="color: ${prediction.risk === "HIGH" ? "var(--danger)" : prediction.risk === "MEDIUM" ? "var(--warning)" : "var(--success)"}">
-          ${prediction.risk}
-        </div>
-      </div>
-    </div>
-    
-    <h4 style="margin: 2rem 0 1.5rem;"><i class="fas fa-lightbulb"></i> Predicted Optimization Needs</h4>
-    ${
-      prediction.suggestions
-        .map(
-          (s) => `
-      <div class="issue-card ${s.priority === "HIGH" ? "critical" : "warning"}">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <strong>${s.type}</strong>
-            <span class="badge ${s.priority === "HIGH" ? "critical" : "warning"}">Priority: ${s.priority}</span>
-        </div>
-        <p>${s.message}</p>
-      </div>
-    `,
-        )
-        .join("") ||
-      "<p>✅ No major risks predicted for this component structure.</p>"
-    }
-  `;
+      
+      <h4 style="margin: 1rem 0 1.5rem;"><i class="fas fa-lightbulb"></i> Predicted Optimization Needs</h4>
+      ${suggestionsHTML}
+    `;
+  }).join('<hr style="margin: 3rem 0; border: 0; border-top: 2px dashed var(--border);" />');
 }
 
 function generateFixesHTML(fixes) {

@@ -71,6 +71,38 @@ class NaturalLanguageReporter {
       nl += `The "${failedFlows[0].name}" flow took ${failedFlows[0].duration}ms (budget: ${failedFlows[0].budget.duration}ms). `;
     }
 
+    // JS Thread Bottlenecks
+    if (analysisData.jsBottlenecks && analysisData.jsBottlenecks.length > 0) {
+      const criticalJS = analysisData.jsBottlenecks.filter(b => b.severity === 'critical');
+      nl += `🧵 JS Thread: Detected ${analysisData.jsBottlenecks.length} JS-blocking event(s)`;
+      if (criticalJS.length > 0) {
+        nl += `, including ${criticalJS.length} critical spike(s). `;
+        nl += `The worst blocked the thread for ${criticalJS[0].duration}ms — `;
+        nl += criticalJS[0].type && criticalJS[0].type.includes('React')
+          ? 'caused by a heavy React render cycle.'
+          : 'caused by non-React business logic (parsing, transforms).';
+        nl += ' ';
+      } else {
+        nl += '. ';
+      }
+    }
+
+    // FlatList / Virtualized List issues
+    if (analysisData.flatListAnalysis && analysisData.flatListAnalysis.length > 0) {
+      nl += `📋 ${analysisData.flatListAnalysis.length} list component(s) have performance issues. `;
+      const top = analysisData.flatListAnalysis[0];
+      nl += `<${top.component}> re-renders ${top.renderCount} times with avg ${top.avgRenderTime}ms per render. `;
+      nl += 'Ensure keyExtractor is stable and renderItem is memoized. ';
+    }
+
+    // Animation issues
+    const jankyAnims = (analysisData.animations || []).filter(a => !a.smooth);
+    if (jankyAnims.length > 0) {
+      nl += `🎬 ${jankyAnims.length} animation(s) are not smooth (<58 FPS). `;
+      nl += `The worst (${jankyAnims[0].component}) averaged ${jankyAnims[0].avgFPS} FPS. `;
+      nl += 'Consider using Reanimated 2+ or enabling useNativeDriver. ';
+    }
+
     // Action plan
     nl += '\n\n**Immediate Actions:**\n';
     nl += this.generateActionPlan(analysisData);

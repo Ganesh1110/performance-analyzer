@@ -96,7 +96,10 @@ function detectContextCascades(componentRenderMap) {
         timeBuckets.get(bucket).add({
           name: componentName,
           duration: render.duration,
-          context: render.reason.context
+          // Normalize: boolean true → ['unknown-context'] so sources are never empty
+          context: Array.isArray(render.reason.context)
+            ? render.reason.context
+            : ['unknown-context']
         });
       }
     });
@@ -153,7 +156,10 @@ function buildHierarchyTree(componentRenderMap, fiberHierarchy) {
       const node = fiberHierarchy.get(nodeId);
       if (!node) return null;
       
-      visited.add(node.name);
+      // Use fiber ID (not component name) to prevent false cycle detection
+      // with components that share the same display name
+      if (visited.has(nodeId)) return null;
+      visited.add(nodeId);
       
       const renders = componentRenderMap.get(node.name) || [];
       const totalDuration = renders.reduce((sum, r) => sum + r.duration, 0);

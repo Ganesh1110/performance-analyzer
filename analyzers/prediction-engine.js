@@ -15,8 +15,9 @@ class PerformancePredictionEngine {
 
   trainModel(historicalReports) {
     this.historicalData = historicalReports;
-    // In a real scenario, this would refine the weights using linear regression
-    console.log(`   🧠 Training prediction model with ${historicalReports.length} historical runs...`);
+    // FUTURE: Implement least-squares weight refinement once enough baseline data is collected.
+    // Currently stores historical data for future use but does NOT update weights.
+    console.log(`   🧠 [Stub] Stored ${historicalReports.length} historical runs for future model training.`);
   }
 
   predictRenderTime(componentMetrics) {

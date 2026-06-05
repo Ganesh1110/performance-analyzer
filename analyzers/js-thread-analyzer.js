@@ -2,7 +2,8 @@ const CONFIG = require('../config');
 
 class JSThreadAnalyzer {
   constructor() {
-    this.jsThreadThreshold = 70; // %
+    // Threshold read from config.js — change CONFIG.thresholds.cpu.jsThreadCritical to override
+    this.jsThreadThreshold = CONFIG.thresholds.cpu.jsThreadCritical || 70;
   }
 
   analyze(flashlightMeasures, reactCommits) {

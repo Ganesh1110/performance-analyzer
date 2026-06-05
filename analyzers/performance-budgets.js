@@ -7,9 +7,12 @@ const defaultBudgets = {
     maxBottlenecks: { max: 5, blocker: false },
     memoryLeaks: { max: 0, blocker: true }
   },
+  bundleSize: {
+    totalKB: { max: 5000, blocker: false }
+  },
   perScreen: {
     'Home': {
-      renderTime: { max: 16.67, blocker: false },
+      transitionDuration: { max: 200, blocker: false },
       reRenders: { max: 3, blocker: false }
     }
   },
@@ -26,11 +29,28 @@ class BudgetEnforcer {
     this.budgets = budgets;
   }
 
+  /**
+   * Load budgets from a JSON file (e.g. .performance-budget.json).
+   * Falls back to defaults if the file doesn't exist or can't be parsed.
+   */
+  static loadFromFile(budgetPath) {
+    if (fs.existsSync(budgetPath)) {
+      try {
+        const custom = JSON.parse(fs.readFileSync(budgetPath, 'utf8'));
+        // Deep-merge: custom overrides defaults at the top-level key level
+        return new BudgetEnforcer({ ...defaultBudgets, ...custom });
+      } catch (e) {
+        console.warn(`⚠️  Could not parse budget file: ${budgetPath}. Using defaults.`);
+      }
+    }
+    return new BudgetEnforcer();
+  }
+
   evaluate(analysisData) {
     const violations = [];
     const blockers = [];
 
-    // Check global budgets
+    // ── Global budgets ──────────────────────────────────────────────────────
     if (analysisData.summary.healthScore < this.budgets.global.healthScore.min) {
       this.addViolation(violations, blockers, {
         type: 'GLOBAL',
@@ -72,7 +92,7 @@ class BudgetEnforcer {
       });
     }
 
-    // Check per-component budgets
+    // ── Per-component budgets ───────────────────────────────────────────────
     analysisData.reRenderIssues.forEach(issue => {
       const componentBudget = this.budgets.perComponent[issue.component];
       if (componentBudget && componentBudget.renderTime) {
@@ -89,6 +109,73 @@ class BudgetEnforcer {
         }
       }
     });
+
+    // ── Per-screen budgets ──────────────────────────────────────────────────
+    if (this.budgets.perScreen && analysisData.navigationAnalysis) {
+      analysisData.navigationAnalysis.forEach(transition => {
+        const screenBudget = this.budgets.perScreen[transition.toScreen];
+        if (!screenBudget) return;
+
+        if (screenBudget.transitionDuration) {
+          const actual = parseFloat(transition.totalDuration);
+          if (actual > screenBudget.transitionDuration.max) {
+            this.addViolation(violations, blockers, {
+              type: 'SCREEN',
+              screen: transition.toScreen,
+              metric: 'transitionDuration',
+              actual,
+              budget: screenBudget.transitionDuration.max,
+              blocker: screenBudget.transitionDuration.blocker
+            });
+          }
+        }
+
+        if (screenBudget.reRenders && analysisData.hierarchyIssues) {
+          // Count re-render issues for components that are children of this screen
+          const screenIssues = analysisData.reRenderIssues.filter(i =>
+            analysisData.hierarchyIssues.some(h => h.child === i.component)
+          );
+          if (screenIssues.length > screenBudget.reRenders.max) {
+            this.addViolation(violations, blockers, {
+              type: 'SCREEN',
+              screen: transition.toScreen,
+              metric: 'reRenders',
+              actual: screenIssues.length,
+              budget: screenBudget.reRenders.max,
+              blocker: screenBudget.reRenders.blocker
+            });
+          }
+        }
+      });
+    }
+
+    // ── Bundle size budgets ─────────────────────────────────────────────────
+    if (this.budgets.bundleSize && analysisData.bundleAnalysis) {
+      const totalKB = parseFloat(analysisData.bundleAnalysis.totalSizeKB);
+      if (this.budgets.bundleSize.totalKB && totalKB > this.budgets.bundleSize.totalKB.max) {
+        this.addViolation(violations, blockers, {
+          type: 'BUNDLE',
+          metric: 'totalSizeKB',
+          actual: totalKB,
+          budget: this.budgets.bundleSize.totalKB.max,
+          blocker: this.budgets.bundleSize.totalKB.blocker
+        });
+      }
+      // Per-component bundle size
+      (analysisData.bundleAnalysis.largeComponents || []).forEach(comp => {
+        const compBudget = this.budgets.perComponent[comp.component];
+        if (compBudget && compBudget.bundleSize && parseFloat(comp.sizeKB) > compBudget.bundleSize.max) {
+          this.addViolation(violations, blockers, {
+            type: 'COMPONENT',
+            component: comp.component,
+            metric: 'bundleSize',
+            actual: parseFloat(comp.sizeKB),
+            budget: compBudget.bundleSize.max,
+            blocker: compBudget.bundleSize.blocker
+          });
+        }
+      });
+    }
 
     return {
       passed: blockers.length === 0,
@@ -113,9 +200,20 @@ class BudgetEnforcer {
       report += `### Blocking Issues (${budgetResult.blockers.length})\n\n`;
       
       budgetResult.blockers.forEach(blocker => {
-        const componentPrefix = blocker.component ? `<${blocker.component}> ` : '';
-        report += `- 🔴 **${componentPrefix}${blocker.metric}**: ${blocker.actual} (budget: ${blocker.budget})\n`;
+        const prefix = blocker.screen
+          ? `[${blocker.screen}] `
+          : blocker.component ? `<${blocker.component}> ` : '';
+        report += `- 🔴 **${prefix}${blocker.metric}**: ${blocker.actual} (budget: ${blocker.budget})\n`;
       });
+
+      if (budgetResult.violations.length > budgetResult.blockers.length) {
+        const warnings = budgetResult.violations.filter(v => !v.blocker);
+        report += `\n### Warnings (${warnings.length})\n\n`;
+        warnings.forEach(w => {
+          const prefix = w.screen ? `[${w.screen}] ` : w.component ? `<${w.component}> ` : '';
+          report += `- 🟡 **${prefix}${w.metric}**: ${w.actual} (budget: ${w.budget})\n`;
+        });
+      }
 
       report += '\n⛔ **This run/PR cannot be merged until blocking issues are resolved.**\n';
     }
@@ -125,3 +223,4 @@ class BudgetEnforcer {
 }
 
 module.exports = { BudgetEnforcer };
+

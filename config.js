@@ -16,7 +16,9 @@ module.exports = {
     },
     cpu: {
       critical: 70,
-      warning: 50
+      warning: 50,
+      jsThreadCritical: 70, // Used by JSThreadAnalyzer
+      jsThreadWarning: 50
     },
     renderThread: {
       critical: 50,
@@ -65,5 +67,23 @@ module.exports = {
       warning: '#FFC107',
       good: '#4CAF50'
     }
+  },
+
+  // User-defined performance flows (edit to add custom flows)
+  // Format: 'flow-name': { start: 'StartComponentName', end: 'EndComponentName', budget: { duration: ms, fps: number } }
+  flows: {
+    'app-launch':   { start: 'AppContainer', end: 'HomeScreen',      budget: { duration: 2000, fps: 58 } },
+    'product-view': { start: 'ProductList',  end: 'ProductDetail',   budget: { duration: 300,  fps: 60 } },
+    'checkout':     { start: 'CartScreen',   end: 'CheckoutSuccess', budget: { duration: 1000, fps: 55 } }
+  },
+
+  // Screen detection patterns for baseline grouping.
+  // Key: colon-separated component names (partial match), Value: human-readable screen name.
+  // Add entries for your own screens here.
+  screenPatterns: {
+    'Header:HomeScreen:ProductList':       'Home',
+    'CartSummary:CheckoutScreen:PaymentForm': 'Checkout',
+    'Avatar:ProfileScreen:SettingsMenu':   'Profile'
   }
 };
+

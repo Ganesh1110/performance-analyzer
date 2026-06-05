@@ -1,0 +1,30 @@
+{
+  "name": "react-native-performance-analyzer",
+  "displayName": "React Native Performance Analyzer",
+  "description": "Highlights performance issues detected by the RN Performance Analyzer directly in your source files",
+  "version": "1.0.0",
+  "publisher": "your-publisher-name",
+  "engines": { "vscode": "^1.80.0" },
+  "categories": ["Linters"],
+  "keywords": ["react native", "performance", "profiling", "diagnostics"],
+  "activationEvents": ["workspaceContains:performance_report.json"],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "performance-analyzer.loadReport",
+        "title": "Performance Analyzer: Load/Refresh Report"
+      },
+      {
+        "command": "performance-analyzer.openComponent",
+        "title": "Performance Analyzer: Open Component Source"
+      }
+    ]
+  },
+  "scripts": {
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^2.0.0"
+  }
+}

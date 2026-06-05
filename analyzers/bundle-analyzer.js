@@ -8,7 +8,7 @@ function analyzeBundleSize(bundleData, componentRenderMap) {
   
   console.log("📦 Analyzing bundle size and correlating with performance...");
   
-  const { totalSize, componentSizes, modules } = bundleData;
+  const { totalSize, componentSizes, componentPaths, modules } = bundleData;
   
   const largeComponents = [];
   const performanceCorrelation = [];

@@ -1,0 +1,28 @@
+{
+  "_comment": "Performance budget configuration for the React Native Performance Analyzer.",
+  "_comment2": "Edit this file to set your own budgets. Run with --enforce-budgets to check.",
+  "global": {
+    "healthScore":    { "min": 80,   "blocker": true  },
+    "avgFPS":         { "min": 58,   "blocker": true  },
+    "maxBottlenecks": { "max": 5,    "blocker": false },
+    "memoryLeaks":    { "max": 0,    "blocker": true  }
+  },
+  "bundleSize": {
+    "totalKB": { "max": 5000, "blocker": false }
+  },
+  "perScreen": {
+    "Home": {
+      "transitionDuration": { "max": 200, "blocker": false },
+      "reRenders":          { "max": 3,   "blocker": false }
+    },
+    "Checkout": {
+      "transitionDuration": { "max": 500, "blocker": true }
+    }
+  },
+  "perComponent": {
+    "ProductCard": {
+      "renderTime": { "max": 8,  "blocker": false },
+      "bundleSize":  { "max": 50, "blocker": false }
+    }
+  }
+}

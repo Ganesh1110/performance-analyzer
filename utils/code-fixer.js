@@ -4,15 +4,15 @@ const path = require('path');
 
 class CodeFixer {
   constructor() {
-    this.parser = null;
+    this.parser   = null;
     this.traverse = null;
-    this.t = null;
+    this.t        = null;
     this.generate = null;
 
     try {
-      this.parser = require('@babel/parser');
+      this.parser   = require('@babel/parser');
       this.traverse = require('@babel/traverse').default;
-      this.t = require('@babel/types');
+      this.t        = require('@babel/types');
       this.generate = require('@babel/generator').default;
     } catch (e) {
       // console.warn('Babel components not found. Code fixing will be limited to suggestions.');
@@ -23,6 +23,7 @@ class CodeFixer {
     return reRenderIssues.map(issue => {
       const suggestions = [];
 
+      // React.memo — wrap component if it re-renders excessively
       if (issue.severity > 0.7) {
         suggestions.push({
           type: 'ADD_MEMO',
@@ -31,11 +32,31 @@ class CodeFixer {
         });
       }
 
-      if (issue.avgRenderTime > 15) {
+      // useMemo — if individual render time is expensive
+      if (parseFloat(issue.avgRenderTime) > 15) {
         suggestions.push({
           type: 'USE_MEMO_HOOK',
           component: issue.component,
           description: `Optimize expensive calculations in ${issue.component} using useMemo().`
+        });
+      }
+
+      // useCallback — if callback props are unstable (causing child re-renders)
+      if (issue.unstableProps && issue.unstableProps.some(p => /^on[A-Z]/.test(p))) {
+        const callbackProps = issue.unstableProps.filter(p => /^on[A-Z]/.test(p));
+        suggestions.push({
+          type: 'USE_CALLBACK',
+          component: issue.component,
+          description: `Wrap callback props [${callbackProps.join(', ')}] in useCallback() to stabilize references and prevent child re-renders.`
+        });
+      }
+
+      // SPLIT_CONTEXT — if >50% of renders are context-driven
+      if (issue.contextChangeCount > issue.renderCount * 0.5) {
+        suggestions.push({
+          type: 'SPLIT_CONTEXT',
+          component: issue.component,
+          description: `${issue.component} re-renders primarily due to context changes (${issue.contextChangeCount}/${issue.renderCount} renders). Split context into smaller providers to reduce blast radius.`
         });
       }
 
@@ -46,7 +67,14 @@ class CodeFixer {
     });
   }
 
-  // Experimental: Apply a fix using Babel
+  /**
+   * Applies React.memo() wrapping to a component using Babel AST.
+   * Supports 4 export patterns:
+   *   1. export default ComponentName;
+   *   2. export default function ComponentName() {}
+   *   3. const ComponentName = () => {}; (plus a separate export default)
+   *   4. export const ComponentName = () => {};
+   */
   applyMemoFix(componentName, filePath) {
     if (!this.parser || !this.traverse || !this.t || !this.generate) {
       return { success: false, error: 'Babel parser/tools not installed' };
@@ -54,18 +82,19 @@ class CodeFixer {
 
     try {
       const code = fs.readFileSync(filePath, 'utf8');
-      const ast = this.parser.parse(code, {
+      const ast  = this.parser.parse(code, {
         sourceType: 'module',
         plugins: ['jsx', 'typescript']
       });
 
-      let modified = false;
+      let wrapped      = false;
       let hasMemoImport = false;
+      const t = this.t;
 
       this.traverse(ast, {
-        ImportDeclaration: (path) => {
-          if (path.node.source.value === 'react') {
-            if (path.node.specifiers.some(s => 
+        ImportDeclaration: (nodePath) => {
+          if (nodePath.node.source.value === 'react') {
+            if (nodePath.node.specifiers.some(s =>
               (s.type === 'ImportSpecifier' && s.imported.name === 'memo') ||
               (s.type === 'ImportDefaultSpecifier' && s.local.name === 'React')
             )) {
@@ -73,51 +102,71 @@ class CodeFixer {
             }
           }
         },
-        ExportDefaultDeclaration: (path) => {
-          const decl = path.node.declaration;
-          
-          // Case 1: export default MyComponent
-          if (decl.type === 'Identifier' && decl.name === componentName) {
-            path.node.declaration = this.t.callExpression(
-              this.t.identifier('memo'),
+
+        ExportDefaultDeclaration: (nodePath) => {
+          if (wrapped) return;
+          const decl = nodePath.node.declaration;
+
+          // Pattern 1: export default ComponentName;
+          if (t.isIdentifier(decl) && decl.name === componentName) {
+            nodePath.node.declaration = t.callExpression(
+              t.identifier('memo'),
               [decl]
             );
-            modified = true;
+            wrapped = true;
           }
-          // Case 2: export default function MyComp() {}
-          else if (decl.type === 'FunctionDeclaration' && decl.id && decl.id.name === componentName) {
-            const funcExpr = this.t.functionExpression(
-              decl.id,
-              decl.params,
-              decl.body,
-              decl.generator,
-              decl.async
+          // Pattern 2: export default function ComponentName() {}
+          else if (t.isFunctionDeclaration(decl) && decl.id && decl.id.name === componentName) {
+            const funcExpr = t.functionExpression(
+              decl.id, decl.params, decl.body, decl.generator, decl.async
             );
-            path.node.declaration = this.t.callExpression(
-              this.t.identifier('memo'),
-              [funcExpr]
-            );
-            modified = true;
+            nodePath.node.declaration = t.callExpression(t.identifier('memo'), [funcExpr]);
+            wrapped = true;
           }
-          // Case 3: export default () => {} (Anonymous)
-          // If we matched by name, it's probably not anonymous, but just in case
+        },
+
+        // Pattern 3: const ComponentName = () => {}; (with separate export default)
+        VariableDeclaration: (nodePath) => {
+          if (wrapped) return;
+          const declarator = nodePath.node.declarations.find(d =>
+            t.isIdentifier(d.id) && d.id.name === componentName
+          );
+          if (!declarator) return;
+          if (t.isArrowFunctionExpression(declarator.init) || t.isFunctionExpression(declarator.init)) {
+            declarator.init = t.callExpression(t.identifier('memo'), [declarator.init]);
+            wrapped = true;
+          }
+        },
+
+        // Pattern 4: export const ComponentName = () => {};
+        ExportNamedDeclaration: (nodePath) => {
+          if (wrapped || !nodePath.node.declaration) return;
+          const declarator = nodePath.node.declaration.declarations?.find(d =>
+            t.isIdentifier(d.id) && d.id.name === componentName
+          );
+          if (!declarator) return;
+          if (t.isArrowFunctionExpression(declarator.init) || t.isFunctionExpression(declarator.init)) {
+            declarator.init = t.callExpression(t.identifier('memo'), [declarator.init]);
+            wrapped = true;
+          }
         }
       });
 
-      if (modified) {
-        if (!hasMemoImport) {
-          const memoImport = this.t.importDeclaration(
-            [this.t.importSpecifier(this.t.identifier('memo'), this.t.identifier('memo'))],
-            this.t.stringLiteral('react')
-          );
-          ast.program.body.unshift(memoImport);
-        }
-
-        const output = this.generate(ast, { retainLines: true }, code);
-        return { success: true, code: output.code };
+      if (!wrapped) {
+        return { success: false, error: `Could not find a wrappable export pattern for <${componentName}>.` };
       }
-      
-      return { success: false, error: `Could not find default export for component: ${componentName}` };
+
+      // Inject memo import if needed
+      if (!hasMemoImport) {
+        const memoImport = t.importDeclaration(
+          [t.importSpecifier(t.identifier('memo'), t.identifier('memo'))],
+          t.stringLiteral('react')
+        );
+        ast.program.body.unshift(memoImport);
+      }
+
+      const output = this.generate(ast, { retainLines: true }, code);
+      return { success: true, code: output.code };
     } catch (e) {
       return { success: false, error: e.message };
     }
@@ -125,3 +174,4 @@ class CodeFixer {
 }
 
 module.exports = { CodeFixer };
+

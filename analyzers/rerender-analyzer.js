@@ -119,7 +119,7 @@ function analyzeReRenders(componentRenderMap) {
         propChangeCounts,
         stateChangeCounts,
         unstableProps: Object.entries(propChangeCounts)
-          .filter(([prop, count]) => count > renders.length * 0.8)
+          .filter(([prop, count]) => count > renders.length * 0.6) // Lowered from 80% → 60%
           .map(([prop]) => prop),
         frequency: frequency.toFixed(2),
         avgInterval: Math.round(avgInterval),
