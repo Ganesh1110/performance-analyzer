@@ -13,11 +13,35 @@ class PerformancePredictionEngine {
     };
   }
 
-  trainModel(historicalReports) {
-    this.historicalData = historicalReports;
-    // FUTURE: Implement least-squares weight refinement once enough baseline data is collected.
-    // Currently stores historical data for future use but does NOT update weights.
-    console.log(`   🧠 [Stub] Stored ${historicalReports.length} historical runs for future model training.`);
+  trainModel(historicalRuns) {
+    if (!historicalRuns || historicalRuns.length < 2) return;
+
+    console.log(`   🧠 Training Prediction Engine with ${historicalRuns.length} historical samples...`);
+
+    const learningRate = 0.01;
+    const epochs = 100;
+
+    for (let i = 0; i < epochs; i++) {
+      historicalRuns.forEach(run => {
+        if (!run.componentMetrics || !run.actualRenderTime) return;
+
+        const metrics = run.componentMetrics;
+        const actual = run.actualRenderTime;
+        const predicted = this.predictRenderTime(metrics);
+        const error = predicted - actual;
+
+        // Adjust weights using gradient descent: w = w - lr * error * input
+        Object.keys(this.weights).forEach(key => {
+          const input = metrics[key] || 0;
+          this.weights[key] -= learningRate * error * input;
+          
+          // Ensure weights stay positive
+          if (this.weights[key] < 0.01) this.weights[key] = 0.01;
+        });
+      });
+    }
+
+    console.log("   ✅ Model trained. Refined weights:", JSON.stringify(this.weights));
   }
 
   predictRenderTime(componentMetrics) {
@@ -66,7 +90,9 @@ class PerformancePredictionEngine {
     return {
       predictedRenderTime: predicted.toFixed(2) + 'ms',
       risk: predicted > 16.67 ? 'HIGH' : predicted > 10 ? 'MEDIUM' : 'LOW',
-      suggestions
+      suggestions,
+      complexityScore: (predicted - 1.0).toFixed(2), // Metrics-driven complexity
+      isStatic: predicted <= 1.05
     };
   }
 }

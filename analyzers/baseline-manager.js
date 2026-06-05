@@ -47,24 +47,47 @@ class BaselineManager {
   }
 
   saveBaseline(screen, data) {
-    const baseline = this.baselines.get(screen) || { history: [], runCount: 0 };
+    const baseline = this.baselines.get(screen) || { history: [], runCount: 0, trainingData: [] };
     
     baseline.history.push({
       timestamp: Date.now(),
       data: data.summary
     });
 
-    // Keep only last 5 runs
-    if (baseline.history.length > 5) {
-      baseline.history.shift();
+    // Capture training data from this run's re-render issues
+    if (data.reRenderIssues) {
+      data.reRenderIssues.forEach(issue => {
+        baseline.trainingData.push({
+          componentMetrics: {
+            stateVariables: Object.keys(issue.stateChangeCounts || {}).length,
+            childComponents: issue.childCount || 0,
+            usesContext: issue.contextChangeCount > 0 ? 1 : 0,
+            hasEffects: (issue.renders || []).some(r => r.reason?.hooks?.length > 0) ? 1 : 0,
+            propsCount: Object.keys(issue.propChangeCounts || {}).length
+          },
+          actualRenderTime: parseFloat(issue.avgRenderTime)
+        });
+      });
     }
+
+    // Keep only last 5 runs and last 100 training samples
+    if (baseline.history.length > 5) baseline.history.shift();
+    if (baseline.trainingData.length > 100) baseline.trainingData = baseline.trainingData.slice(-100);
 
     baseline.runCount++;
     baseline.timestamp = Date.now();
-    baseline.data = data.summary; // Latest data for quick access
+    baseline.data = data.summary;
 
     this.baselines.set(screen, baseline);
     this.saveBaselines();
+  }
+
+  getTrainingData() {
+    const allData = [];
+    this.baselines.forEach(baseline => {
+      if (baseline.trainingData) allData.push(...baseline.trainingData);
+    });
+    return allData;
   }
 
   compare(screen, currentData) {

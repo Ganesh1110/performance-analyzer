@@ -16,6 +16,10 @@
         "title": "Performance Analyzer: Load/Refresh Report"
       },
       {
+        "command": "performance-analyzer.openReport",
+        "title": "Performance Analyzer: Open Full Dashboard"
+      },
+      {
         "command": "performance-analyzer.openComponent",
         "title": "Performance Analyzer: Open Component Source"
       }

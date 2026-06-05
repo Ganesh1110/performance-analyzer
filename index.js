@@ -100,6 +100,10 @@ function main() {
   // Run all analyses
   console.log("\n🔍 Running comprehensive analysis...\n");
   
+  // Smart Baseline Management - moved up to provide training data
+  const baselineManager = new BaselineManager(path.join(__dirname, 'smart-baselines.json'));
+  const detectedScreen = baselineManager.detectScreen(componentRenderMap);
+
   const bottlenecks = detectBottlenecks(flashlightMeasures, reactCommits);
   const reRenderIssues = analyzeReRenders(componentRenderMap);
   const memoryAnalysis = analyzeMemory(flashlightMeasures, componentRenderMap);
@@ -180,10 +184,24 @@ function main() {
 
   // Tier 3 & 4: Predictive & Integration
   const predictionEngine = new PerformancePredictionEngine();
+  
+  // Train model with historical data if available
+  const trainingData = baselineManager.getTrainingData();
+  if (trainingData.length > 0) {
+    predictionEngine.trainModel(trainingData);
+  }
+
   // P2.1: Wire prediction engine to real component data from re-render analysis
-  const predictions = reRenderIssues.slice(0, 10).map(issue => {
+  // Sort by "complexity" to get more interesting predictions first
+  const complexIssues = [...reRenderIssues].sort((a, b) => {
+    const scoreA = Object.keys(a.stateChangeCounts || {}).length + (a.contextChangeCount > 0 ? 5 : 0);
+    const scoreB = Object.keys(b.stateChangeCounts || {}).length + (b.contextChangeCount > 0 ? 5 : 0);
+    return scoreB - scoreA;
+  });
+
+  const predictions = complexIssues.slice(0, 15).map(issue => {
     const hasContext  = issue.contextChangeCount > 0;
-    const childCount  = hierarchyIssues.filter(h => h.parent === issue.component).length;
+    const childCount  = (hierarchyIssues || []).filter(h => h.parent === issue.component).length;
     return {
       component: issue.component,
       ...predictionEngine.suggestOptimizations({
@@ -191,7 +209,8 @@ function main() {
         childComponents: childCount,
         usesContext:     hasContext,
         hasEffects:      issue.renders?.some(r => r.reason?.hooks?.length > 0) || false,
-        linesOfCode:     0, // Not available at runtime; future: AST-based LOC count
+        propsCount:      Object.keys(issue.propChangeCounts || {}).length,
+        linesOfCode:     0,
         dependencies:    0
       })
     };
@@ -275,9 +294,6 @@ function main() {
   );
   console.log("   ✓ JSON report generated");
 
-  // Smart Baseline Management
-  const baselineManager = new BaselineManager(path.join(__dirname, 'smart-baselines.json'));
-  const detectedScreen = baselineManager.detectScreen(componentRenderMap);
   console.log(`\n📱 Detected Screen/Flow: ${detectedScreen}`);
 
   if (updateBaseline) {

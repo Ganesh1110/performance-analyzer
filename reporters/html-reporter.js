@@ -1302,7 +1302,7 @@ function generateIssueTabsHTML(data) {
       id: "prediction",
       icon: "fa-brain",
       label: "Prediction",
-      count: prediction?.suggestions?.length || 0,
+      count: prediction?.length || 0,
     },
     {
       id: "fixes",
@@ -2237,6 +2237,8 @@ function generatePredictionHTML(prediction) {
   return predictionArray.map(p => {
     const compHeader = p.component ? `<h3 style="margin-top: 2rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem;"><i class="fas fa-cube"></i> &lt;${p.component}&gt;</h3>` : '';
     const renderTime = String(p.predictedRenderTime).endsWith('ms') ? p.predictedRenderTime : p.predictedRenderTime + 'ms';
+    const riskColor = p.risk === "HIGH" ? "var(--danger)" : p.risk === "MEDIUM" ? "var(--warning)" : "var(--success)";
+    
     const suggestionsHTML = (p.suggestions || [])
       .map(
         (s) => `
@@ -2250,7 +2252,9 @@ function generatePredictionHTML(prediction) {
       `,
       )
       .join("") ||
-      "<p>✅ No major risks predicted for this component structure.</p>";
+      (p.isStatic 
+        ? "<p>✅ This appears to be a static component with minimal performance overhead.</p>"
+        : "<p>✅ No major risks predicted for this component structure.</p>");
 
     return `
       ${compHeader}
@@ -2261,13 +2265,22 @@ function generatePredictionHTML(prediction) {
           </div>
           <div class="metric-title">Predicted Render Time</div>
           <div class="metric-value">${renderTime}</div>
+          <div class="metric-change neutral">Based on complexity</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-header">
+            <div class="metric-icon"><i class="fas fa-brain"></i></div>
+          </div>
+          <div class="metric-title">Complexity Score</div>
+          <div class="metric-value">${p.complexityScore}</div>
+          <div class="metric-change neutral">Weighted sum of inputs</div>
         </div>
         <div class="metric-card">
           <div class="metric-header">
             <div class="metric-icon"><i class="fas fa-shield-alt"></i></div>
           </div>
           <div class="metric-title">Risk Level</div>
-          <div class="metric-value" style="color: ${p.risk === "HIGH" ? "var(--danger)" : p.risk === "MEDIUM" ? "var(--warning)" : "var(--success)"}">
+          <div class="metric-value" style="color: ${riskColor}">
             ${p.risk}
           </div>
         </div>

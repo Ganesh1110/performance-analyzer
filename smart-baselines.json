@@ -1,0 +1,1046 @@
+{
+  "Screen(ClockDisplay:Context...)": {
+    "history": [
+      {
+        "timestamp": 1780642839683,
+        "data": {
+          "totalFrames": 194,
+          "bottleneckCount": 102,
+          "reRenderIssueCount": 1853,
+          "hierarchyIssueCount": 0,
+          "memoryLeakCount": 0,
+          "jsBottleneckCount": 0,
+          "avgFPS": 51,
+          "healthScore": 47
+        }
+      },
+      {
+        "timestamp": 1780646208882,
+        "data": {
+          "totalFrames": 194,
+          "bottleneckCount": 102,
+          "reRenderIssueCount": 1853,
+          "hierarchyIssueCount": 0,
+          "memoryLeakCount": 0,
+          "jsBottleneckCount": 0,
+          "avgFPS": 51,
+          "healthScore": 47
+        }
+      }
+    ],
+    "runCount": 2,
+    "trainingData": [
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 3
+        },
+        "actualRenderTime": 5.89
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 3
+        },
+        "actualRenderTime": 5.83
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 5.58
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 5.49
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 3.4
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 1
+        },
+        "actualRenderTime": 0.14
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.82
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.81
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.62
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.58
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 1.12
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 1.12
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.74
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.58
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 2.68
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 2.67
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 2.48
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.62
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.7
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.69
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.52
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.42
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.82
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.82
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.63
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.54
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.74
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.73
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.53
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.43
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.67
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.66
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.5
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.39
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 1.04
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 1.03
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.85
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.41
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.73
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.72
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.53
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.44
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.76
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.75
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.58
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.48
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.65
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.64
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.47
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.38
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.82
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.81
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.53
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.41
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.73
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.72
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.45
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 0.35
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 1
+        },
+        "actualRenderTime": 45.31
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 1
+        },
+        "actualRenderTime": 45.18
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 5
+        },
+        "actualRenderTime": 0.33
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.21
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.01
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.17
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.01
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.32
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.01
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.28
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.01
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 1.54
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.01
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.41
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.01
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.15
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.01
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.14
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.01
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.13
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.01
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.12
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.01
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.33
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.01
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.2
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.39
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.17
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.01
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.23
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.27
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.01
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.36
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.3
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.15
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.36
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.51
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 0,
+          "hasEffects": 0,
+          "propsCount": 0
+        },
+        "actualRenderTime": 0.43
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 1,
+          "hasEffects": 0,
+          "propsCount": 1
+        },
+        "actualRenderTime": 8.45
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 1,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 8.3
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 1,
+          "hasEffects": 0,
+          "propsCount": 1
+        },
+        "actualRenderTime": 8.7
+      },
+      {
+        "componentMetrics": {
+          "stateVariables": 0,
+          "childComponents": 0,
+          "usesContext": 1,
+          "hasEffects": 0,
+          "propsCount": 2
+        },
+        "actualRenderTime": 8.55
+      }
+    ],
+    "timestamp": 1780646208883,
+    "data": {
+      "totalFrames": 194,
+      "bottleneckCount": 102,
+      "reRenderIssueCount": 1853,
+      "hierarchyIssueCount": 0,
+      "memoryLeakCount": 0,
+      "jsBottleneckCount": 0,
+      "avgFPS": 51,
+      "healthScore": 47
+    }
+  }
+}

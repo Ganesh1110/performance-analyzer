@@ -42,6 +42,86 @@ function activate(context) {
     }
   });
 
+  // Command: open the interactive HTML dashboard
+  let dashboardCmd = vscode.commands.registerCommand('performance-analyzer.openReport', function () {
+    const folders = vscode.workspace.workspaceFolders;
+    if (!folders) return;
+    const htmlPath = path.join(folders[0].uri.fsPath, 'performance_report.html');
+    const jsonPath = path.join(folders[0].uri.fsPath, 'performance_report.json');
+
+    if (!fs.existsSync(htmlPath)) {
+      vscode.window.showErrorMessage('performance_report.html not found. Run the analyzer first.');
+      return;
+    }
+
+    const panel = vscode.window.createWebviewPanel(
+      'perfDashboard',
+      'Performance Dashboard',
+      vscode.ViewColumn.One,
+      {
+        enableScripts: true,
+        retainContextWhenHidden: true,
+        localResourceRoots: [vscode.Uri.file(folders[0].uri.fsPath)]
+      }
+    );
+
+    let html = fs.readFileSync(htmlPath, 'utf8');
+
+    // Load report JSON to get component paths for navigation
+    let reportData = {};
+    if (fs.existsSync(jsonPath)) {
+      try {
+        reportData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+      } catch (e) {}
+    }
+
+    const allPaths = {
+      ...(reportData.componentPaths || {}),
+      ...(reportData.bundleAnalysis?.componentPaths || {})
+    };
+
+    // Inject navigation script
+    const navScript = `
+      <script>
+        const vscode = acquireVsCodeApi();
+        const componentPaths = ${JSON.stringify(allPaths)};
+
+        // Intercept clicks on component tags/names
+        document.addEventListener('click', event => {
+          const element = event.target.closest('code, strong');
+          if (!element) return;
+          
+          const text = element.textContent.replace(/[<>/]/g, '').trim();
+          const path = componentPaths[text];
+          
+          if (path) {
+            vscode.postMessage({
+              command: 'openComponent',
+              path: path
+            });
+          }
+        });
+      </script>
+    `;
+
+    // Inject the navigation script before </body>
+    html = html.replace('</body>', navScript + '</body>');
+    
+    panel.webview.html = html;
+
+    panel.webview.onDidReceiveMessage(
+      message => {
+        switch (message.command) {
+          case 'openComponent':
+            vscode.commands.executeCommand('performance-analyzer.openComponent', message.path);
+            return;
+        }
+      },
+      undefined,
+      context.subscriptions
+    );
+  });
+
   // Command: open the source file for a component
   let openCmd = vscode.commands.registerCommand('performance-analyzer.openComponent', async (componentPath) => {
     if (!componentPath) return;

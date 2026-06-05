@@ -93,20 +93,43 @@ class SentryIntegration {
     if (this.enabled) {
       try {
         const Sentry = require('@sentry/node');
-        Sentry.init({ dsn: this.dsn });
-        issues.forEach(issue => {
-          if (issue.type === 'transaction') {
-            Sentry.withScope(scope => {
-              Object.entries(issue.tags || {}).forEach(([k, v]) => scope.setTag(k, v));
-              scope.setExtra('data', issue.data);
-              Sentry.captureMessage(issue.name, 'warning');
-            });
-          }
+        Sentry.init({ 
+          dsn: this.dsn,
+          tracesSampleRate: 1.0,
+          debug: false
         });
-        console.log(`   ✓ Sent ${issues.length} issues to Sentry`);
+
+        issues.forEach(issue => {
+          Sentry.withScope(scope => {
+            scope.setLevel(issue.level || 'warning');
+            Object.entries(issue.tags || {}).forEach(([k, v]) => scope.setTag(k, v));
+            scope.setContext('performance_data', issue.data);
+            
+            if (issue.type === 'transaction') {
+              Sentry.captureMessage(issue.name, 'warning');
+            } else {
+              Sentry.addBreadcrumb({
+                category: issue.category,
+                message: issue.message,
+                level: issue.level,
+                data: issue.data
+              });
+              // For critical issues, also send an error event
+              if (issue.level === 'error') {
+                Sentry.captureException(new Error(issue.message));
+              }
+            }
+          });
+        });
+
+        // Ensure events are flushed before exiting
+        Sentry.flush(2000).then(() => {
+          console.log(`   ✓ Successfully synced ${issues.length} events to Sentry`);
+        });
+
       } catch (e) {
-        console.warn('   ⚠️  @sentry/node not installed — issues saved to sentry-export.json only.');
-        console.warn('      To enable real Sentry export: npm install @sentry/node');
+        console.warn('   ⚠️  Failed to send to Sentry:', e.message);
+        console.warn('      Check your DSN and internet connection.');
       }
     }
 
