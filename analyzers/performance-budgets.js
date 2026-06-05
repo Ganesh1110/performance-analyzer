@@ -220,6 +220,34 @@ class BudgetEnforcer {
 
     return report;
   }
+
+  generateBadge(budgetResult) {
+    const color = budgetResult.passed ? '#10b981' : '#ef4444';
+    const status = budgetResult.passed ? 'PASSED' : 'FAILED';
+    const violations = budgetResult.violations.length;
+
+    return `
+<svg width="180" height="20" xmlns="http://www.w3.org/2000/svg">
+  <linearGradient id="b" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <mask id="a">
+    <rect width="180" height="20" rx="3" fill="#fff"/>
+  </mask>
+  <g mask="url(#a)">
+    <path fill="#555" d="M0 0h120v20H0z"/>
+    <path fill="${color}" d="M120 0h60v20H120z"/>
+    <path fill="url(#b)" d="M0 0h180v20H0z"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+    <text x="60" y="15" fill="#010101" fill-opacity=".3">Performance Budget</text>
+    <text x="60" y="14">Performance Budget</text>
+    <text x="150" y="15" fill="#010101" fill-opacity=".3">${status}</text>
+    <text x="150" y="14">${status}</text>
+  </g>
+</svg>`.trim();
+  }
 }
 
 module.exports = { BudgetEnforcer };

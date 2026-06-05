@@ -319,6 +319,10 @@ function main() {
     const budgetReport   = budgetEnforcer.generateReport(budgetResult);
     fs.writeFileSync(path.join(__dirname, "budget-report.md"), budgetReport, "utf-8");
     console.log("   ✓ Budget report generated (budget-report.md)");
+
+    const badgeSvg = budgetEnforcer.generateBadge(budgetResult);
+    fs.writeFileSync(path.join(__dirname, "performance-badge.svg"), badgeSvg, "utf-8");
+    console.log("   ✓ Performance badge generated (performance-badge.svg)");
     
     if (!budgetResult.passed) {
       console.log(`   ❌ Failed: ${budgetResult.blockers.length} blocking violations detected.`);
